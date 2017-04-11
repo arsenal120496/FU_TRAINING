@@ -1,0 +1,10 @@
+/*format register*/
+
+.navbar-right {
+    height: 50px;
+}
+
+.navbar-right div {
+    height: 50px;
+    line-height: 50px;
+}

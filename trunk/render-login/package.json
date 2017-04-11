@@ -1,0 +1,29 @@
+{
+  "name": "render-login",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "flatpickr": "^2.4.8",
+    "google-map-react": "^0.23.0",
+    "jquery": "^3.2.1",
+    "react": "^15.4.2",
+    "react-bootstrap": "^0.30.8",
+    "react-datepicker": "^0.44.0",
+    "react-display-name": "^0.2.0",
+    "react-dom": "^15.4.2",
+    "react-flatpickr": "^3.2.0",
+    "react-google-maps": "^4.11.0",
+    "react-helmet": "^5.0.2",
+    "react-redux": "^5.0.3",
+    "react-router": "^3.0.0"
+  },
+  "devDependencies": {
+    "react-scripts": "0.9.5"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  }
+}

@@ -1,0 +1,17 @@
+/*format login*/
+
+.login-box {
+    display: block;
+    width: 300px;
+    height: 250px;
+    border: none;
+    border-radius: 7.5%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #fff;
+}
+#register-link {
+    text-align: center;
+}
