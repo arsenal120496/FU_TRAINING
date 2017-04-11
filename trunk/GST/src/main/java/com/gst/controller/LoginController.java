@@ -1,11 +1,10 @@
 package com.gst.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gst.domain.User;
 import com.gst.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -19,24 +18,25 @@ public class LoginController {
 
     @CrossOrigin(origins = "http://localhost:3000")
     @RequestMapping(value = "/login", method = RequestMethod.POST, produces = "application/json")
-    public ResponseEntity login(@RequestParam(value = "email", required = true) String  email, @RequestParam(value = "password", required = true) String password){
+    public String login(@RequestParam(value = "email", required = true) String email, @RequestParam(value = "password", required = true) String password) throws JsonProcessingException {
         User user = userService.login(email, password);
-        if (user != null){
-            return new ResponseEntity("Login successfully",HttpStatus.OK);
+        String result = null;
+        if (user != null) {
+            ObjectMapper obj = new ObjectMapper();
+            result = obj.writeValueAsString(user);
         }
-        else{
-            return new ResponseEntity("Login failed", HttpStatus.NOT_FOUND);
-        }
+        return result;
+
     }
 
-//    @CrossOrigin(origins = "http://localhost:3000")
+    //    @CrossOrigin(origins = "http://localhost:3000")
     @RequestMapping(value = "/test", method = RequestMethod.GET, produces = "application/json")
-    public User login(){
-         User user = new User();
-         user.setName("Binh");
-         user.setPassword("123456");
-         user.setEmail("binhfpt");
-         return user;
+    public User login() {
+        User user = new User();
+        user.setName("Binh");
+        user.setPassword("123456");
+        user.setEmail("binhfpt");
+        return user;
 
     }
 }

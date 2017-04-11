@@ -111,7 +111,6 @@ class MyMap extends Component {
     }
 
     render() {
-        console.log(this.state.center);
         return (
             <div id="GSE" style={{height: `100%`}}>
                 <GoogleMapConst

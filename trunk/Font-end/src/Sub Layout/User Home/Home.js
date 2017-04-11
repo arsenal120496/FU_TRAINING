@@ -12,12 +12,11 @@ import MyMap from "../Map/MyMap";
 import Table from "../Table/Table";
 
 
-const user = JSON.parse(localStorage.getItem('user-email'));
+const user = JSON.parse(localStorage.getItem('user'));
 
 const PATH_BASE = 'http://localhost:8080/home/locations';
 const PATH_EMAIL = 'email=';
 const PARAM_EMAIL = user.email;
-
 
 
 class Home extends Component {
@@ -38,7 +37,6 @@ class Home extends Component {
     }
 
     fetchSearchLocation() {
-
         fetch(`${PATH_BASE}?${PATH_EMAIL}${PARAM_EMAIL}`)
             .then(resp => resp.json())
             .then(result => this.setSearchLocation(result));
@@ -46,8 +44,8 @@ class Home extends Component {
     }
 
     /*componentWillMount() {
-        this.fetchSearchLocation();
-    }*/
+     this.fetchSearchLocation();
+     }*/
 
     componentDidMount() {
         var height = (window.innerHeight - 100) + "px";
@@ -57,18 +55,6 @@ class Home extends Component {
     }
 
     render() {
-        let user = 'me';
-        let l = this.state.listLoc.filter(function (obj) {
-            return obj;
-        });
-
-        const obj = l.pop();
-
-        if (obj !== undefined) {
-            user = obj.user.name;
-        }
-
-
         return (
             <div className="full-height">
                 <nav className="navbar navbar-default">
@@ -78,7 +64,7 @@ class Home extends Component {
                             <a className="navbar-brand" href="#">GPS Tracking System</a>
                         </div>
                         <div className="nav navbar-nav navbar-right">
-                            <div>Welcome, {user} (<a href="#">Log out</a>)</div>
+                            <div>Welcome, {user.name} (<a href="#">Log out</a>)   </div>
                         </div>
                     </div>
 

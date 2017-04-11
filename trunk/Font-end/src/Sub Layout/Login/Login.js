@@ -31,6 +31,7 @@ class Login extends Component {
 
     handleSubmit(event) {
         event.preventDefault();
+        console.log(this.state.email, " - ", this.state.password);
         $.ajax({
             url: 'http://localhost:8080/login',
             method: 'POST',
@@ -58,7 +59,7 @@ class Login extends Component {
 
     login(data) {
         var user = JSON.stringify(data);
-        localStorage.setItem("user-email", user.email);
+        localStorage.setItem("user", user);
         this.props.router.push('/home');
     }
 

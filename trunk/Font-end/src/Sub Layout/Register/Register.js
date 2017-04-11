@@ -8,7 +8,7 @@ import $ from 'jquery';
 import {Link} from 'react-router';
 import "./main.css"
 import "../resource/main.css"
-const PATH_BASE = 'http://localhost:8080/register';
+
 
 
 class Register extends Component {
@@ -52,9 +52,7 @@ class Register extends Component {
 }
     renderError(){
         if(this.state.error){
-            <div className="alert alert-success">
-          <p>{this.state.error}</p>
-        </div>
+
         }
     }
     fetchRegister(event) {
