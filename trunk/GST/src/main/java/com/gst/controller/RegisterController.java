@@ -17,15 +17,19 @@ public class RegisterController {
     @Autowired
     private UserService userService;
 
-//    @CrossOrigin(origins = "http://localhost:3000")
-    @RequestMapping(value = "/register", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity register(@RequestBody User user){
-        User added = userService.register(user);
-        if (added != null) {
+    @CrossOrigin(origins = "http://localhost:3000")
+    @RequestMapping(value = "/register", method = RequestMethod.POST)
+    public ResponseEntity register(@RequestParam(value = "name") String  name,
+                                   @RequestParam(value = "email") String email,
+                                   @RequestParam(value = "password") String password){
+        User existed = userService.checkEmailExist(email);
+        if (existed == null) {
+            User user = new User(name, email, password);
+            User added = userService.register(user);
             return new ResponseEntity("User registered successfully", HttpStatus.OK);
         }
         else {
-            return new ResponseEntity("User registered unsuccessfully", HttpStatus.NOT_FOUND);
+            return new ResponseEntity("User registered unsuccessfully", HttpStatus.BAD_REQUEST);
         }
     }
 

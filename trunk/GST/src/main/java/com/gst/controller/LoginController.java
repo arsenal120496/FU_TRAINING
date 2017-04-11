@@ -17,8 +17,8 @@ public class LoginController {
     @Autowired
     private UserService userService;
 
-//    @CrossOrigin(origins = "http://localhost:3000")
-    @RequestMapping(value = "/login", method = RequestMethod.POST, produces = "application/json", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @CrossOrigin(origins = "http://localhost:3000")
+    @RequestMapping(value = "/login", method = RequestMethod.POST, produces = "application/json")
     public ResponseEntity login(@RequestParam(value = "email", required = true) String  email, @RequestParam(value = "password", required = true) String password){
         User user = userService.login(email, password);
         if (user != null){

@@ -11,4 +11,5 @@ import java.util.List;
 public interface UserService {
     User login(String email, String password);
     User register(User user);
+    User checkEmailExist(String email);
 }

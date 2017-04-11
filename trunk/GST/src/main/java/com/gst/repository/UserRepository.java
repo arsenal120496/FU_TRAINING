@@ -10,5 +10,6 @@ import org.springframework.data.mongodb.repository.Query;
 public interface UserRepository extends MongoRepository<User, String > {
     @Query(value = "{'email':?0, 'password':?1}")
     User login(String email, String password);
+    User getUserByEmail(String email);
 }
 

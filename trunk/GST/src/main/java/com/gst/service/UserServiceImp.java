@@ -25,4 +25,10 @@ public class UserServiceImp implements UserService {
     public User register(User user) {
         return userRepository.save(user);
     }
+
+    @Override
+    public User checkEmailExist(String email) {
+        User user = userRepository.getUserByEmail(email);
+        return user;
+    }
 }
