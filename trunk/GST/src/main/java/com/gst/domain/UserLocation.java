@@ -18,7 +18,7 @@ public class UserLocation {
     @Id
     String id;
 
-    User user;
+    String email;
 
     Location location;
 
@@ -39,12 +39,12 @@ public class UserLocation {
         this.id = id;
     }
 
-    public User getUser() {
-        return user;
+    public String getEmail() {
+        return email;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public Location getLocation() {
@@ -61,6 +61,10 @@ public class UserLocation {
 
     public void setMacAddress(String macAddress) {
         this.macAddress = macAddress;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
     }
 
     public String getTime() {

@@ -10,5 +10,5 @@ import java.util.List;
  * Created by truonghuuthanh on 4/4/17.
  */
 public interface LocationRespository extends MongoRepository<UserLocation, String >{
-    List<UserLocation> findByUser(User user);
+    List<UserLocation> findByEmail(String email);
 }

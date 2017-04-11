@@ -30,7 +30,8 @@ public class LocationServiceImp implements LocationService {
     }
 
     @Override
-    public List<UserLocation> findByUser(User user) {
-        return locationRespository.findByUser(user);
+    public List<UserLocation> findByEmail(String email) {
+        List<UserLocation> list = locationRespository.findByEmail(email);
+        return list;
     }
 }

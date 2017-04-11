@@ -14,6 +14,6 @@ public interface LocationService {
 
     UserLocation save(UserLocation userLocation);
 
-    List<UserLocation> findByUser(User user);
+    List<UserLocation> findByEmail(String email);
 }
 
