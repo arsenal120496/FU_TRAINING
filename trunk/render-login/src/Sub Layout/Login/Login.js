@@ -58,7 +58,7 @@ class Login extends Component {
 
     login(data) {
         var user = JSON.stringify(data);
-        localStorage.setItem("user", user);
+        localStorage.setItem("user-email", user.email);
         this.props.router.push('/home');
     }
 
