@@ -38,9 +38,9 @@ const user = JSON.parse(localStorage.getItem('user'));
 
 const PATH_BASE = 'http://localhost:8080/home/locations';
 const PATH_NAME = 'name='
-const PARAM_NAME = user.name;
+// const PARAM_NAME = user.name;
 const PATH_EMAIL = 'email=';
-const PARAM_EMAIL = user.email;
+// const PARAM_EMAIL = user.email;
 
 class MyMap extends Component {
     constructor(props) {
@@ -73,7 +73,7 @@ class MyMap extends Component {
     }
 
     fetchSearchLocation() {
-        fetch(`${PATH_BASE}?${PATH_EMAIL}${PARAM_EMAIL}&${PATH_NAME}${PARAM_NAME}`)
+        fetch(`${PATH_BASE}`)
             .then(resp => resp.json())
             .then(result => this.setSearchLocation(result));
 

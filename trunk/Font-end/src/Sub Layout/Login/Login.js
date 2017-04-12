@@ -40,11 +40,7 @@ class Login extends Component {
                 password: this.state.password
             },
             success: function (data) {
-                if (data !== null) {
-                    this.login(data);
-                } else {
-                    alert("Login failed");
-                }
+                
             }.bind(this)
         });
 
