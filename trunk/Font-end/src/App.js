@@ -12,6 +12,10 @@ import {
 } from "./Main Layout";
 
 import {
+    AuthorizedContainer
+} from "./Sub Layout/AuthorizedContainer"
+
+import {
     Login
 } from "./Sub Layout/Login"
 import {
@@ -23,17 +27,45 @@ import {
     Home
 } from "./Sub Layout/User Home"
 
+
 class App extends Component {
     render() {
         return (
             <Router history={hashHistory}>
                 <Route path="/" component={Application}>
-                    <IndexRoute component={Login} />
-                    <Route path="register" component={Register} />
-                    <Route path="home" component={Home} />
+                    <Route component={AuthorizedContainer} onEnter={requireAuth}>
+                        <IndexRoute component={Home}/>
+                        {/*<Route path="/home" component={Home}></Route>*/}
+                    </Route>
+                    <Route component={Login} path="/sign_in">
+                    </Route>
+                    <Route component={Register} path="/register">
+                    </Route>
                 </Route>
             </Router>
+
         );
+    }
+}
+
+// const Routes = (
+//     <Router history={history}>
+//         <Route path="/" component={App}>
+//             <Route component={AuthorizedContainer} onEnter={requireFake}>
+//                 <IndexRoute component={Home}/>
+//                 <Route component={RouteView} path='/routes-view'/>
+//             </Route>
+//             <Route component={LoginPage} path="/sign_in">
+//             </Route>
+//         </Route>
+//         <Route path="*" component={NoMatch}/>
+//     </Router>
+// );
+function requireAuth() {
+    const user = JSON.parse(localStorage.getItem('user'));
+    if (user === null) {
+        alert("user null");
+        window.location = 'http://localhost:3000/#/sign_in';
     }
 }
 

@@ -12,12 +12,18 @@ import MyMap from "../Map/MyMap";
 import Table from "../Table/Table";
 
 
-const user = JSON.parse(localStorage.getItem('user'));
+let user = JSON.parse(localStorage.getItem('user'));
+if (user === null) {
+    console.log("1")
+    user = {
+        email: "abcd",
+        name: "me"
+    }
+}
 
 const PATH_BASE = 'http://localhost:8080/home/locations';
 const PATH_EMAIL = 'email=';
-const PARAM_EMAIL = user.email;
-
+let PARAM_EMAIL = user.email;
 
 class Home extends Component {
     constructor(props) {
@@ -37,6 +43,7 @@ class Home extends Component {
     }
 
     fetchSearchLocation() {
+        console.log(`${PATH_BASE}?${PATH_EMAIL}${PARAM_EMAIL}`);
         fetch(`${PATH_BASE}?${PATH_EMAIL}${PARAM_EMAIL}`)
             .then(resp => resp.json())
             .then(result => this.setSearchLocation(result));
@@ -48,10 +55,21 @@ class Home extends Component {
      }*/
 
     componentDidMount() {
+        user = JSON.parse(localStorage.getItem('user'));
+        if (user === null) {
+            user = {
+                email: "abcd",
+                name: "me"
+            };
+            this.props.router.push('/sign_in');
+        } else {
+            PARAM_EMAIL = user.email;
+        }
         var height = (window.innerHeight - 100) + "px";
         document.getElementById("con").setAttribute("style", "height:" + height);
         document.getElementById("map").setAttribute("style", "height:" + height);
         this.fetchSearchLocation();
+
     }
 
     render() {
@@ -64,7 +82,7 @@ class Home extends Component {
                             <a className="navbar-brand" href="#">GPS Tracking System</a>
                         </div>
                         <div className="nav navbar-nav navbar-right">
-                            <div>Welcome, {user.name} (<a href="#">Log out</a>)   </div>
+                            <div>Welcome, {user.name} (<a href="#">Log out</a>)</div>
                         </div>
                     </div>
 

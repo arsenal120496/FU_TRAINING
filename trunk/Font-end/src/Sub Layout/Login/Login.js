@@ -31,7 +31,6 @@ class Login extends Component {
 
     handleSubmit(event) {
         event.preventDefault();
-        console.log(this.state.email, " - ", this.state.password);
         $.ajax({
             url: 'http://localhost:8080/login',
             method: 'POST',
@@ -42,6 +41,13 @@ class Login extends Component {
             success: function (data) {
                 if (data !== null) {
                     this.login(data);
+                    var u = localStorage.getItem('user');
+                    if (u !== null) {
+                        this.props.router.push('/');
+                    } else {
+                        console.log('fail to setItem');
+                    }
+
                 } else {
                     alert("Login failed");
                 }
@@ -60,7 +66,6 @@ class Login extends Component {
     login(data) {
         var user = JSON.stringify(data);
         localStorage.setItem("user", user);
-        this.props.router.push('/home');
     }
 
     render() {

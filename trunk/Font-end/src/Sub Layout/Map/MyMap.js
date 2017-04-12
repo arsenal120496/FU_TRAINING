@@ -16,7 +16,7 @@ const GoogleMapConst = withGoogleMap(props => (
     <GoogleMap
         ref={props.onMapLoad}
         defaultZoom={15}
-        center={props.defaultCenter}
+        center={props.center}
     >
 
         {props.markers.map(marker => (
@@ -34,13 +34,18 @@ const center = {
 
 let markerList = [];
 
-const user = JSON.parse(localStorage.getItem('user'));
 
+let user = JSON.parse(localStorage.getItem('user'));
+if (user === null) {
+    user = {
+        email: "abcd",
+        name: "me"
+    }
+}
 const PATH_BASE = 'http://localhost:8080/home/locations';
-const PATH_NAME = 'name='
-const PARAM_NAME = user.name;
 const PATH_EMAIL = 'email=';
-const PARAM_EMAIL = user.email;
+let PARAM_EMAIL = user.email;
+
 
 class MyMap extends Component {
     constructor(props) {
@@ -63,17 +68,17 @@ class MyMap extends Component {
 
     handleMapLoad(map) {
         this._mapComponent = map;
-        console.log("Map zoom " + map.getZoom());
     }
 
     setSearchLocation(result) {
+        console.log(result);
         this.setState({
             listLoc: result.locations
         })
     }
 
     fetchSearchLocation() {
-        fetch(`${PATH_BASE}?${PATH_EMAIL}${PARAM_EMAIL}&${PATH_NAME}${PARAM_NAME}`)
+        fetch(`${PATH_BASE}?${PATH_EMAIL}${PARAM_EMAIL}`)
             .then(resp => resp.json())
             .then(result => this.setSearchLocation(result));
 
@@ -97,20 +102,28 @@ class MyMap extends Component {
             }
 
         });
-
-        if (markerList.length !== undefined) {
-            this.state.center = center;
-            this.state.markers = markerList;
-        }
-
-        ;
+        this.state.center = center;
+        this.state.markers = markerList;
     }
 
     componentDidMount() {
+        user = JSON.parse(localStorage.getItem('user'));
+        if (user === null) {
+            console.log("null");
+            user = {
+                email: "abcd",
+                name: "me"
+            };
+        } else {
+            console.log("not null");
+            PARAM_EMAIL = user.email;
+        }
         this.fetchSearchLocation();
     }
 
     render() {
+        console.log("center", this.state.center);
+        console.log("markers", this.state.markers);
         return (
             <div id="GSE" style={{height: `100%`}}>
                 <GoogleMapConst
@@ -120,7 +133,7 @@ class MyMap extends Component {
                     mapElement={
                         <div style={{height: `100%`}}/>
                     }
-                    defaultCenter={this.state.center}
+                    center={this.state.center}
                     onMapLoad={this.handleMapLoad}
                     markers={this.state.markers}
                 />

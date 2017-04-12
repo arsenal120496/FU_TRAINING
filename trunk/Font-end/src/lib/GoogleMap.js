@@ -187,7 +187,7 @@ export default _.flowRight(
     const {
       children,
     } = this.props;
-
+console.log('map props', this.props);
     return (
       <div>
         {children}

@@ -9,7 +9,7 @@ import {Link} from 'react-router';
 import "./main.css"
 import "../resource/main.css"
 
-
+let user = JSON.parse(localStorage.getItem('user'));
 
 class Register extends Component {
 
