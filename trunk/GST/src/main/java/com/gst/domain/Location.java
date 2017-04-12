@@ -5,23 +5,23 @@ package com.gst.domain;
  * Created by truonghuuthanh on 4/4/17.
  */
 public class Location {
-    String longitude;
+    String longtitude;
     String latitude;
 
     public Location() {
     }
 
-    public Location(String longitude, String latitude) {
-        this.longitude = longitude;
+    public Location(String longtitude, String latitude) {
+        this.longtitude = longtitude;
         this.latitude = latitude;
     }
 
-    public String getLongitude() {
-        return longitude;
+    public String getLongtitude() {
+        return longtitude;
     }
 
     public void setLongitude(String longitude) {
-        this.longitude = longitude;
+        this.longtitude = longitude;
     }
 
     public String getLatitude() {

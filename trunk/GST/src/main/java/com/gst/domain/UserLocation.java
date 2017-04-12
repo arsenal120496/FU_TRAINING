@@ -26,8 +26,19 @@ public class UserLocation {
     public UserLocation() {
 
     }
+    
+    
 
-    public String getId() {
+    public UserLocation(String email, Location location, String nameDeivce) {
+		super();
+		this.email = email;
+		this.location = location;
+		this.nameDeivce = nameDeivce;
+	}
+
+
+
+	public String getId() {
         return id;
     }
 
