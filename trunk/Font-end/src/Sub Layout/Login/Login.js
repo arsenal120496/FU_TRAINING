@@ -50,7 +50,7 @@ class Login extends Component {
                 } else {
                     alert("Login failed");
                 }
-            }
+            }.bind(this)
         });
     }
 
