@@ -24,7 +24,7 @@ public class UserLocation {
     String time;
 
     public UserLocation() {
-
+    	
     }
     
     
@@ -34,6 +34,14 @@ public class UserLocation {
 		this.email = email;
 		this.location = location;
 		this.nameDeivce = nameDeivce;
+	}
+    
+    public UserLocation(String email, Location location, String nameDeivce, String time) {
+		super();
+		this.email = email;
+		this.location = location;
+		this.nameDeivce = nameDeivce;
+		this.time = time;
 	}
 
 

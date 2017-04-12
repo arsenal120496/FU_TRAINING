@@ -10,9 +10,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-/**
- * Created by truonghuuthanh on 4/4/17.
- */
 @RestController
 public class LoginController {
 
@@ -37,8 +34,7 @@ public class LoginController {
         User user = userService.login(email, password);
         if (user != null){
             return new ResponseEntity<String>("Login successfully",HttpStatus.OK);
-        }
-        else{
+        } else {
             return new ResponseEntity<String>("Login failed", HttpStatus.NOT_FOUND);
         }
     }
