@@ -1,6 +1,5 @@
 package com.gst.domain;
 
-import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
  * Created by truonghuuthanh on 4/4/17.

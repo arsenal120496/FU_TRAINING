@@ -5,6 +5,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gst.domain.User;
 import com.gst.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -29,14 +32,14 @@ public class LoginController {
 
     }
 
-    //    @CrossOrigin(origins = "http://localhost:3000")
-    @RequestMapping(value = "/test", method = RequestMethod.GET, produces = "application/json")
-    public User login() {
-        User user = new User();
-        user.setName("Binh");
-        user.setPassword("123456");
-        user.setEmail("binhfpt");
-        return user;
-
+    @RequestMapping(value = "/loginMobile", method = RequestMethod.POST, produces = "application/json", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> loginMobile(@RequestParam(value = "email", required = true) String  email, @RequestParam(value = "password", required = true) String password){
+        User user = userService.login(email, password);
+        if (user != null){
+            return new ResponseEntity<String>("Login successfully",HttpStatus.OK);
+        }
+        else{
+            return new ResponseEntity<String>("Login failed", HttpStatus.NOT_FOUND);
+        }
     }
 }

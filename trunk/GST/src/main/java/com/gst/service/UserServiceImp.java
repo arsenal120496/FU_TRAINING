@@ -5,7 +5,6 @@ import com.gst.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 
 /**
  * Created by truonghuuthanh on 4/4/17.
@@ -31,4 +30,6 @@ public class UserServiceImp implements UserService {
         User user = userRepository.getUserByEmail(email);
         return user;
     }
+    
+    
 }

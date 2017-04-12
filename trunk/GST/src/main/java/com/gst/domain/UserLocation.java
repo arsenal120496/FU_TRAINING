@@ -1,10 +1,7 @@
 package com.gst.domain;
 
 import org.springframework.data.annotation.Id;
-import org.springframework.data.auditing.CurrentDateTimeProvider;
-import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -22,8 +19,7 @@ public class UserLocation {
 
     Location location;
 
-    @Indexed
-    String macAddress;
+    String nameDeivce;
 
     String time;
 
@@ -35,9 +31,6 @@ public class UserLocation {
         return id;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
 
     public String getEmail() {
         return email;
@@ -54,14 +47,14 @@ public class UserLocation {
     public void setLocation(Location location) {
         this.location = location;
     }
-
-    public String getMacAddress() {
-        return macAddress;
-    }
-
-    public void setMacAddress(String macAddress) {
-        this.macAddress = macAddress;
-    }
+    
+    public String getNameDeivce() {
+		return nameDeivce;
+	}
+    
+    public void setNameDeivce(String nameDeivce) {
+		this.nameDeivce = nameDeivce;
+	}
 
     public void setTime(String time) {
         this.time = time;

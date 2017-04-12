@@ -1,11 +1,8 @@
 package com.gst.controller;
 
-import com.gst.domain.User;
 import com.gst.service.LocationService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.HashMap;
 import java.util.Map;
 

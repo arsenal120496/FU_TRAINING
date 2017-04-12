@@ -2,7 +2,6 @@ package com.gst.service;
 
 import com.gst.domain.User;
 
-import java.util.List;
 
 
 /**

@@ -1,7 +1,6 @@
 package com.gst.service;
 
-import com.gst.domain.Location;
-import com.gst.domain.User;
+
 import com.gst.domain.UserLocation;
 
 import java.util.List;
@@ -15,5 +14,6 @@ public interface LocationService {
     UserLocation save(UserLocation userLocation);
 
     List<UserLocation> findByEmail(String email);
+    
 }
 
