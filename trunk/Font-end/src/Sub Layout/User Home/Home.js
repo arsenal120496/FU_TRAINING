@@ -25,6 +25,7 @@ const PATH_BASE = 'http://localhost:8080/home/locations';
 const PATH_EMAIL = 'email=';
 let PARAM_EMAIL = user.email;
 
+
 class Home extends Component {
     constructor(props) {
         super(props);

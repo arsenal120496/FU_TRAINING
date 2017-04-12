@@ -47,13 +47,11 @@ class Login extends Component {
                     } else {
                         console.log('fail to setItem');
                     }
-
                 } else {
                     alert("Login failed");
                 }
-            }.bind(this)
+            }
         });
-
     }
 
 
@@ -114,4 +112,6 @@ class Login extends Component {
 }
 ;
 
-export default Login;
+export
+default
+Login;

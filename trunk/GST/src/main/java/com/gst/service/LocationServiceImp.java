@@ -1,10 +1,8 @@
 package com.gst.service;
 
-import com.gst.domain.Location;
-import com.gst.domain.User;
+
 import com.gst.domain.UserLocation;
 import com.gst.repository.LocationRespository;
-import com.gst.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -47,6 +47,7 @@ const PATH_EMAIL = 'email=';
 let PARAM_EMAIL = user.email;
 
 
+
 class MyMap extends Component {
     constructor(props) {
         super(props);

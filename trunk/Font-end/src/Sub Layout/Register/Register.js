@@ -9,56 +9,43 @@ import {Link} from 'react-router';
 import "./main.css"
 import "../resource/main.css"
 
-let user = JSON.parse(localStorage.getItem('user'));
+import {Error, Success} from '../Notify'
+
+
 
 class Register extends Component {
-
     constructor(props) {
         super(props);
         this.state = {
             name: '',
             email: '',
             password: '',
-            stated: '',
+            success: false,
             confirmPassword: '',
             error: false
         }
         this._handleChange = this._handleChange.bind(this);
         this.fetchRegister = this.fetchRegister.bind(this);
-        this.successfully = this.successfully.bind(this);
-        this.renderSuccessfull = this.renderSuccessfull.bind(this);
+        this.validateInput = this.validateInput.bind(this);
     }
     validateInput(){
         if(this.state.password !== this.state.confirmPassword){
             this.setState({error: "Password and Confirm Password is not correct"});
+            console.log(this.state.error);
             return false;
+            
         }
         else{
             this.setState({error: false});
             return true;
         }
     }
-    successfully(){
-        this.setState({stated: 'success'});
-    }
-    renderSuccessfull(){
-        if (!this.state.stated === 'success') {
-      return (
-        <div className="alert alert-success">
-          <p>Register successfully. Please click here to <Link to='/login'><strong>Login</strong></Link></p>
-        </div>
-      );
-    }
-}
-    renderError(){
-        if(this.state.error){
 
-        }
-    }
     fetchRegister(event) {
         event.preventDefault();
-        
-        if(this.validateInput()){
+        let valid = this.validateInput();
+        console.log('valid: ', valid);
+        if(valid){
             console.log('fetched: ', this.state);
             $.ajax({
             url: 'http://localhost:8080/register',
@@ -69,8 +56,11 @@ class Register extends Component {
                 password: this.state.password                          
             },
             success: function (data) {
-                this.successfully();
+                this.setState({success: 'success'});
                 console.log(this.state);
+            }.bind(this),
+            error: function (err){
+                this.setState({error: 'Email existed. Please try another'});
             }.bind(this)
         });
         }
@@ -82,17 +72,18 @@ class Register extends Component {
         console.log(this.state);
     }
     render() {
-        const message = this.renderError();
+        
         return (
             <div className="overlay">
                 <div className="register-box">
                     <div className="popup-form-title">
                         <h1>Register</h1>
-                    </div>
-                        {message}
+                    </div>       
+                        {this.state.error ? <Error error = {this.state.error}></Error> : null}
+                        {this.state.success ? <Success/>: null}                     
                     <div>
                         <form onSubmit={(event) => this.fetchRegister(event)}>
-                            <div className="input-group">
+                             <div className="input-group">
                                 <div className="input-group-addon">
                                     <i className="fa fa-envelope" aria-hidden="true"></i>
                                 </div>
@@ -101,7 +92,6 @@ class Register extends Component {
                                     className="form-control"
                                     name="txtEmail"
                                     placeholder="Email"
-                                    /*pattern="/^[\w+_.]{3,15}@[a-z]{3,10}[.][a-z]{3,5}(.[a-z]{2,5})?$/"*/
                                     required
                                     onChange={(event) => this._handleChange(event, 'email')} />
                             </div>
@@ -141,8 +131,10 @@ class Register extends Component {
                                     required
                                     onChange={(event) => this._handleChange(event, 'confirmPassword')}/>
                             </div>
-                            <input className="btn btn-success btn-in-popup-form" id="btnRegister" type="submit"
+                            <div className="input-group"> 
+                            <input className="btn btn-success btn-block" id="btnRegister" type="submit"
                                 value="Register" />
+                                </div>
                         </form>
                     </div>
                 </div>

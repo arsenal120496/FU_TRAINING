@@ -1,6 +1,5 @@
 package com.gst.repository;
 
-import com.gst.domain.User;
 import com.gst.domain.UserLocation;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
