@@ -16,6 +16,7 @@
         android:textSize="25dp"
         android:layout_marginTop="10dp"
         android:gravity="center"/>
+
     <EditText
         android:id="@+id/edEmail"
         android:hint="Email"
@@ -27,6 +28,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textPassword"/>
+
+
+
     <LinearLayout
         android:gravity="center"
         android:layout_width="match_parent"

@@ -24,14 +24,14 @@ public class HomeScreen extends AppCompatActivity {
     private TextView txtEmail,txtLongitude,txtlastitude;
     private Button btnStart,btnStop;
     private BroadcastReceiver broadcastReceiver;
+    private Bundle extras;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen);
         mapping();
-
-        Bundle extras = getIntent().getExtras();
+        extras = getIntent().getExtras();
         txtEmail.setText("Welcome GSP Tracking,"+extras.getString("email")+"!");
 
         if(!runtime_permissions()){
@@ -79,6 +79,7 @@ public class HomeScreen extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent i =new Intent(getApplicationContext(),GPS_Service.class);
+                i.putExtra("email", extras.getString("email"));
                 startService(i);
                 btnStop.setEnabled(true);
                 btnStart.setEnabled(false);
