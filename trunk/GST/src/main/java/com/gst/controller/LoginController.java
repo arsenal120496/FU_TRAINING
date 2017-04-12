@@ -19,7 +19,7 @@ public class LoginController {
     @CrossOrigin(origins = "http://localhost:3000")
     @RequestMapping(value = "/login", method = RequestMethod.POST, produces = "application/json")
     public String login(@RequestParam(value = "email", required = true) String email, @RequestParam(value = "password", required = true) String password) throws JsonProcessingException {
-        User user = userService.login(email, password);
+    	User user = userService.login(email, password);
         String result = null;
         if (user != null) {
             ObjectMapper obj = new ObjectMapper();
@@ -29,13 +29,17 @@ public class LoginController {
 
     }
 
-    @RequestMapping(value = "/loginMobile", method = RequestMethod.POST, produces = "application/json", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> loginMobile(@RequestParam(value = "email", required = true) String  email, @RequestParam(value = "password", required = true) String password){
-        User user = userService.login(email, password);
+    @RequestMapping(value = "/loginMobile", method = RequestMethod.POST)
+    public ResponseEntity<User> loginMobile(@RequestParam(value = "email", required = true) String  email, @RequestParam(value = "password", required = true) String password){
+    	System.out.println(email);
+    	System.out.println(password);
+    	User user = userService.login(email, password);
         if (user != null){
-            return new ResponseEntity<String>("Login successfully",HttpStatus.OK);
+        	System.out.println("thanh cong");
+            return new ResponseEntity("Login successfully",HttpStatus.OK);
         } else {
-            return new ResponseEntity<String>("Login failed", HttpStatus.NOT_FOUND);
+        	System.out.println("that bai");
+            return new ResponseEntity("Login failed", HttpStatus.NOT_FOUND);
         }
     }
 }
