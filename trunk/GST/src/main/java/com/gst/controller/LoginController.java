@@ -31,14 +31,10 @@ public class LoginController {
 
     @RequestMapping(value = "/loginMobile", method = RequestMethod.POST)
     public ResponseEntity<User> loginMobile(@RequestParam(value = "email", required = true) String  email, @RequestParam(value = "password", required = true) String password){
-    	System.out.println(email);
-    	System.out.println(password);
     	User user = userService.login(email, password);
         if (user != null){
-        	System.out.println("thanh cong");
             return new ResponseEntity("Login successfully",HttpStatus.OK);
         } else {
-        	System.out.println("that bai");
             return new ResponseEntity("Login failed", HttpStatus.NOT_FOUND);
         }
     }
