@@ -1,27 +1,26 @@
 /**
  * Created by Asus on 3/30/2017.
  */
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import '../resource/bootstrap/css/bootstrap.min.css';
 import '../resource/font-awesome/css/font-awesome.min.css';
-
-
+import $ from 'jquery';
 import "./main.css"
 import "../resource/main.css"
 import MyMap from "../Map/MyMap";
 import Table from "../Table/Table";
-
-
+import ReactTable from 'react-table'
+import 'react-table/react-table.css'
 let user = JSON.parse(localStorage.getItem('user'));
 if (user === null) {
-    console.log("1")
+    // console.log("1")
     user = {
         email: "abcd",
         name: "me"
     }
 }
 
-const PATH_BASE = 'http://localhost:8080/home/locations';
+const PATH_BASE = 'http://10.88.53.18:8080/home/locations';
 const PATH_EMAIL = 'email=';
 let PARAM_EMAIL = user.email;
 
@@ -39,9 +38,12 @@ class Home extends Component {
     }
 
     setSearchLocation(result) {
+
         this.setState({
-            listLoc: result.locations
+            listLoc: result
+            
         })
+        console.log(this.state.listLoc);
     }
 
     fetchSearchLocation() {
@@ -49,6 +51,17 @@ class Home extends Component {
         fetch(`${PATH_BASE}?${PATH_EMAIL}${PARAM_EMAIL}`)
             .then(resp => resp.json())
             .then(result => this.setSearchLocation(result));
+        // $.ajax({
+        //     url: `${PATH_BASE}?${PATH_EMAIL}${PARAM_EMAIL}`,
+        //     method: 'POST',
+        //     success: function (data) {
+        //         this.setSearchLocation(data)
+        //     }.bind(this),
+        //     error: function (err) {
+        //         console.log('error: ',err);
+
+        //     }
+        // });
 
     }
 
@@ -73,11 +86,28 @@ class Home extends Component {
         this.fetchSearchLocation();
 
     }
-    logout(){
+    logout() {
         // event.preventDefault();
         localStorage.setItem('user', null);
     }
     render() {
+        const columns = [{
+            header: 'Latitude',
+            id: 'latitude',
+            accessor: d => d.location.latitude
+        },
+        {
+            header: 'Longitude',
+            id: 'longitude',
+            accessor: d => d.location.longitude
+        },
+        {
+            header: 'Device',
+
+            accessor: 'nameDeivce'
+        }
+
+        ]
         return (
             <div className="full-height">
                 <nav className="navbar navbar-default">
@@ -96,10 +126,15 @@ class Home extends Component {
                 <div className="container col-md-12" id="con">
 
                     <div className="col-xs-12 col-md-7 " id="map">
-                        <MyMap list={this.state.listLoc}/>
+                        <MyMap list={this.state.listLoc} />
                     </div>
                     <div className="col-xs-12 col-md-5">
-                        <Table list={this.state.listLoc}/>
+                        {/*<Table list={this.state.listLoc} />*/}
+                        <ReactTable
+                            data={this.state.listLoc}
+                            columns={columns}
+                            defaultPageSize={10}
+                        />
                     </div>
                 </div>
             </div>

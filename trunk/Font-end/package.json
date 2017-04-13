@@ -7,15 +7,16 @@
     "google-map-react": "^0.23.0",
     "jquery": "^3.2.1",
     "react": "^15.4.2",
-    "react-bootstrap": "^0.30.8",
     "react-datepicker": "^0.44.0",
     "react-display-name": "^0.2.0",
     "react-dom": "^15.4.2",
     "react-flatpickr": "^3.2.0",
     "react-google-maps": "^4.11.0",
     "react-helmet": "^5.0.2",
+    "react-paginate-component": "0.0.3",
     "react-redux": "^5.0.3",
-    "react-router": "^3.0.0"
+    "react-router": "^3.0.0",
+    "react-table": "^5.5.0"
   },
   "devDependencies": {
     "react-scripts": "0.9.5"

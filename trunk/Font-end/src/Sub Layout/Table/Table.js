@@ -2,7 +2,7 @@
  * Created by Asus on 4/4/2017.
  */
 import React, {Component} from 'react';
-
+import ReactTable from 'react-table'
 import '../resource/bootstrap/css/bootstrap.min.css';
 import './main.css';
 
@@ -12,7 +12,6 @@ import './main.css';
 /*import Flatpickr from 'react-flatpickr'*/
 
 class Table extends Component {
-
 
     render() {
         const {list} = this.props;
@@ -27,7 +26,7 @@ class Table extends Component {
                         <option value="2">Device 3</option>
                     </select>
                 </div>*/}
-                <table className="table table-striped table-hover">
+                <table className="table table-striped table-hover" id="location">
                     <thead>
                     <tr>
                         <th>#</th>
@@ -44,6 +43,7 @@ class Table extends Component {
                             <td>{item.nameDeivce}</td>
                         </tr>
                     )}
+
                     </tbody>
                 </table>
             </div>

@@ -42,7 +42,7 @@ if (user === null) {
         name: "me"
     }
 }
-const PATH_BASE = 'http://localhost:8080/home/locations';
+const PATH_BASE = 'http://10.88.53.18:8080/home/locations';
 const PATH_EMAIL = 'email=';
 let PARAM_EMAIL = user.email;
 
