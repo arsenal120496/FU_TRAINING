@@ -20,19 +20,19 @@ class Table extends Component {
             <div className="container col-md-12">
                 {/*<Flatpickr options={{minDate: '2017-01-01'}}  />*/}
 
-                <div className="form-field-wrapper">
+                {/*<div className="form-field-wrapper">
                     <select name="status">
                         <option value="0">Device 1</option>
                         <option value="1">Device 2</option>
                         <option value="2">Device 3</option>
                     </select>
-                </div>
+                </div>*/}
                 <table className="table table-striped table-hover">
                     <thead>
                     <tr>
                         <th>#</th>
-                        <th colSpan="2">Location</th>
-                        <th>Username</th>
+                        <th>Location</th>
+                        <th>Device</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -40,9 +40,8 @@ class Table extends Component {
                     {list.map(item =>
                         <tr key={item.id} >
                             <td>{list.indexOf(item) + 1}</td>
-                            <td>{item.location.latitude}</td>
-                            <td>{item.location.longitude}</td>
-                            <td>{item.macAddress}</td>
+                            <td>[{item.location.latitude}] - [{item.location.longitude}]</td>
+                            <td>{item.nameDeivce}</td>
                         </tr>
                     )}
                     </tbody>

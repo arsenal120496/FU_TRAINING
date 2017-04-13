@@ -16,7 +16,7 @@ public class RegisterController {
     @Autowired
     private UserService userService;
 
-    @CrossOrigin(origins = "http://localhost:3000")
+    @CrossOrigin
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public ResponseEntity register(@RequestParam(value = "name") String  name,
                                    @RequestParam(value = "email") String email,

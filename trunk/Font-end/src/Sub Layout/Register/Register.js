@@ -32,8 +32,12 @@ class Register extends Component {
         if(this.state.password !== this.state.confirmPassword){
             this.setState({error: "Password and Confirm Password is not correct"});
             console.log(this.state.error);
-            return false;
-            
+            return false;           
+        }
+        else if(this.state.password.length < 6){
+            this.setState({error: "The length of password must be 8 character at least"});
+            console.log(this.state.error);
+            return false; 
         }
         else{
             this.setState({error: false});
@@ -50,6 +54,7 @@ class Register extends Component {
             $.ajax({
             url: 'http://localhost:8080/register',
             method: 'POST',
+            // headers: { "Access-Control-Allow-Origin": "*" },
             data: {
                 name: this.state.name,
                 email: this.state.email,
@@ -61,7 +66,7 @@ class Register extends Component {
                 console.log(this.state);
             }.bind(this),
             error: function (err){
-                this.setState({error: 'Email existed. Please try another'});
+                this.setState({error: 'Email existed. Please try another'});              
             }.bind(this)
         });
         }

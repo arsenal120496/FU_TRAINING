@@ -15,7 +15,7 @@ public class HomeController {
     @Autowired
     LocationService locationService;
 
-    @CrossOrigin(origins = "http://localhost:3000")
+    @CrossOrigin
     @GetMapping(value = "/locations", produces = "application/json")
     public Map<String, Object> list(@RequestParam(value = "email", required = true) String email){
         Map<String, Object> result = new HashMap<String, Object>();
