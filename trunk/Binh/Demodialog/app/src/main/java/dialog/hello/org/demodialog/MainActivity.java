@@ -27,11 +27,13 @@ import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public class MainActivity extends AppCompatActivity {
     private EditText edEmail, edPassword;
     private Button btnLogin, btnExit;
     private String responseServer = "";
+    private String url = "http://10.88.52.195:8080/loginMobile";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
         login();
     }
 
+    //ánh xạ
     private void mapping() {
         edEmail = (EditText) findViewById(R.id.edEmail);
         edPassword = (EditText) findViewById(R.id.edPassword);
@@ -78,26 +81,33 @@ public class MainActivity extends AppCompatActivity {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                    if (checkValidate()) {
+                if (checkValidate()) {
+                    try {
                         if (checkUser()) {
-                            Toast.makeText(getApplicationContext(),responseServer,Toast.LENGTH_LONG);
                             Intent intent = new Intent(MainActivity.this, HomeScreen.class);
                             String email = edEmail.getText().toString();
-                            intent.putExtra("email",email);
+                            intent.putExtra("email", email);
                             startActivity(intent);
                         } else {
-                            Toast.makeText(getApplicationContext(),responseServer,Toast.LENGTH_LONG);
+                            Toast.makeText(getApplicationContext(), "False!", Toast.LENGTH_LONG);
                         }
+                    } catch (ExecutionException e) {
+                        e.printStackTrace();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
                     }
+                }
 
             }
         });
     }
 
-    private boolean checkUser() {
+    private boolean checkUser() throws ExecutionException, InterruptedException {
         String email = edEmail.getText().toString();
         String password = edPassword.getText().toString();
-        sendPostRequest(email,password);
+        SendPostReqAsyncTask sendPostReqAsyncTask = new SendPostReqAsyncTask();
+        sendPostReqAsyncTask.execute(email, password);
+        responseServer = sendPostReqAsyncTask.get();
         if (!responseServer.equalsIgnoreCase("Login failed")) {
             return true;
         }
@@ -112,11 +122,11 @@ public class MainActivity extends AppCompatActivity {
             edEmail.setError("Email can be blank!");
             edEmail.requestFocus();
             result = false;
-        }else if(!(edEmail.getText().toString().trim().matches("^([a-zA-Z0-9_\\-\\.]+)@([a-zA-Z0-9_\\-\\.]+)\\.([a-zA-Z]{2,5})$"))){
+        } else if (!(edEmail.getText().toString().trim().matches("^([a-zA-Z0-9_\\-\\.]+)@([a-zA-Z0-9_\\-\\.]+)\\.([a-zA-Z]{2,5})$"))) {
             result = false;
             edEmail.setError("Invalid email form! Please try again");
             edEmail.requestFocus();
-        }else if (edPassword.getText().length() < 6) {
+        } else if (edPassword.getText().length() < 6) {
             edPassword.setError("Password must be longer than 6!");
             edPassword.requestFocus();
             result = false;
@@ -124,82 +134,80 @@ public class MainActivity extends AppCompatActivity {
         return result;
     }
 
-    private void sendPostRequest(final String email, final String password) {
 
-        class SendPostReqAsyncTask extends AsyncTask<String, Void, String> {
+    class SendPostReqAsyncTask extends AsyncTask<String, Void, String> {
 
-            @Override
-            protected String doInBackground(String... params) {
+        @Override
+        protected String doInBackground(String... params) {
 
 
-                HttpClient httpClient = new DefaultHttpClient();
+            HttpClient httpClient = new DefaultHttpClient();
 
-                // In a POST request, we don't pass the values in the URL.
-                //Therefore we use only the web page URL as the parameter of the HttpPost argument
-                HttpPost httpPost = new HttpPost("http://10.88.53.82:8080/loginMobile");
+            // In a POST request, we don't pass the values in the URL.
+            //Therefore we use only the web page URL as the parameter of the HttpPost argument
+            HttpPost httpPost = new HttpPost(url);
 
-                // Because we are not passing values over the URL, we should have a mechanism to pass the values that can be
-                //uniquely separate by the other end.
-                //To achieve that we use BasicNameValuePair
-                //Things we need to pass with the POST request
+            // Because we are not passing values over the URL, we should have a mechanism to pass the values that can be
+            //uniquely separate by the other end.
+            //To achieve that we use BasicNameValuePair
+            //Things we need to pass with the POST request
 
-                // We add the content that we want to pass with the POST request to as name-value pairs
-                //Now we put those sending details to an ArrayList with type safe of NameValuePair
-                List<NameValuePair> nameValuePairList = new ArrayList<NameValuePair>();
-                nameValuePairList.add(new BasicNameValuePair("email", email));
-                nameValuePairList.add(new BasicNameValuePair("password", password));
+            // We add the content that we want to pass with the POST request to as name-value pairs
+            //Now we put those sending details to an ArrayList with type safe of NameValuePair
+            List<NameValuePair> nameValuePairList = new ArrayList<NameValuePair>();
+            nameValuePairList.add(new BasicNameValuePair("email", params[0]));
+            nameValuePairList.add(new BasicNameValuePair("password", params[1]));
+
+            try {
+                // UrlEncodedFormEntity is an entity composed of a list of url-encoded pairs.
+                //This is typically useful while sending an HTTP POST request.
+                UrlEncodedFormEntity urlEncodedFormEntity = new UrlEncodedFormEntity(nameValuePairList);
+
+                // setEntity() hands the entity (here it is urlEncodedFormEntity) to the request.
+                httpPost.setEntity(urlEncodedFormEntity);
 
                 try {
-                    // UrlEncodedFormEntity is an entity composed of a list of url-encoded pairs.
-                    //This is typically useful while sending an HTTP POST request.
-                    UrlEncodedFormEntity urlEncodedFormEntity = new UrlEncodedFormEntity(nameValuePairList);
+                    // HttpResponse is an interface just like HttpPost.
+                    //Therefore we can't initialize them
+                    HttpResponse httpResponse = httpClient.execute(httpPost);
 
-                    // setEntity() hands the entity (here it is urlEncodedFormEntity) to the request.
-                    httpPost.setEntity(urlEncodedFormEntity);
+                    // According to the JAVA API, InputStream constructor do nothing.
+                    //So we can't initialize InputStream although it is not an interface
+                    InputStream inputStream = httpResponse.getEntity().getContent();
 
-                    try {
-                        // HttpResponse is an interface just like HttpPost.
-                        //Therefore we can't initialize them
-                        HttpResponse httpResponse = httpClient.execute(httpPost);
+                    InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
 
-                        // According to the JAVA API, InputStream constructor do nothing.
-                        //So we can't initialize InputStream although it is not an interface
-                        InputStream inputStream = httpResponse.getEntity().getContent();
+                    BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
 
-                        InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+                    StringBuilder stringBuilder = new StringBuilder();
 
-                        BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+                    String bufferedStrChunk = null;
 
-                        StringBuilder stringBuilder = new StringBuilder();
-
-                        String bufferedStrChunk = null;
-
-                        while((bufferedStrChunk = bufferedReader.readLine()) != null){
-                            stringBuilder.append(bufferedStrChunk);
-                        }
-                        responseServer = stringBuilder.toString();
-                        return stringBuilder.toString();
-
-                    } catch (ClientProtocolException cpe) {
-                        cpe.printStackTrace();
-                    } catch (IOException ioe) {
-                        ioe.printStackTrace();
+                    while ((bufferedStrChunk = bufferedReader.readLine()) != null) {
+                        stringBuilder.append(bufferedStrChunk);
                     }
+                    responseServer = stringBuilder.toString();
+                    return stringBuilder.toString();
 
-                } catch (UnsupportedEncodingException uee) {
-                    uee.printStackTrace();
+                } catch (ClientProtocolException cpe) {
+                    cpe.printStackTrace();
+                } catch (IOException ioe) {
+                    ioe.printStackTrace();
                 }
 
-                return null;
+            } catch (UnsupportedEncodingException uee) {
+                uee.printStackTrace();
             }
 
-            @Override
-            protected void onPostExecute(String result) {
-                super.onPostExecute(result);
-            }
+            return null;
         }
-        SendPostReqAsyncTask sendPostReqAsyncTask = new SendPostReqAsyncTask();
-        sendPostReqAsyncTask.execute();
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+        }
+
     }
+
 
 }

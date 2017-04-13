@@ -34,13 +34,20 @@ public class GPS_Service extends Service {
 
     private LocationListener listener;
     private LocationManager locationManager;
-
+    private String extras;
+    private String url = "http://10.88.52.195:8080/addLocation";
 
 
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
         return null;
+    }
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        extras = intent.getStringExtra("email");
+        return START_STICKY;
     }
 
     @Override
@@ -82,7 +89,7 @@ public class GPS_Service extends Service {
         locationManager = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
 
         //noinspection MissingPermission
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,10000,0,listener);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,300000,0,listener);
 
     }
 
@@ -95,23 +102,26 @@ public class GPS_Service extends Service {
         }
     }
 
-    private void sendLocation(String longtitude, String latitude){
+    private void sendLocation(String longitude, String latitude){
         String device_name = Build.MODEL;
+        String email = extras;
+        sendLocationRequest(email,device_name,longitude,latitude);
 
     }
-    private void sendLocationRequest(final String email,final String deviceName, final String longtitude, final String latitude) {
+
+
+    private void sendLocationRequest(final String email,final String deviceName, final String longitude, final String latitude) {
 
         class SendPostReqAsyncTask extends AsyncTask<String, Void, String> {
 
             @Override
             protected String doInBackground(String... params) {
 
-
                 HttpClient httpClient = new DefaultHttpClient();
 
                 // In a POST request, we don't pass the values in the URL.
                 //Therefore we use only the web page URL as the parameter of the HttpPost argument
-                HttpPost httpPost = new HttpPost("http://10.88.53.82:8080/addLocation");
+                HttpPost httpPost = new HttpPost(url);
                 // Because we are not passing values over the URL, we should have a mechanism to pass the values that can be
                 //uniquely separate by the other end.
                 //To achieve that we use BasicNameValuePair
@@ -122,7 +132,7 @@ public class GPS_Service extends Service {
                 List<NameValuePair> nameValuePairList = new ArrayList<NameValuePair>();
                 nameValuePairList.add(new BasicNameValuePair("email", email));
                 nameValuePairList.add(new BasicNameValuePair("deviceName", deviceName));
-                nameValuePairList.add(new BasicNameValuePair("longtitude", longtitude));
+                nameValuePairList.add(new BasicNameValuePair("longtitude", longitude));
                 nameValuePairList.add(new BasicNameValuePair("latitude", latitude));
 
                 try {
@@ -134,6 +144,7 @@ public class GPS_Service extends Service {
                     httpPost.setEntity(urlEncodedFormEntity);
 
                     try {
+
                         // HttpResponse is an interface just like HttpPost.
                         //Therefore we can't initialize them
                         HttpResponse httpResponse = httpClient.execute(httpPost);

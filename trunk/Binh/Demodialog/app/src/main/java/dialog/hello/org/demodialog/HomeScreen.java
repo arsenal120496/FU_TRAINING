@@ -78,9 +78,9 @@ public class HomeScreen extends AppCompatActivity {
         btnStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i =new Intent(getApplicationContext(),GPS_Service.class);
+                Intent i =new Intent(HomeScreen.this,GPS_Service.class);
                 i.putExtra("email", extras.getString("email"));
-                startService(i);
+                HomeScreen.this.startService(i);
                 btnStop.setEnabled(true);
                 btnStart.setEnabled(false);
 

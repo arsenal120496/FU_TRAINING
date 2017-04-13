@@ -16,20 +16,30 @@ import com.gst.service.LocationService;
 @RestController
 public class LocationController {
 
-	@Autowired
-	private LocationService locationService;
-	
-	
-	@RequestMapping("/addLocation")
-	public boolean addLocation(@RequestParam(value = "email", required = true) String  email, 
-							@RequestParam(value = "deviceName", required = true) String deviceName,
-							@RequestParam(value = "longtitude", required = true) String longtitude,
-							@RequestParam(value = "latitude", required = true) String latitude){
-		Date d = new Date();
-		SimpleDateFormat sdf =  new SimpleDateFormat();
-		String time = sdf.format(d);
-		UserLocation u = new UserLocation(email,new Location(longtitude, latitude),deviceName, time);
-		locationService.save(u);
-		return true;
-	}
+    @Autowired
+    private LocationService locationService;
+
+
+    @RequestMapping("/addLocation")
+    public boolean addLocation(@RequestParam(value = "email", required = true) String email,
+                               @RequestParam(value = "deviceName", required = true) String deviceName,
+                               @RequestParam(value = "longtitude", required = true) String longtitude,
+                               @RequestParam(value = "latitude", required = true) String latitude) {
+        Date d = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat();
+        String time = sdf.format(d);
+        UserLocation u = new UserLocation(email, new Location(longtitude, latitude), deviceName, time);
+        locationService.save(u);
+        return true;
+    }
+    @RequestMapping("/addLocation1")
+    public boolean addLocation1() {
+        Date d = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat();
+        String time = sdf.format(d);
+        UserLocation u = new UserLocation("khanh@gmail.com", new Location("106.198768767", "10.087688658"), "samssung", "6/13/2017");
+        locationService.save(u);
+        return true;
+    }
+
 }
