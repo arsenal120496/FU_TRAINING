@@ -36,6 +36,7 @@ public class GPS_Service extends Service {
     private LocationManager locationManager;
     private String extras;
     private String url = "http://10.88.52.195:8080/addLocation";
+    private int timeRequest = 5000;
 
 
     @Nullable
@@ -89,7 +90,7 @@ public class GPS_Service extends Service {
         locationManager = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
 
         //noinspection MissingPermission
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,300000,0,listener);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,timeRequest,0,listener);
 
     }
 

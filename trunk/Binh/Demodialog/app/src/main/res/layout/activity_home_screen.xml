@@ -6,7 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="dialog.hello.org.demodialog.HomeScreen">
+    tools:context="dialog.hello.org.demodialog.HomeScreen"
+    android:background="@drawable/home_screen">
 
     <TextView
         android:gravity="center"
@@ -14,27 +15,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:textSize="20dp" />
-    <TextView
-        android:id="@+id/txtLastitude"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="Lastitude : "
-        android:textSize="20dp" />
-
-    <TextView
-        android:id="@+id/txtLongitude"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="Longitude : "
-        android:textSize="20dp" />
+        android:textSize="20dp"
+        android:textColor="#fff"
+        android:layout_marginBottom="30dp"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:gravity="center">
 
         <Button
             android:id="@+id/btnStart"
@@ -49,5 +38,22 @@
             android:text="Logout" />
 
     </LinearLayout>
+    <TextView
+        android:id="@+id/txtLastitude"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Lastitude : "
+        android:textSize="20dp"
+        android:textColor="#fff"/>
+
+    <TextView
+        android:id="@+id/txtLongitude"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="Longitude : "
+        android:textSize="20dp"
+        android:textColor="#fff"/>
 
 </LinearLayout>

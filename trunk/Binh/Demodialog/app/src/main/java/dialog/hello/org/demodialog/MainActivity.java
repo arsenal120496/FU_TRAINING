@@ -6,9 +6,11 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.apache.http.HttpResponse;
@@ -31,9 +33,20 @@ import java.util.concurrent.ExecutionException;
 
 public class MainActivity extends AppCompatActivity {
     private EditText edEmail, edPassword;
+    private TextView txtLink;
     private Button btnLogin, btnExit;
     private String responseServer = "";
     private String url = "http://10.88.52.195:8080/loginMobile";
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setContentView(R.layout.activity_main);
+        mapping();
+        actionExit();
+        login();
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +63,8 @@ public class MainActivity extends AppCompatActivity {
         edPassword = (EditText) findViewById(R.id.edPassword);
         btnLogin = (Button) findViewById(R.id.btnLogin);
         btnExit = (Button) findViewById(R.id.btnExit);
+        txtLink = (TextView) findViewById(R.id.txtLink);
+        txtLink.setVisibility(View.INVISIBLE);
     }
 
     private void actionExit() {
@@ -89,7 +104,8 @@ public class MainActivity extends AppCompatActivity {
                             intent.putExtra("email", email);
                             startActivity(intent);
                         } else {
-                            Toast.makeText(getApplicationContext(), "False!", Toast.LENGTH_LONG);
+                            txtLink.setVisibility(View.VISIBLE);
+                            txtLink.setMovementMethod(LinkMovementMethod.getInstance());
                         }
                     } catch (ExecutionException e) {
                         e.printStackTrace();
@@ -186,7 +202,6 @@ public class MainActivity extends AppCompatActivity {
                     while ((bufferedStrChunk = bufferedReader.readLine()) != null) {
                         stringBuilder.append(bufferedStrChunk);
                     }
-                    responseServer = stringBuilder.toString();
                     return stringBuilder.toString();
 
                 } catch (ClientProtocolException cpe) {
@@ -204,6 +219,10 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String result) {
+            if(!(result.equalsIgnoreCase("Login failed")))
+                Toast.makeText(MainActivity.this,result,Toast.LENGTH_LONG).show();
+            else
+                Toast.makeText(MainActivity.this,"You must have an account!",Toast.LENGTH_LONG).show();
             super.onPostExecute(result);
         }
 

@@ -32,7 +32,7 @@ public class HomeScreen extends AppCompatActivity {
         setContentView(R.layout.activity_home_screen);
         mapping();
         extras = getIntent().getExtras();
-        txtEmail.setText("Welcome GSP Tracking,"+extras.getString("email")+"!");
+        txtEmail.setText("Welcome GSP Tracking,\n"+extras.getString("email")+"!");
 
         if(!runtime_permissions()){
             enable_buttons();

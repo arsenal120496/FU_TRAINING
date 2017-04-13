@@ -7,7 +7,10 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:id="@+id/activity_main"
-    tools:context="dialog.hello.org.demodialog.MainActivity">
+    tools:context="dialog.hello.org.demodialog.MainActivity"
+    android:background="@drawable/map"
+    android:gravity="center">
+
 
     <TextView
         android:layout_width="match_parent"
@@ -16,7 +19,11 @@
         android:textSize="25dp"
         android:layout_marginTop="10dp"
         android:gravity="center"/>
-
+    <ImageView
+        android:layout_gravity="center"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:background="@drawable/logo"/>
     <EditText
         android:id="@+id/edEmail"
         android:hint="Email"
@@ -29,6 +36,13 @@
         android:layout_height="wrap_content"
         android:inputType="textPassword"/>
 
+    <TextView
+        android:id="@+id/txtLink"
+        android:autoLink="web"
+        android:linksClickable="true"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:text="@string/register"/>
 
 
     <LinearLayout
