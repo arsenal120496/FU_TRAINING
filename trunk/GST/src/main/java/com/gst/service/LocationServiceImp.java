@@ -30,7 +30,6 @@ public class LocationServiceImp implements LocationService {
     @Override
     public List<UserLocation> findByEmail(String email) {
         List<UserLocation> list = locationRespository.findByEmail(email);
-        System.out.println(list.get(0).getLocation().getLongtitude());
         return list;
     }
 }
