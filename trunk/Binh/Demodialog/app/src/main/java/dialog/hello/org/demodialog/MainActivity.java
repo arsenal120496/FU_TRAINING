@@ -64,7 +64,8 @@ public class MainActivity extends AppCompatActivity {
         btnLogin = (Button) findViewById(R.id.btnLogin);
         btnExit = (Button) findViewById(R.id.btnExit);
         txtLink = (TextView) findViewById(R.id.txtLink);
-        txtLink.setVisibility(View.INVISIBLE);
+        txtLink.setVisibility(View.VISIBLE);
+        txtLink.setMovementMethod(LinkMovementMethod.getInstance());
     }
 
     private void actionExit() {
@@ -103,14 +104,11 @@ public class MainActivity extends AppCompatActivity {
                             String email = edEmail.getText().toString();
                             intent.putExtra("email", email);
                             startActivity(intent);
-                        } else {
-                            txtLink.setVisibility(View.VISIBLE);
-                            txtLink.setMovementMethod(LinkMovementMethod.getInstance());
                         }
                     } catch (ExecutionException e) {
-                        e.printStackTrace();
+
                     } catch (InterruptedException e) {
-                        e.printStackTrace();
+
                     }
                 }
 
@@ -123,11 +121,14 @@ public class MainActivity extends AppCompatActivity {
         String password = edPassword.getText().toString();
         SendPostReqAsyncTask sendPostReqAsyncTask = new SendPostReqAsyncTask();
         sendPostReqAsyncTask.execute(email, password);
+
         responseServer = sendPostReqAsyncTask.get();
-        if (!responseServer.equalsIgnoreCase("Login failed")) {
-            return true;
-        }
-        return false;
+
+        if (responseServer.equalsIgnoreCase("Login failed")) {
+            return false;
+        }else if(responseServer.equalsIgnoreCase(""))
+            return false;
+        return true;
     }
 
     private boolean checkValidate() {
@@ -155,8 +156,6 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... params) {
-
-
             HttpClient httpClient = new DefaultHttpClient();
 
             // In a POST request, we don't pass the values in the URL.
@@ -214,15 +213,20 @@ public class MainActivity extends AppCompatActivity {
                 uee.printStackTrace();
             }
 
-            return null;
+            return "";
+
         }
+
 
         @Override
         protected void onPostExecute(String result) {
-            if(!(result.equalsIgnoreCase("Login failed")))
-                Toast.makeText(MainActivity.this,result,Toast.LENGTH_LONG).show();
+            if (result.equalsIgnoreCase(""))
+                Toast.makeText(getApplicationContext(), "Connection failed", Toast.LENGTH_LONG).show();
+            else if (!(result.equalsIgnoreCase("Login failed")))
+                Toast.makeText(getApplicationContext(), result, Toast.LENGTH_LONG).show();
             else
-                Toast.makeText(MainActivity.this,"You must have an account!",Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "You must have an account!", Toast.LENGTH_LONG).show();
+
             super.onPostExecute(result);
         }
 
