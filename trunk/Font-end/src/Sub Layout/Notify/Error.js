@@ -4,7 +4,7 @@ class Error extends Component {
     render(){
         const {error} = this.props;
         return(
-            <div className="alert alert-danger">
+            <div className="alert alert-danger text-center">
                 <p>{error}</p>
             </div>
         );

@@ -56,6 +56,7 @@ class Register extends Component {
                 password: this.state.password                          
             },
             success: function (data) {
+                console.log(data);
                 this.setState({success: 'success'});
                 console.log(this.state);
             }.bind(this),

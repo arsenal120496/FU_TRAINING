@@ -3,7 +3,7 @@
 .login-box {
     display: block;
     width: 300px;
-    height: 250px;
+    /*height: 250px;*/
     border: none;
     border-radius: 7.5%;
     position: absolute;
@@ -14,4 +14,8 @@
 }
 #register-link {
     text-align: center;
+    text-decoration: none;
+}
+#btnlogin {
+    margin-bottom: 10px;
 }

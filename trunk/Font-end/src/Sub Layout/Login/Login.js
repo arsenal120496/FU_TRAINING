@@ -1,7 +1,7 @@
 /**
  * Created by Asus on 3/30/2017.
  */
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import '../resource/bootstrap/css/bootstrap.min.css';
 import '../resource/font-awesome/css/font-awesome.min.css';
 
@@ -11,8 +11,8 @@ import "../resource/main.css"
 
 import $ from "jquery"
 
-
-import {Link} from 'react-router';
+import { Error } from '../Notify'
+import { Link } from 'react-router';
 
 
 class Login extends Component {
@@ -21,12 +21,12 @@ class Login extends Component {
         super(props);
         this.state = {
             email: '',
-            password: ''
+            password: '',
+            error: false
         }
 
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.login = this.login.bind(this);
     }
 
     handleSubmit(event) {
@@ -40,16 +40,15 @@ class Login extends Component {
             },
             success: function (data) {
                 if (data !== null) {
-                    this.login(data);
-                    var u = localStorage.getItem('user');
-                    if (u !== null) {
-                        this.props.router.push('/');
-                    } else {
-                        console.log('fail to setItem');
-                    }
-                } else {
-                    alert("Login failed");
+                    localStorage.setItem("user", JSON.stringify(data));
+                    this.props.router.push('/');
                 }
+                else {
+                    this.setState({ error: 'Invalid email or password.' });
+                }
+            }.bind(this),
+            error: function(err){
+                this.setState({ error: 'Invalid email or password.' });
             }.bind(this)
         });
     }
@@ -61,11 +60,6 @@ class Login extends Component {
         this.setState(newState);
     }
 
-    login(data) {
-        var user = JSON.stringify(data);
-        localStorage.setItem("user", user);
-    }
-
     render() {
         return (
             <div className="overlay">
@@ -73,6 +67,7 @@ class Login extends Component {
                     <div className="popup-form-title">
                         <h1>Login</h1>
                     </div>
+                    {this.state.error ? <Error error={this.state.error}></Error> : null}
                     <div>
                         <form id="login-form" onSubmit={(evt) => this.handleSubmit(evt)}>
                             <div className="input-group">
@@ -85,7 +80,7 @@ class Login extends Component {
                                     name="email"
                                     placeholder="Email"
                                     required id="email"
-                                    onChange={(event) => this.handleChange(event, 'email')}/>
+                                    onChange={(event) => this.handleChange(event, 'email')} />
                             </div>
                             <div className="input-group">
                                 <div className="input-group-addon">
@@ -97,12 +92,14 @@ class Login extends Component {
                                     name="password"
                                     placeholder="Password"
                                     required id="password"
-                                    onChange={(event) => this.handleChange(event, 'password')}/>
+                                    onChange={(event) => this.handleChange(event, 'password')} />
                             </div>
+                            <div className="input-group">
                             <div id="register-link"><Link to='/register'>Register new account</Link></div>
-                            <input className="btn btn-success btn-in-popup-form" type="submit" ref="submit"
-                                   value="Login"
+                            <input className="btn btn-success btn-block" type="submit" ref="submit" id="btnlogin"
+                                value="Login"
                             />
+                            </div>
                         </form>
                     </div>
                 </div>
@@ -113,5 +110,5 @@ class Login extends Component {
 ;
 
 export
-default
-Login;
+    default
+    Login;

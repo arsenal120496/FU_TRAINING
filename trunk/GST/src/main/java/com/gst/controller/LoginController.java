@@ -18,14 +18,17 @@ public class LoginController {
 
     @CrossOrigin(origins = "http://localhost:3000")
     @RequestMapping(value = "/login", method = RequestMethod.POST, produces = "application/json")
-    public String login(@RequestParam(value = "email", required = true) String email, @RequestParam(value = "password", required = true) String password) throws JsonProcessingException {
+    public ResponseEntity login(@RequestParam(value = "email", required = true) String email, @RequestParam(value = "password", required = true) String password) throws JsonProcessingException {
     	User user = userService.login(email, password);
         String result = null;
         if (user != null) {
             ObjectMapper obj = new ObjectMapper();
             result = obj.writeValueAsString(user);
+            return new ResponseEntity(result, HttpStatus.OK);
         }
-        return result;
+        else{
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
 
     }
 

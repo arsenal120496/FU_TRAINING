@@ -35,6 +35,7 @@ class Home extends Component {
 
         this.setSearchLocation = this.setSearchLocation.bind(this);
         this.fetchSearchLocation = this.fetchSearchLocation.bind(this);
+        this.logout = this.logout.bind(this);
     }
 
     setSearchLocation(result) {
@@ -72,7 +73,10 @@ class Home extends Component {
         this.fetchSearchLocation();
 
     }
-
+    logout(){
+        // event.preventDefault();
+        localStorage.setItem('user', null);
+    }
     render() {
         return (
             <div className="full-height">
@@ -83,7 +87,7 @@ class Home extends Component {
                             <a className="navbar-brand" href="#">GPS Tracking System</a>
                         </div>
                         <div className="nav navbar-nav navbar-right">
-                            <div>Welcome, {user.name} (<a href="#">Log out</a>)</div>
+                            <div>Welcome, <strong>{user.name}</strong> (<a href="" onClick={this.logout}>Log out</a>)</div>
                         </div>
                     </div>
 
