@@ -74,7 +74,7 @@ class MyMap extends Component {
     setSearchLocation(result) {
         console.log(result);
         this.setState({
-            listLoc: result.locations
+            listLoc: result
         })
     }
 
