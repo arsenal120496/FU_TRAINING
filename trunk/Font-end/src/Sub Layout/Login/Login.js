@@ -32,7 +32,7 @@ class Login extends Component {
     handleSubmit(event) {
         event.preventDefault();
         $.ajax({
-            url: 'http://10.88.53.18:8080/login',
+            url: 'http://10.88.52.143:8080/login',
             method: 'POST',
             data: {
                 email: this.state.email,

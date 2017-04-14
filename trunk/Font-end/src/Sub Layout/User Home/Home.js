@@ -20,7 +20,7 @@ if (user === null) {
     }
 }
 
-const PATH_BASE = 'http://10.88.53.18:8080/home/locations';
+const PATH_BASE = 'http://10.88.52.143:8080/home/locations';
 const PATH_EMAIL = 'email=';
 let PARAM_EMAIL = user.email;
 
@@ -40,28 +40,28 @@ class Home extends Component {
     setSearchLocation(result) {
 
         this.setState({
-            listLoc: result
+            listLoc: result.reverse()
             
         })
         console.log(this.state.listLoc);
     }
 
     fetchSearchLocation() {
-        console.log(`${PATH_BASE}?${PATH_EMAIL}${PARAM_EMAIL}`);
-        fetch(`${PATH_BASE}?${PATH_EMAIL}${PARAM_EMAIL}`)
-            .then(resp => resp.json())
-            .then(result => this.setSearchLocation(result));
-        // $.ajax({
-        //     url: `${PATH_BASE}?${PATH_EMAIL}${PARAM_EMAIL}`,
-        //     method: 'POST',
-        //     success: function (data) {
-        //         this.setSearchLocation(data)
-        //     }.bind(this),
-        //     error: function (err) {
-        //         console.log('error: ',err);
+        // console.log(`${PATH_BASE}?${PATH_EMAIL}${PARAM_EMAIL}`);
+        // fetch(`${PATH_BASE}?${PATH_EMAIL}${PARAM_EMAIL}`)
+        //     .then(resp => resp.json())
+        //     .then(result => this.setSearchLocation(result));
+        $.ajax({
+            url: `${PATH_BASE}?${PATH_EMAIL}${PARAM_EMAIL}`,
+            method: 'GET',
+            success: function (data) {
+                this.setSearchLocation(data)
+            }.bind(this),
+            error: function (err) {
+                console.log('error: ',err);
 
-        //     }
-        // });
+            }
+        });
 
     }
 
@@ -105,6 +105,11 @@ class Home extends Component {
             header: 'Device',
 
             accessor: 'nameDeivce'
+        },
+        {
+            header: 'Time',
+
+            accessor: 'time'
         }
 
         ]
