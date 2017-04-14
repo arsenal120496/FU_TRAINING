@@ -41,7 +41,7 @@ class Home extends Component {
 
         this.setState({
             listLoc: result.reverse()
-            
+
         })
         console.log(this.state.listLoc);
     }
@@ -58,7 +58,7 @@ class Home extends Component {
                 this.setSearchLocation(data)
             }.bind(this),
             error: function (err) {
-                console.log('error: ',err);
+                console.log('error: ', err);
 
             }
         });
@@ -83,8 +83,15 @@ class Home extends Component {
         var height = (window.innerHeight - 100) + "px";
         document.getElementById("con").setAttribute("style", "height:" + height);
         document.getElementById("map").setAttribute("style", "height:" + height);
-        this.fetchSearchLocation();
+        this.timerID = setInterval(
+      () => this.fetchSearchLocation(),
+      3000
+    );
+        // this.fetchSearchLocation();
 
+    }
+    componentWillUnmount() {
+        clearInterval(this.timerID);
     }
     logout() {
         // event.preventDefault();
