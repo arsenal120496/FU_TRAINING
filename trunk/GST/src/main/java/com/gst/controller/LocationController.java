@@ -25,11 +25,9 @@ public class LocationController {
 	public boolean addLocation(@RequestParam(value = "email", required = true) String  email, 
 							@RequestParam(value = "deviceName", required = true) String deviceName,
 							@RequestParam(value = "longtitude", required = true) String longtitude,
-							@RequestParam(value = "latitude", required = true) String latitude){
-		Date d = new Date();
-		SimpleDateFormat sdf =  new SimpleDateFormat();
-		String time = sdf.format(d);	
-		UserLocation u = new UserLocation(email,new Location(longtitude, latitude),deviceName, time);
+							@RequestParam(value = "latitude", required = true) String latitude,
+							@RequestParam(value = "date", required = true) String date){	
+		UserLocation u = new UserLocation(email,new Location(longtitude, latitude),deviceName, date);
 		locationService.save(u);
 		return true;
 	}

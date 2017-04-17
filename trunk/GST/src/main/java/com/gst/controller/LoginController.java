@@ -36,9 +36,10 @@ public class LoginController {
     public ResponseEntity<User> loginMobile(@RequestParam(value = "email", required = true) String  email, @RequestParam(value = "password", required = true) String password){
     	User user = userService.login(email, password);
         if (user != null){
-            return new ResponseEntity("Login successfully",HttpStatus.OK);
+            return new ResponseEntity(user.getName(),HttpStatus.OK);
         } else {
             return new ResponseEntity("Login failed", HttpStatus.NOT_FOUND);
         }
     }
+    
 }
