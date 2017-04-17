@@ -2,15 +2,14 @@ package dialog.hello.org.demodialog;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import org.apache.http.HttpResponse;
@@ -33,11 +32,9 @@ import java.util.concurrent.ExecutionException;
 
 public class MainActivity extends AppCompatActivity {
     private EditText edEmail, edPassword;
-    private TextView txtLink;
-    private Button btnLogin, btnExit;
+    private Button btnLogin, btnExit, btnRegister;
     private String responseServer = "";
-    private String url = "http://10.88.52.101:8080/test";
-
+    private String url = "http://ac93584a.ngrok.io/loginMobile";
     @Override
     protected void onResume() {
         super.onResume();
@@ -45,7 +42,19 @@ public class MainActivity extends AppCompatActivity {
         mapping();
         actionExit();
         login();
+        register();
 
+    }
+
+    private void register() {
+        btnRegister.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Uri uri = Uri.parse("http://www.google.com");
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -55,18 +64,18 @@ public class MainActivity extends AppCompatActivity {
         mapping();
         actionExit();
         login();
-        new sendTest().execute();
     }
 
     //ánh xạ
     private void mapping() {
         edEmail = (EditText) findViewById(R.id.edEmail);
         edPassword = (EditText) findViewById(R.id.edPassword);
+        edEmail.setText("binh@gmail.com");
+        edPassword.setText("123456");
+
         btnLogin = (Button) findViewById(R.id.btnLogin);
         btnExit = (Button) findViewById(R.id.btnExit);
-        txtLink = (TextView) findViewById(R.id.txtLink);
-        txtLink.setVisibility(View.VISIBLE);
-        txtLink.setMovementMethod(LinkMovementMethod.getInstance());
+        btnRegister = (Button) findViewById(R.id.btnRegister);
     }
 
     private void actionExit() {
@@ -104,6 +113,7 @@ public class MainActivity extends AppCompatActivity {
                             Intent intent = new Intent(MainActivity.this, HomeScreen.class);
                             String email = edEmail.getText().toString();
                             intent.putExtra("email", email);
+                            intent.putExtra("name",responseServer);
                             startActivity(intent);
                         }
                     } catch (ExecutionException e) {
@@ -127,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (responseServer.equalsIgnoreCase("Login failed")) {
             return false;
-        }else if(responseServer.equalsIgnoreCase(""))
+        }else if(responseServer.equalsIgnoreCase("")|| responseServer.contains("<html>"))
             return false;
         return true;
     }
@@ -202,6 +212,7 @@ public class MainActivity extends AppCompatActivity {
                     while ((bufferedStrChunk = bufferedReader.readLine()) != null) {
                         stringBuilder.append(bufferedStrChunk);
                     }
+
                     return stringBuilder.toString();
 
                 } catch (ClientProtocolException cpe) {
@@ -221,10 +232,10 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String result) {
-            if (result.equalsIgnoreCase(""))
+            if (result.equalsIgnoreCase("") || result.contains("<html>"))
                 Toast.makeText(getApplicationContext(), "Connection failed", Toast.LENGTH_LONG).show();
             else if (!(result.equalsIgnoreCase("Login failed")))
-                Toast.makeText(getApplicationContext(), result, Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Login succeed!", Toast.LENGTH_LONG).show();
             else
                 Toast.makeText(getApplicationContext(), "You must have an account!", Toast.LENGTH_LONG).show();
 
@@ -234,68 +245,4 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    class sendTest extends AsyncTask<String,Void,String>{
-
-        @Override
-        protected String doInBackground(String... params) {
-            HttpClient httpClient = new DefaultHttpClient();
-
-            // In a POST request, we don't pass the values in the URL.
-            //Therefore we use only the web page URL as the parameter of the HttpPost argument
-            HttpPost httpPost = new HttpPost(url);
-
-            // Because we are not passing values over the URL, we should have a mechanism to pass the values that can be
-            //uniquely separate by the other end.
-            //To achieve that we use BasicNameValuePair
-            //Things we need to pass with the POST request
-
-            // We add the content that we want to pass with the POST request to as name-value pairs
-            //Now we put those sending details to an ArrayList with type safe of NameValuePair
-            List<NameValuePair> nameValuePairList = new ArrayList<NameValuePair>();
-            nameValuePairList.add(new BasicNameValuePair("a", params[0]));
-            nameValuePairList.add(new BasicNameValuePair("b", params[1]));
-
-            try {
-                // UrlEncodedFormEntity is an entity composed of a list of url-encoded pairs.
-                //This is typically useful while sending an HTTP POST request.
-                UrlEncodedFormEntity urlEncodedFormEntity = new UrlEncodedFormEntity(nameValuePairList);
-
-                // setEntity() hands the entity (here it is urlEncodedFormEntity) to the request.
-                httpPost.setEntity(urlEncodedFormEntity);
-
-                try {
-                    // HttpResponse is an interface just like HttpPost.
-                    //Therefore we can't initialize them
-                    HttpResponse httpResponse = httpClient.execute(httpPost);
-
-                    // According to the JAVA API, InputStream constructor do nothing.
-                    //So we can't initialize InputStream although it is not an interface
-                    InputStream inputStream = httpResponse.getEntity().getContent();
-
-                    InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
-
-                    BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-
-                    StringBuilder stringBuilder = new StringBuilder();
-
-                    String bufferedStrChunk = null;
-
-                    while ((bufferedStrChunk = bufferedReader.readLine()) != null) {
-                        stringBuilder.append(bufferedStrChunk);
-                    }
-                    return stringBuilder.toString();
-
-                } catch (ClientProtocolException cpe) {
-                    cpe.printStackTrace();
-                } catch (IOException ioe) {
-                    ioe.printStackTrace();
-                }
-
-            } catch (UnsupportedEncodingException uee) {
-                uee.printStackTrace();
-            }
-
-            return "";
-        }
-    }
 }

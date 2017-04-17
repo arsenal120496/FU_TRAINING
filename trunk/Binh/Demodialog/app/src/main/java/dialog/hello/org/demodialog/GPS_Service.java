@@ -37,9 +37,9 @@ public class GPS_Service extends Service {
     private LocationListener listener;
     private LocationManager locationManager;
     private String extras;
-    private String url = "http://10.88.52.195:8080/addLocation";
+    private String url = "http://ac93584a.ngrok.io/addLocation";
     private int timeRequest = 5000; // milisecond
-    private int distance = 0; //meter
+    private int distance = 30; //meter
 
 
     @Nullable

@@ -36,13 +36,6 @@
         android:layout_height="wrap_content"
         android:inputType="textPassword"/>
 
-    <TextView
-        android:id="@+id/txtLink"
-        android:autoLink="web"
-        android:linksClickable="true"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        android:text="@string/register"/>
 
 
     <LinearLayout
@@ -57,10 +50,15 @@
             android:text="Login"/>
         <Button
             android:layout_marginLeft="30dp"
-            android:id="@+id/btnExit"
+            android:id="@+id/btnRegister"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Exit"/>
+            android:text="Register"/>
     </LinearLayout>
+    <Button
+        android:id="@+id/btnExit"
+        android:layout_width="205dp"
+        android:layout_height="wrap_content"
+        android:text="Exit"/>
 
 </LinearLayout>

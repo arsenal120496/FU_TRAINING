@@ -41,7 +41,7 @@ public class HomeScreen extends FragmentActivity implements OnMapReadyCallback {
         mapping();
 
         extras = getIntent().getExtras();
-        txtEmail.setText("Welcome GSP Tracking,\n" + extras.getString("email") + "!");
+        txtEmail.setText("Welcome,\n" + extras.getString("name") + "!");
 
 
         if (!runtime_permissions()) {
