@@ -13,6 +13,8 @@ import {
     Polyline,
 } from "../../lib";
 
+import $ from 'jquery';
+
 const GoogleMapConst = withGoogleMap(props => (
     <GoogleMap
         ref={props.onMapLoad}
@@ -51,7 +53,7 @@ if (user === null) {
         name: "me"
     }
 }
-const PATH_BASE = 'http://10.88.52.143:8080/home/locations';
+const PATH_BASE = 'http://localhost:8080/home/locations';
 const PATH_EMAIL = 'email=';
 let PARAM_EMAIL = user.email;
 
@@ -81,20 +83,10 @@ class MyMap extends Component {
     }
 
     setSearchLocation(result) {
-        console.log(result);
         this.setState({
             listLoc: result
         })
-    }
-
-    fetchSearchLocation() {
-        fetch(`${PATH_BASE}?${PATH_EMAIL}${PARAM_EMAIL}`)
-            .then(resp => resp.json())
-            .then(result => this.setSearchLocation(result));
-
-    }
-
-    componentDidUpdate() {
+        //
         const list = this.state.listLoc;
         list.forEach(function (el) {
             const nextMarkers = {
@@ -108,38 +100,68 @@ class MyMap extends Component {
             const path = {
                 lat: parseFloat(el.location.latitude),
                 lng: parseFloat(el.location.longitude),
-            }
+            };
             center.lat = parseFloat(el.location.latitude);
-            center.lng = parseFloat(el.location.longitude)
+            center.lng = parseFloat(el.location.longitude);
             if (markerList.length !== list.length) {
-                markerList.push(nextMarkers);
-                pathList.push(path);
+                if (markerList.indexOf(nextMarkers) < 0) {
+                    markerList.push(nextMarkers);
+                    pathList.push(path);
+                }
             }
 
         });
-        this.state.paths = pathList;
-        this.state.center = center;
-        this.state.markers = markerList;
+        this.setState({
+            paths: pathList,
+            center: center,
+            markers: markerList,
+        });
+    }
+
+    fetchSearchLocation() {
+        // fetch(`${PATH_BASE}?${PATH_EMAIL}${PARAM_EMAIL}`)
+        //     .then(resp => resp.json())
+        //     .then(result => this.setSearchLocation(result));
+        $.ajax({
+            url: `${PATH_BASE}?${PATH_EMAIL}${PARAM_EMAIL}`,
+            method: 'GET',
+            success: function (data) {
+                this.setSearchLocation(data)
+            }.bind(this),
+            error: function (err) {
+                console.log('error: ', err);
+
+            }
+        });
     }
 
     componentDidMount() {
         user = JSON.parse(localStorage.getItem('user'));
         if (user === null) {
-            console.log("null");
             user = {
                 email: "abcd",
                 name: "me"
             };
         } else {
-            console.log("not null");
             PARAM_EMAIL = user.email;
         }
         this.fetchSearchLocation();
+        // this.timerID = setInterval(
+        //     () => this.fetchSearchLocation(),
+        //     1000
+        // );
     }
 
+    /*componentWillUnmount() {
+     clearInterval(this.timerID);
+     }*/
+
     render() {
-        console.log("center", this.state.center);
-        console.log("markers", this.state.markers);
+        if (this.state.markers == null) {
+            return (
+                <div>Loading...</div>
+            );
+        }
         return (
             <div id="GSE" style={{height: `100%`}}>
                 <GoogleMapConst

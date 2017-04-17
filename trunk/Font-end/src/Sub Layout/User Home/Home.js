@@ -1,7 +1,7 @@
 /**
  * Created by Asus on 3/30/2017.
  */
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import '../resource/bootstrap/css/bootstrap.min.css';
 import '../resource/font-awesome/css/font-awesome.min.css';
 import $ from 'jquery';
@@ -20,7 +20,7 @@ if (user === null) {
     }
 }
 
-const PATH_BASE = 'http://10.88.52.143:8080/home/locations';
+const PATH_BASE = 'http://localhost:8080/home/locations';
 const PATH_EMAIL = 'email=';
 let PARAM_EMAIL = user.email;
 
@@ -38,12 +38,10 @@ class Home extends Component {
     }
 
     setSearchLocation(result) {
-
         this.setState({
             listLoc: result.reverse()
 
-        })
-        console.log(this.state.listLoc);
+        });
     }
 
     fetchSearchLocation() {
@@ -83,41 +81,45 @@ class Home extends Component {
         var height = (window.innerHeight - 100) + "px";
         document.getElementById("con").setAttribute("style", "height:" + height);
         document.getElementById("map").setAttribute("style", "height:" + height);
-        this.timerID = setInterval(
-      () => this.fetchSearchLocation(),
-      3000
-    );
-        // this.fetchSearchLocation();
+        // this.timerID = setInterval(
+        //     () => this.fetchSearchLocation(),
+        //     1000
+        // );
+        this.fetchSearchLocation();
 
     }
+
     componentWillUnmount() {
         clearInterval(this.timerID);
     }
+
     logout() {
         // event.preventDefault();
         localStorage.setItem('user', null);
+        localStorage.setItem('logout', true);
     }
+
     render() {
         const columns = [{
             header: 'Latitude',
             id: 'latitude',
             accessor: d => d.location.latitude
         },
-        {
-            header: 'Longitude',
-            id: 'longitude',
-            accessor: d => d.location.longitude
-        },
-        {
-            header: 'Device',
+            {
+                header: 'Longitude',
+                id: 'longitude',
+                accessor: d => d.location.longitude
+            },
+            {
+                header: 'Device',
 
-            accessor: 'nameDeivce'
-        },
-        {
-            header: 'Time',
+                accessor: 'nameDeivce'
+            },
+            {
+                header: 'Time',
 
-            accessor: 'time'
-        }
+                accessor: 'time'
+            }
 
         ]
         return (
@@ -129,7 +131,8 @@ class Home extends Component {
                             <a className="navbar-brand" href="#">GPS Tracking System</a>
                         </div>
                         <div className="nav navbar-nav navbar-right">
-                            <div>Welcome, <strong>{user.name}</strong> (<a href="" onClick={this.logout}>Log out</a>)</div>
+                            <div>Welcome, <strong>{user.name}</strong> (<a href="" onClick={this.logout}>Log out</a>)
+                            </div>
                         </div>
                     </div>
 
@@ -138,7 +141,7 @@ class Home extends Component {
                 <div className="container col-md-12" id="con">
 
                     <div className="col-xs-12 col-md-7 " id="map">
-                        <MyMap list={this.state.listLoc} />
+                        <MyMap list={this.state.listLoc}/>
                     </div>
                     <div className="col-xs-12 col-md-5">
                         {/*<Table list={this.state.listLoc} />*/}

@@ -1,7 +1,7 @@
 /**
  * Created by Asus on 3/30/2017.
  */
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import '../resource/bootstrap/css/bootstrap.min.css';
 import '../resource/font-awesome/css/font-awesome.min.css';
 
@@ -11,8 +11,8 @@ import "../resource/main.css"
 
 import $ from "jquery"
 
-import { Error } from '../Notify'
-import { Link } from 'react-router';
+import {Error} from '../Notify'
+import {Link} from 'react-router';
 
 
 class Login extends Component {
@@ -32,7 +32,7 @@ class Login extends Component {
     handleSubmit(event) {
         event.preventDefault();
         $.ajax({
-            url: 'http://10.88.52.143:8080/login',
+            url: 'http://localhost:8080/login',
             method: 'POST',
             data: {
                 email: this.state.email,
@@ -44,11 +44,11 @@ class Login extends Component {
                     this.props.router.push('/');
                 }
                 else {
-                    this.setState({ error: 'Invalid email or password.' });
+                    this.setState({error: 'Invalid email or password.'});
                 }
             }.bind(this),
-            error: function(err){
-                this.setState({ error: 'Invalid email or password.' });
+            error: function (err) {
+                this.setState({error: 'Invalid email or password.'});
             }.bind(this)
         });
     }
@@ -58,6 +58,18 @@ class Login extends Component {
         let newState = this.state;
         newState[attribute] = event.target.value;
         this.setState(newState);
+    }
+
+    componentDidMount() {
+        var user = JSON.parse(localStorage.getItem('user'));
+        if (user === null) {
+            var logout = JSON.parse(localStorage.getItem('logout'));
+            if (logout === true) {
+                localStorage.removeItem('user');
+                localStorage.removeItem('logout');
+                window.location.reload(true);
+            }
+        }
     }
 
     render() {
@@ -80,7 +92,7 @@ class Login extends Component {
                                     name="email"
                                     placeholder="Email"
                                     required id="email"
-                                    onChange={(event) => this.handleChange(event, 'email')} />
+                                    onChange={(event) => this.handleChange(event, 'email')}/>
                             </div>
                             <div className="input-group">
                                 <div className="input-group-addon">
@@ -92,13 +104,13 @@ class Login extends Component {
                                     name="password"
                                     placeholder="Password"
                                     required id="password"
-                                    onChange={(event) => this.handleChange(event, 'password')} />
+                                    onChange={(event) => this.handleChange(event, 'password')}/>
                             </div>
                             <div className="input-group">
-                            <div id="register-link"><Link to='/register'>Register new account</Link></div>
-                            <input className="btn btn-success btn-block" type="submit" ref="submit" id="btnlogin"
-                                value="Login"
-                            />
+                                <div id="register-link"><Link to='/register'>Register new account</Link></div>
+                                <input className="btn btn-success btn-block" type="submit" ref="submit" id="btnlogin"
+                                       value="Login"
+                                />
                             </div>
                         </form>
                     </div>
@@ -110,5 +122,5 @@ class Login extends Component {
 ;
 
 export
-    default
-    Login;
+default
+Login;

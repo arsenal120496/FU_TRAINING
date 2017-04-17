@@ -64,7 +64,7 @@ class App extends Component {
 function requireAuth() {
     const user = JSON.parse(localStorage.getItem('user'));
     if (user === null) {
-        window.location = 'http://10.88.52.143:3000/#/sign_in';
+        window.location = 'http://localhost:3000/#/sign_in';
     }
 }
 
