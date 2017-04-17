@@ -24,7 +24,9 @@ import org.apache.http.message.BasicNameValuePair;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -107,12 +109,14 @@ public class GPS_Service extends Service {
     private void sendLocation(String longitude, String latitude){
         String device_name = Build.MODEL;
         String email = extras;
-        sendLocationRequest(email,device_name,longitude,latitude);
+        SimpleDateFormat sdf = new SimpleDateFormat();
+        String date = sdf.format(new Date());
+        sendLocationRequest(email,device_name,longitude,latitude, date);
 
     }
 
 
-    private void sendLocationRequest(final String email,final String deviceName, final String longitude, final String latitude) {
+    private void sendLocationRequest(final String email,final String deviceName, final String longitude, final String latitude, final String time) {
 
         class SendPostReqAsyncTask extends AsyncTask<String, Void, String> {
 
@@ -136,6 +140,7 @@ public class GPS_Service extends Service {
                 nameValuePairList.add(new BasicNameValuePair("deviceName", deviceName));
                 nameValuePairList.add(new BasicNameValuePair("longtitude", longitude));
                 nameValuePairList.add(new BasicNameValuePair("latitude", latitude));
+                nameValuePairList.add(new BasicNameValuePair("date", time));
 
                 try {
                     // UrlEncodedFormEntity is an entity composed of a list of url-encoded pairs.
