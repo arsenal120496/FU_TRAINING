@@ -23,6 +23,11 @@
     margin-bottom: 15px !important;
 }
 
+cite {
+    font-size: 0.9em;
+    color: #BEBCB5;
+}
+
 /*format calendar*/
 
 .daterangepicker {

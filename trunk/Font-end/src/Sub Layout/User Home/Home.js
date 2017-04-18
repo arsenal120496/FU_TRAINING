@@ -34,7 +34,6 @@ const PATH_TODATE = 'toDate=';
 let PARAM_TODATE = moment().format('MM/DD/YYYY');
 
 
-
 // class use DateRangePicker
 var CalendarInput = React.createClass({
     getInitialState: function () {
@@ -218,13 +217,20 @@ class Home extends Component {
     }
 
     render() {
+        /*user = JSON.parse(localStorage.getItem('user'));
+         if (user === null) {
+         user = {
+         email: "abcd",
+         name: "me"
+         };
+         this.props.router.push('/sign_in');
+         } else {
+         PARAM_EMAIL = user.email;
+         }
+         */
         user = JSON.parse(localStorage.getItem('user'));
-        if (user === null) {
-            user = {
-                email: "abcd",
-                name: "me"
-            };
-            this.props.router.push('/sign_in');
+        if (user.name === "me") {
+            window.location.reload(true);
         } else {
             PARAM_EMAIL = user.email;
         }
@@ -275,7 +281,7 @@ class Home extends Component {
                         <div className="col-xs-12 col-md-12" id="search-area">
                             <form action="http://localhost:8080/home/locations" method="GET" className="form-inline"
                                   id="filter-form">
-                                <h5>Select day to tracking your GPS:</h5>
+                                <h5>Select day to tracking your GPS <cite>(MM-DD-YYYY)</cite>:</h5>
                                 <div className="col-xs-12 col-md-12">
                                     <CalendarInput/>
                                     <button type="button" id="btnSeach" onClick={this.handleFormSubmit}
