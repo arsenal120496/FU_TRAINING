@@ -3,6 +3,7 @@ package com.gst.service;
 
 import com.gst.domain.UserLocation;
 
+import java.text.ParseException;
 import java.util.List;
 
 /**
@@ -15,6 +16,6 @@ public interface LocationService {
 
     List<UserLocation> findByEmail(String email);
     
-    List<UserLocation> findByTime(String email, String fromDate, String toDate);
+    List<UserLocation> findByTime(String email, String fromDate, String toDate) throws ParseException;
 }
 

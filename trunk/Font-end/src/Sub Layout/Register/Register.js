@@ -5,7 +5,6 @@ import React, { Component } from 'react';
 import '../resource/bootstrap/css/bootstrap.min.css';
 import '../resource/font-awesome/css/font-awesome.min.css';
 import $ from 'jquery';
-import {Link} from 'react-router';
 import "./main.css"
 import "../resource/main.css"
 
@@ -85,7 +84,7 @@ class Register extends Component {
                     <div className="popup-form-title">
                         <h1>Register</h1>
                     </div>       
-                        {this.state.error ? <Error error = {this.state.error}></Error> : null}
+                        {this.state.error ? <Error error={this.state.error}></Error> : null}
                         {this.state.success ? <Success/>: null}                     
                     <div>
                         <form onSubmit={(event) => this.fetchRegister(event)}>

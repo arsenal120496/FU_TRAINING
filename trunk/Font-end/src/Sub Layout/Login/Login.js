@@ -69,6 +69,11 @@ class Login extends Component {
                 localStorage.removeItem('logout');
                 window.location.reload(true);
             }
+            else if (logout === null) {
+                localStorage.removeItem('user');
+                localStorage.setItem('logout', false);
+                window.location.reload(true);
+            }
         }
     }
 

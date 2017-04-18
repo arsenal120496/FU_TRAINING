@@ -1,5 +1,6 @@
 package com.gst.controller;
 
+import java.text.ParseException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,11 +36,11 @@ public class LocationController {
 	}
 	
 	@CrossOrigin
-	@RequestMapping(value = "/getLocationByTime" , method = RequestMethod.POST)
+	@RequestMapping(value = "/getLocationByTime" , method = RequestMethod.GET)
 	public ResponseEntity getLocationByTime(@RequestParam(value = "email", required = true) String  email, 
 							@RequestParam(value = "fromDate", required = true) String fromDate,
 							@RequestParam(value = "toDate", required = true) String toDate
-							){	
+							) throws ParseException {
 		List<UserLocation> res = locationService.findByTime(email, fromDate, toDate);
 		return new ResponseEntity(res,HttpStatus.OK);
 	}

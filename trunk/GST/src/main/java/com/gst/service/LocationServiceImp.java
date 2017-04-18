@@ -6,6 +6,9 @@ import com.gst.repository.LocationRespository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -35,22 +38,23 @@ public class LocationServiceImp implements LocationService {
         return list;
     }
 
-	@SuppressWarnings("deprecation")
-	@Override
-	public List<UserLocation> findByTime(String email, String fromDate, String toDate) {
-		List<UserLocation> list = locationRespository.findByEmail(email);
-		Date fDate = new Date(fromDate);
-		Date tDate = new Date(toDate);
-		List<UserLocation> res = new ArrayList<UserLocation>();
-		for (UserLocation userLocation : list) {
-			Date d = new Date(userLocation.getTime());
-			int compareFdate = fDate.compareTo(d);
-			int compareTdate = tDate.compareTo(d);
-			if((compareFdate != 1) && (compareTdate != -1)){
-				res.add(userLocation);
-			}
-		}
-		
-		return res;
-	}
+    @SuppressWarnings("deprecation")
+    @Override
+    public List<UserLocation> findByTime(String email, String fromDate, String toDate) throws ParseException {
+        List<UserLocation> list = locationRespository.findByEmail(email);
+        DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+        Date fDate = df.parse(fromDate);
+        Date tDate = df.parse(toDate);
+        List<UserLocation> res = new ArrayList<UserLocation>();
+        for (UserLocation userLocation : list) {
+            Date d = df.parse(userLocation.getTime());
+            int compareFdate = fDate.compareTo(d);
+            int compareTdate = tDate.compareTo(d);
+            if ((compareFdate != 1) && (compareTdate != -1)) {
+                res.add(userLocation);
+            }
+        }
+
+        return res;
+    }
 }
