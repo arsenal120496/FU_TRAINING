@@ -15,5 +15,6 @@ public interface LocationService {
 
     List<UserLocation> findByEmail(String email);
     
+    List<UserLocation> findByTime(String email, String fromDate, String toDate);
 }
 

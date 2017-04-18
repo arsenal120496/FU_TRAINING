@@ -10,4 +10,5 @@ import java.util.List;
  */
 public interface LocationRespository extends MongoRepository<UserLocation, String >{
     List<UserLocation> findByEmail(String email);
+    
 }
