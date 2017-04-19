@@ -34,12 +34,13 @@ import java.util.List;
  */
 public class GPS_Service extends Service {
 
+    SQLite_Database myDB;
     private LocationListener listener;
     private LocationManager locationManager;
     private String extras;
-    private String url = "http://ac93584a.ngrok.io/addLocation";
-    private int timeRequest = 5000; // milisecond
-    private int distance = 30; //meter
+    private String url = "http://10.88.53.1:8080/addLocation";
+    private int timeRequest = 10000; // milisecond
+    private int distance = 0; //meter
 
 
     @Nullable
@@ -56,7 +57,7 @@ public class GPS_Service extends Service {
 
     @Override
     public void onCreate() {
-
+        myDB = new SQLite_Database(this);
         listener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
@@ -111,8 +112,8 @@ public class GPS_Service extends Service {
         String email = extras;
         SimpleDateFormat sdf = new SimpleDateFormat();
         String date = sdf.format(new Date());
-        sendLocationRequest(email,device_name,longitude,latitude, date);
-
+        myDB.insertData(email,longitude,latitude,device_name,date);
+        //sendLocationRequest(email,device_name,longitude,latitude, date);
     }
 
 
@@ -155,20 +156,25 @@ public class GPS_Service extends Service {
                         // HttpResponse is an interface just like HttpPost.
                         //Therefore we can't initialize them
                         HttpResponse httpResponse = httpClient.execute(httpPost);
+
                     } catch (ClientProtocolException cpe) {
+                        System.out.println("Loi client protocol");
                         cpe.printStackTrace();
                     } catch (IOException ioe) {
-                        ioe.printStackTrace();
+
                     }
 
                 } catch (UnsupportedEncodingException uee) {
+                    System.out.println("Loi");
                     uee.printStackTrace();
                 }
-                return null;
+
+                return "test";
             }
 
             @Override
             protected void onPostExecute(String result) {
+                System.out.println(result);
                 super.onPostExecute(result);
             }
         }

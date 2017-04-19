@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
     private EditText edEmail, edPassword;
     private Button btnLogin, btnExit, btnRegister;
     private String responseServer = "";
-    private String url = "http://ac93584a.ngrok.io/loginMobile";
+    private String url = "http://10.88.53.1:8080/loginMobile";
     @Override
     protected void onResume() {
         super.onResume();
