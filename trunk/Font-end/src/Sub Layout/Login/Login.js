@@ -60,17 +60,6 @@ class Login extends Component {
         this.setState(newState);
     }
 
-    componentDidMount() {
-        var user = JSON.parse(localStorage.getItem('user'));
-        if (user === null) {
-            var logout = JSON.parse(localStorage.getItem('logout'));
-            if (logout === true) {
-                localStorage.removeItem('user');
-                localStorage.removeItem('logout');
-                window.location.reload(true);
-            }
-        }
-    }
 
     render() {
         return (

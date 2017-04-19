@@ -33,7 +33,7 @@ class App extends Component {
         return (
             <Router history={hashHistory}>
                 <Route path="/" component={Application}>
-                    <Route component={AuthorizedContainer} onEnter={requireAuth}>
+                    <Route component={AuthorizedContainer} onEnter={requireAuth()}>
                         <IndexRoute component={Home}/>
                         {/*<Route path="/home" component={Home}></Route>*/}
                     </Route>
