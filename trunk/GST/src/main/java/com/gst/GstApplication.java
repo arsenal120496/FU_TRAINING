@@ -22,9 +22,7 @@ public class GstApplication extends SpringBootServletInitializer {
 		return new WebMvcConfigurerAdapter() {
 			@Override
 			public void addCorsMappings(CorsRegistry registry) {
-//				registry.addMapping("/home/locations").allowedOrigins("http://localhost:3000");
 				registry.addMapping("/**");
-//				registry.addMapping("/register").allowedOrigins("http://localhost:3000");
 			}
 		};
 	}
