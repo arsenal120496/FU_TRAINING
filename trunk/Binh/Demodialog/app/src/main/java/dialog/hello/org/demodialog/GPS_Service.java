@@ -23,7 +23,6 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -38,9 +37,9 @@ public class GPS_Service extends Service {
     private LocationListener listener;
     private LocationManager locationManager;
     private String extras;
-    private String url = "http://10.88.53.1:8080/addLocation";
-    private int timeRequest = 10000; // milisecond
-    private int distance = 0; //meter
+    private String url = "http://10.88.53.37:8080//addLocation";
+    private int timeRequest = 10000; // miliseconds
+    private int distance = 30; //meter
 
 
     @Nullable
@@ -66,10 +65,10 @@ public class GPS_Service extends Service {
                 String latitude = "" + location.getLatitude();
 
                 //hàm send location
-                sendLocation(longitude,latitude);
+                sendLocation(longitude, latitude);
 
-                i.putExtra("long",location.getLongitude());
-                i.putExtra("last",location.getLatitude());
+                i.putExtra("long", location.getLongitude());
+                i.putExtra("last", location.getLatitude());
                 sendBroadcast(i);
             }
 
@@ -94,41 +93,36 @@ public class GPS_Service extends Service {
         locationManager = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
 
         //noinspection MissingPermission
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,timeRequest,distance,listener);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, timeRequest, distance, listener);
 
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if(locationManager != null){
+        if (locationManager != null) {
             //noinspection MissingPermission
             locationManager.removeUpdates(listener);
         }
     }
 
-    private void sendLocation(String longitude, String latitude){
+    private void sendLocation(String longitude, String latitude) {
         String device_name = Build.MODEL;
         String email = extras;
-        SimpleDateFormat sdf = new SimpleDateFormat();
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
         String date = sdf.format(new Date());
-        myDB.insertData(email,longitude,latitude,device_name,date);
-        //sendLocationRequest(email,device_name,longitude,latitude, date);
+        sendLocationRequest(email, device_name, longitude, latitude, date);
     }
 
 
-    private void sendLocationRequest(final String email,final String deviceName, final String longitude, final String latitude, final String time) {
+    private void sendLocationRequest(final String email, final String deviceName, final String longitude, final String latitude, final String time) {
 
         class SendPostReqAsyncTask extends AsyncTask<String, Void, String> {
 
             @Override
             protected String doInBackground(String... params) {
 
-                HttpClient httpClient = new DefaultHttpClient();
 
-                // In a POST request, we don't pass the values in the URL.
-                //Therefore we use only the web page URL as the parameter of the HttpPost argument
-                HttpPost httpPost = new HttpPost(url);
                 // Because we are not passing values over the URL, we should have a mechanism to pass the values that can be
                 //uniquely separate by the other end.
                 //To achieve that we use BasicNameValuePair
@@ -136,6 +130,8 @@ public class GPS_Service extends Service {
 
                 // We add the content that we want to pass with the POST request to as name-value pairs
                 //Now we put those sending details to an ArrayList with type safe of NameValuePair
+                List<List<NameValuePair>> listLocation = new ArrayList<>();
+
                 List<NameValuePair> nameValuePairList = new ArrayList<NameValuePair>();
                 nameValuePairList.add(new BasicNameValuePair("email", email));
                 nameValuePairList.add(new BasicNameValuePair("deviceName", deviceName));
@@ -143,42 +139,81 @@ public class GPS_Service extends Service {
                 nameValuePairList.add(new BasicNameValuePair("latitude", latitude));
                 nameValuePairList.add(new BasicNameValuePair("date", time));
 
+                listLocation.add(nameValuePairList);
+
+                int rowDB = myDB.numberOfRows();
+                if (rowDB != 0) {
+                    ArrayList<LocationNode> listDB = myDB.getAllCotacts();
+                    for (LocationNode x : listDB) {
+                        ArrayList<NameValuePair> nameValuePairListDB = new ArrayList<NameValuePair>();
+                        nameValuePairListDB.add(new BasicNameValuePair("email", x.getEmail()));
+                        nameValuePairListDB.add(new BasicNameValuePair("deviceName", x.getDeviceName()));
+                        nameValuePairListDB.add(new BasicNameValuePair("longtitude", x.getLongitude()));
+                        nameValuePairListDB.add(new BasicNameValuePair("latitude", x.getLatitude()));
+                        nameValuePairListDB.add(new BasicNameValuePair("date", x.getTime()));
+                        listLocation.add(nameValuePairListDB);
+                    }
+                }
+
+
                 try {
-                    // UrlEncodedFormEntity is an entity composed of a list of url-encoded pairs.
-                    //This is typically useful while sending an HTTP POST request.
-                    UrlEncodedFormEntity urlEncodedFormEntity = new UrlEncodedFormEntity(nameValuePairList);
+                    if (rowDB != 0) {
+                        for (List<NameValuePair> x : listLocation) {
+                            HttpClient httpClient = new DefaultHttpClient();
+                            // In a POST request, we don't pass the values in the URL.
+                            //Therefore we use only the web page URL as the parameter of the HttpPost argument
+                            HttpPost httpPost = new HttpPost(url);
+                            UrlEncodedFormEntity urlEncodedFormEntity = new UrlEncodedFormEntity(x);
+                            httpPost.setEntity(urlEncodedFormEntity);
+                            HttpResponse httpResponse = httpClient.execute(httpPost);
+                            
+                        }
 
-                    // setEntity() hands the entity (here it is urlEncodedFormEntity) to the request.
-                    httpPost.setEntity(urlEncodedFormEntity);
+                    } else {
+                        HttpClient httpClient = new DefaultHttpClient();
 
-                    try {
-
+                        // In a POST request, we don't pass the values in the URL.
+                        //Therefore we use only the web page URL as the parameter of the HttpPost argument
+                        HttpPost httpPost = new HttpPost(url);
+                        // UrlEncodedFormEntity is an entity composed of a list of url-encoded pairs.
+                        //This is typically useful while sending an HTTP POST request.
+                        UrlEncodedFormEntity urlEncodedFormEntity = new UrlEncodedFormEntity(nameValuePairList);
+                        // setEntity() hands the entity (here it is urlEncodedFormEntity) to the request.
+                        httpPost.setEntity(urlEncodedFormEntity);
                         // HttpResponse is an interface just like HttpPost.
                         //Therefore we can't initialize them
                         HttpResponse httpResponse = httpClient.execute(httpPost);
-
-                    } catch (ClientProtocolException cpe) {
-                        System.out.println("Loi client protocol");
-                        cpe.printStackTrace();
-                    } catch (IOException ioe) {
-
                     }
 
-                } catch (UnsupportedEncodingException uee) {
-                    System.out.println("Loi");
-                    uee.printStackTrace();
+
+                } catch (ClientProtocolException cpe) {
+                    cpe.printStackTrace();
+                } catch (IOException ioe) {
+                    myDB.insertData(email, longitude, latitude, deviceName, time);
                 }
 
-                return "test";
+                return "";
             }
 
             @Override
             protected void onPostExecute(String result) {
-                System.out.println(result);
                 super.onPostExecute(result);
             }
         }
         SendPostReqAsyncTask sendPostReqAsyncTask = new SendPostReqAsyncTask();
         sendPostReqAsyncTask.execute();
+    }
+
+    public class list implements NameValuePair {
+
+        @Override
+        public String getName() {
+            return null;
+        }
+
+        @Override
+        public String getValue() {
+            return null;
+        }
     }
 }

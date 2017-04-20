@@ -2,8 +2,12 @@ package dialog.hello.org.demodialog;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
+import java.util.ArrayList;
 
 /**
  * Created by trank on 4/18/2017.
@@ -11,7 +15,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class SQLite_Database extends SQLiteOpenHelper {
 
-    public static final String DB_NAME = "SQLite.db";
+    public static final String DB_NAME = "Location.db";
     public static final String TABLE_NAME = "location_table";
     public static final String COLUMN_1 = "ID";
     public static final String COLUMN_2 = "email";
@@ -53,4 +57,32 @@ public class SQLite_Database extends SQLiteOpenHelper {
         }
         return true;
     }
+
+    public ArrayList<LocationNode> getAllCotacts() {
+        ArrayList<LocationNode> array_list = new ArrayList<LocationNode>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor res =  db.rawQuery( "select * from " + TABLE_NAME, null );
+        res.moveToFirst();
+
+        while(res.isAfterLast() == false){
+            LocationNode tmp = new LocationNode();
+            tmp.setEmail(COLUMN_2);
+            tmp.setDeviceName(COLUMN_3);
+            tmp.setLongitude(COLUMN_4);
+            tmp.setLatitude(COLUMN_5);
+            tmp.setTime(COLUMN_6);
+            array_list.add(tmp);
+            res.moveToNext();
+        }
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
+        onCreate(db);
+        return array_list;
+    }
+
+    public int numberOfRows(){
+        SQLiteDatabase db = this.getReadableDatabase();
+        int numRows = (int) DatabaseUtils.queryNumEntries(db,TABLE_NAME);
+        return numRows;
+    }
+
 }
