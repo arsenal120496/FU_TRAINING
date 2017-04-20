@@ -42,10 +42,13 @@ public class LoginController {
     }
 
     @RequestMapping(value = "/loginMobile", method = RequestMethod.POST)
-    public ResponseEntity<User> loginMobile(@RequestParam(value = "email", required = true) String  email, @RequestParam(value = "password", required = true) String password){
+    public ResponseEntity<User> loginMobile(@RequestParam(value = "email", required = true) String  email, @RequestParam(value = "password", required = true) String password, HttpServletResponse res){
     	User user = userService.login(email, password);
+
         if (user != null){
-            return new ResponseEntity(user.getName(),HttpStatus.OK);
+            String token = TokenAuthenticationService.gettoken(res, email);
+            UserTokenRespone userTokenRespone = new UserTokenRespone(user.getEmail(), user.getName(), TokenAuthenticationService.HEADER_STRING, token);
+            return new ResponseEntity(userTokenRespone,HttpStatus.OK);
         } else {
             return new ResponseEntity("Login failed", HttpStatus.NOT_FOUND);
         }

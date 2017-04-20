@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.text.ParseException;
 import java.util.List;
 
-
+@CrossOrigin
 @RestController
 public class LocationController {
 
@@ -38,5 +38,10 @@ public class LocationController {
 							) throws ParseException {
 		List<UserLocation> res = locationService.findByTime(email, fromDate, toDate);
 		return new ResponseEntity(res,HttpStatus.OK);
+	}
+	@CrossOrigin
+	@RequestMapping(value = "/test", method = RequestMethod.GET)
+	public String getTest(){
+		return new String("TEST SECURITY");
 	}
 }
