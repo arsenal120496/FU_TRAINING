@@ -19,12 +19,9 @@ const GoogleMapConst = withGoogleMap(props => (
         defaultZoom={15}
         center={props.center}
     >
-
-        {props.markers.map(marker => (
-            <Marker
-                {...marker}
-            />
-        ))}
+        <Marker
+            {...props.markers}
+        />
         <Polyline path={props.paths}
                   options={{
                       geodesic: true,
@@ -47,7 +44,6 @@ class MyMap extends Component {
     }
 
     render() {
-        console.log(this.props);
         return (
             <div id="GSE" style={{height: `100%`}}>
                 <GoogleMapConst

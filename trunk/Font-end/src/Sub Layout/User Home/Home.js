@@ -11,6 +11,8 @@ import MyMap from "../Map/MyMap";
 import ReactTable from 'react-table'
 import 'react-table/react-table.css'
 
+import {NavDropdown, MenuItem, Modal, Button} from 'react-bootstrap'
+
 var DateRangePicker = require('react-bootstrap-daterangepicker');
 var moment = require('moment');
 var BS = require('react-bootstrap');
@@ -20,7 +22,8 @@ if (user === null) {
     // console.log("1")
     user = {
         email: "abcd",
-        name: "me"
+        name: "me",
+        tokenValue: "asdsad"
     }
 }
 
@@ -87,8 +90,16 @@ const center = {
     lng: 106.6297
 }
 
-let markerList = [];
+const marker = {
+    position: {
+        lat: parseFloat(center.lat),
+        lng: parseFloat(center.lng),
+    },
+    defaultAnimation: 2,
+    key: PARAM_TODATE,
+};
 let pathList = [];
+
 
 class Home extends Component {
     constructor(props) {
@@ -101,15 +112,37 @@ class Home extends Component {
                 lng: 106.6297
             },
             paths: [],
+            show: false,
         }
 
         this.setSearchLocation = this.setSearchLocation.bind(this);
         this.fetchSearchLocation = this.fetchSearchLocation.bind(this);
         this.logout = this.logout.bind(this);
         this.handleFormSubmit = this.handleFormSubmit.bind(this);
+        this.showModal = this.showModal.bind(this);
+        this.hideModal = this.hideModal.bind(this);
+        this.showPass = this.showPass.bind(this);
+        this.hidePass = this.hidePass.bind(this);
+    }
+
+    showPass(id) {
+        $(id).attr('type', 'text');
+    }
+
+    hidePass(id) {
+        $(id).attr('type', 'password');
+    }
+
+    showModal() {
+        this.setState({show: true});
+    }
+
+    hideModal() {
+        this.setState({show: false});
     }
 
     setSearchLocation(result) {
+        //reset marker, path, center
         this.setState({
             listLoc: [],
             markers: [],
@@ -119,45 +152,50 @@ class Home extends Component {
                 lng: 106.6297
             },
         });
-        markerList = [];
         pathList = [];
-        //
+        //update marker, path, center
         const list = result;
         list.forEach(function (el) {
-            const nextMarkers = {
-                position: {
-                    lat: parseFloat(el.location.latitude),
-                    lng: parseFloat(el.location.longitude),
-                },
-                defaultAnimation: 2,
-                key: el.time, // Add a key property for: http://fb.me/react-warning-keys
-            };
             const path = {
                 lat: parseFloat(el.location.latitude),
                 lng: parseFloat(el.location.longitude),
             };
+            marker.position.lat = parseFloat(el.location.latitude);
+            marker.position.lng = parseFloat(el.location.longitude);
+            marker.key = el.time;
             center.lat = parseFloat(el.location.latitude);
             center.lng = parseFloat(el.location.longitude);
-            if (markerList.length !== list.length) {
-                if (markerList.indexOf(nextMarkers) < 0) {
-                    markerList.push(nextMarkers);
-                    pathList.push(path);
-                }
-            }
-
+            pathList.push(path);
         });
         this.setState({
             paths: pathList,
             center: center,
-            markers: markerList,
+            markers: marker,
             listLoc: result.reverse(),
         });
+        //reset marker if no data
+        if (result.length === 0) {
+            this.setState({
+                markers: {}
+            })
+        }
+
     }
 
     fetchSearchLocation() {
+        // $.ajaxSetup({
+        //     beforeSend: function (xhr) {
+        //         xhr.setRequestHeader("Authorization", user.tokenValue + "");
+        //         console.log(xhr);
+        //     }
+        // });
+        function setTokenHeader () {
+            return {"Authorization": user.tokenValue};
+        }
         $.ajax({
             url: `${PATH_BASE}?${PATH_EMAIL}${PARAM_EMAIL}&${PATH_FROMDATE}${PARAM_FROMDATE}&${PATH_TODATE}${PARAM_TODATE}`,
             method: 'GET',
+            headers: setTokenHeader(),
             success: function (data) {
                 this.setSearchLocation(data)
             }.bind(this),
@@ -186,9 +224,14 @@ class Home extends Component {
         //     () => this.fetchSearchLocation(),
         //     1000
         // );
+        //fix hover background with null row
+        var listRow = document.getElementsByClassName('rt-tr-group');
+        for (var i = 0; i < listRow.length; i++) {
+            if (listRow[i].innerText.trim() === '') {
+                listRow[i].setAttribute('style', 'background-color: #fff');
+            }
+        }
         this.fetchSearchLocation();
-
-
     }
 
     handleFormSubmit() {
@@ -213,49 +256,46 @@ class Home extends Component {
     logout() {
         // event.preventDefault();
         localStorage.setItem('user', null);
-        localStorage.setItem('logout', true);
+        // localStorage.setItem('logout', true);
+        window.location.reload();
     }
 
     render() {
-        /*user = JSON.parse(localStorage.getItem('user'));
-         if (user === null) {
-         user = {
-         email: "abcd",
-         name: "me"
-         };
-         this.props.router.push('/sign_in');
-         } else {
-         PARAM_EMAIL = user.email;
-         }
-         */
-        user = JSON.parse(localStorage.getItem('user'));
+        console.log(user);
         if (user.name === "me") {
             window.location.reload(true);
         } else {
             PARAM_EMAIL = user.email;
         }
-        const columns = [{
-            header: 'Latitude',
-            id: 'latitude',
-            accessor: d => d.location.latitude
-        },
+        const columns = [
+            {
+                header: 'Latitude',
+                id: 'latitude',
+                accessor: d => d.location.latitude,
+                sortable: false,
+                hideFilter: true,
+            },
             {
                 header: 'Longitude',
                 id: 'longitude',
-                accessor: d => d.location.longitude
+                accessor: d => d.location.longitude,
+                hideFilter: true,
+                sortable: false
             },
             {
                 header: 'Device',
-
-                accessor: 'nameDeivce'
+                accessor: 'nameDevice',
+                sortable: false,
+                hideFilter: false,
             },
             {
                 header: 'Time',
-
-                accessor: 'time'
+                accessor: 'time',
+                sortable: false,
+                hideFilter: false,
             }
         ]
-
+        const name = "Welcome, " + user.name;
         return (
             <div className="full-height">
                 <nav className="navbar navbar-default">
@@ -265,11 +305,101 @@ class Home extends Component {
                             <a className="navbar-brand" href="#">GPS Tracking System</a>
                         </div>
                         <div className="nav navbar-nav navbar-right">
-                            <div>Welcome, <strong>{user.name}</strong> (<a href="" onClick={this.logout}>Log out</a>)
-                            </div>
+                            <NavDropdown title={name} id="nav-dropdown">
+                                <MenuItem onClick={this.showModal}>
+                                    <span className="glyphicon glyphicon-user"/>&nbsp;
+                                    Thong tin tai khoan
+                                </MenuItem>
+                                <MenuItem divider/>
+                                <MenuItem onClick={this.logout}>
+                                    <span className="glyphicon glyphicon-log-out"/>&nbsp;
+                                    Dang xuat
+                                </MenuItem>
+                            </NavDropdown>
                         </div>
                     </div>
-
+                    <Modal
+                        {...this.props}
+                        show={this.state.show}
+                        onHide={this.hideModal}
+                        dialogClassName="custom-modal"
+                    >
+                        <Modal.Header closeButton>
+                            <Modal.Title id="contained-modal-title-lg">Thong tin tai khoan</Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>
+                            {/*email*/}
+                            <div className="input-group">
+                                <div className="input-group-addon">
+                                    <i className="fa fa-envelope" aria-hidden="true"/>
+                                </div>
+                                <input
+                                    type="email"
+                                    className="form-control"
+                                    name="txtEmail"
+                                    placeholder="Email"
+                                    required
+                                    onChange={(event) => this._handleChange(event, 'email')}
+                                    value={user.email}
+                                    disabled
+                                />
+                            </div>
+                            {/*name*/}
+                            <div className="input-group">
+                                <div className="input-group-addon">
+                                    <i className="fa fa-user" aria-hidden="true"/>
+                                </div>
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    name="txtUsername"
+                                    placeholder="Name"
+                                    required
+                                    onChange={(event) => this._handleChange(event, 'name')}
+                                    value={user.name}
+                                />
+                            </div>
+                            {/*password*/}
+                            <div className="input-group">
+                                <div className="input-group-addon">
+                                    <i className="fa fa-key" aria-hidden="true"/>
+                                </div>
+                                <input
+                                    type="password"
+                                    className="form-control"
+                                    name="txtPassword"
+                                    placeholder="Password"
+                                    required
+                                    onChange={(event) => this._handleChange(event, 'password')}
+                                    // value={user.password}
+                                />
+                            </div>
+                            {/*confirm*/}
+                            <div className="input-group">
+                                <div className="input-group-addon">
+                                    <i className="fa fa-key" aria-hidden="true"/>
+                                </div>
+                                <input
+                                    type="password"
+                                    className="form-control"
+                                    name="txtConfirmPassword"
+                                    placeholder="Confirm Password"
+                                    required
+                                    onChange={(event) => this._handleChange(event, 'confirmPassword')}
+                                    // value={user.password}
+                                    id="confirm-password"
+                                />
+                                <div className="input-group-addon " onMouseDown={this.showPass('#confirm-password')}
+                                     onMouseUp={this.hidePass('#confirm-password')}
+                                     onMouseOut={this.hidePass('#confirm-password')}><span
+                                    className="glyphicon glyphicon-eye-open"/></div>
+                            </div>
+                        </Modal.Body>
+                        <Modal.Footer>
+                            <Button bsStyle="primary" onClick={this.hideModal}>Save</Button>
+                            <Button onClick={this.hideModal}>Close</Button>
+                        </Modal.Footer>
+                    </Modal>
                 </nav>
                 <div className="container col-md-12" id="con">
 
@@ -296,6 +426,29 @@ class Home extends Component {
                                 data={this.state.listLoc}
                                 columns={columns}
                                 defaultPageSize={10}
+                                pageSizeOptions={[5, 10]}
+                                showFilters={true}
+                                getTdProps={(state, rowInfo, column, instance) => {
+                                    return {
+                                        onClick: e => {
+                                            if (rowInfo !== undefined) {
+                                                this.setState({
+                                                    center: {
+                                                        lat: parseFloat(rowInfo.rowValues.latitude),
+                                                        lng: parseFloat(rowInfo.rowValues.longitude),
+                                                    }, markers: {
+                                                        position: {
+                                                            lat: parseFloat(rowInfo.rowValues.latitude),
+                                                            lng: parseFloat(rowInfo.rowValues.longitude),
+                                                        },
+                                                        defaultAnimation: 2,
+                                                        key: rowInfo.rowValues.time,
+                                                    }
+                                                });
+                                            }
+                                        }
+                                    }
+                                }}
                             />
                         </div>
                     </div>

@@ -1,4 +1,4 @@
-/*format register*/
+/*format navbar*/
 
 .navbar-right {
     height: 50px;
@@ -7,6 +7,14 @@
 .navbar-right div {
     height: 50px;
     line-height: 50px;
+    margin-right: 50px;
+}
+
+.dropdown-menu>li>a>span {
+    line-height: 26px;
+}
+.dropdown-menu .divider {
+    margin: 5px 0 !important;
 }
 
 #filter-form {
@@ -26,6 +34,12 @@
 cite {
     font-size: 0.9em;
     color: #BEBCB5;
+}
+
+/*format table row*/
+.rt-tr-group:hover {
+    cursor: pointer !important;
+    background-color: #cccccc;
 }
 
 /*format calendar*/
