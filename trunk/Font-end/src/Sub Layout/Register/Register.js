@@ -7,7 +7,7 @@ import '../resource/font-awesome/css/font-awesome.min.css';
 import $ from 'jquery';
 import "./main.css"
 import "../resource/main.css"
-
+import {Link} from 'react-router';
 import {Error, Success} from '../Notify'
 
 
@@ -150,6 +150,7 @@ class Register extends Component {
                             <input className="btn btn-success btn-block" id="btnRegister" type="submit"
                                 value="Register" />
                                 </div>
+                                <div id="register-link"><Link to='/sign_in'>Login with existed account</Link></div>
                         </form>
                     </div>
                 </div>
