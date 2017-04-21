@@ -7,7 +7,7 @@ import '../resource/font-awesome/css/font-awesome.min.css';
 import $ from 'jquery';
 import "./main.css"
 import "../resource/main.css"
-
+import {Link} from 'react-router';
 import {Error, Success} from '../Notify'
 
 
@@ -26,6 +26,14 @@ class Register extends Component {
         this._handleChange = this._handleChange.bind(this);
         this.fetchRegister = this.fetchRegister.bind(this);
         this.validateInput = this.validateInput.bind(this);
+        this.resetForm = this.resetForm.bind(this);
+    }
+    resetForm(){
+        let reset = document.getElementsByClassName('form-control');
+        for(var i=0;i<reset.length; i++){
+            reset[i].value = "";
+            
+        }
     }
     validateInput(){
         if(this.state.password !== this.state.confirmPassword){
@@ -34,7 +42,7 @@ class Register extends Component {
             return false;           
         }
         else if(this.state.password.length < 6){
-            this.setState({error: "The length of password must be 8 character at least"});
+            this.setState({error: "The length of password must be 6 character at least"});
             console.log(this.state.error);
             return false; 
         }
@@ -47,7 +55,7 @@ class Register extends Component {
     fetchRegister(event) {
         event.preventDefault();
         let valid = this.validateInput();
-        console.log('valid: ', valid);
+        // console.log('valid: ', valid);
         if(valid){
             console.log('fetched: ', this.state);
             $.ajax({
@@ -60,12 +68,15 @@ class Register extends Component {
                 password: this.state.password                          
             },
             success: function (data) {
-                console.log(data);
+                // console.log(data);
                 this.setState({success: 'success'});
-                console.log(this.state);
+                // console.log(this.state);
+                this.resetForm();
             }.bind(this),
             error: function (err){
-                this.setState({error: 'Email existed. Please try another'});              
+                this.setState({error: 'Email existed. Please try another',
+                                success: false});     
+
             }.bind(this)
         });
         }
@@ -139,6 +150,7 @@ class Register extends Component {
                             <input className="btn btn-success btn-block" id="btnRegister" type="submit"
                                 value="Register" />
                                 </div>
+                                <div id="register-link"><Link to='/sign_in'>Login with existed account</Link></div>
                         </form>
                     </div>
                 </div>

@@ -14,5 +14,8 @@
 }
 
 #btnRegister {
-    margin-bottom: 10px;
+    margin-bottom: 5px;
+}
+#login-link {
+    padding-bottom: 10px;
 }
