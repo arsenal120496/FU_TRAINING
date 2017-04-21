@@ -22,7 +22,9 @@ var Notyf = require('notyf');
 import 'notyf/dist/notyf.min.css';
 
 // Create an instance of Notyf
-var notyf = new Notyf()
+var notyf = new Notyf({
+    delay: 3000,
+});
 
 // Display an alert notification
 
@@ -137,6 +139,7 @@ class Home extends Component {
         this.hideModal = this.hideModal.bind(this);
         this._handleChange = this._handleChange.bind(this);
         this.handleSubmitProfile = this.handleSubmitProfile.bind(this);
+        this.validateInput = this.validateInput.bind(this);
     }
 
     _handleChange(event, attribute) {
@@ -289,6 +292,43 @@ class Home extends Component {
                 this.hideModal();
             }.bind(this)
         });
+        let valid = this.validateInput();
+        if (valid) {
+            $.ajax({
+                url: 'http://localhost:8080/updateProfile',
+                method: 'POST',
+                headers: {"Authorization": user.tokenValue},
+                data: {
+                    name: this.state.name,
+                    email: user.email,
+                    oldPassword: this.state.oldPassword,
+                    newPassword: this.state.newPassword
+                },
+                success: function (data) {
+                    notyf.confirm('Update your profile successfully!!!');
+                    this.hideModal();
+                }.bind(this),
+                error: function (err) {
+                    notyf.alert(err.toString());
+                    this.hideModal();
+                }.bind(this)
+            });
+        }
+    }
+
+    validateInput() {
+        if (this.state.name.trim().length === 0) {
+            notyf.alert("Username can't be null");
+            return false;
+        }
+        if (this.state.newPassword.trim().length < 6 || this.state.oldPassword.trim().length < 6) {
+            notyf.alert("The length of password must be 6 character at least");
+            return false;
+        } else if (this.state.newPassword.trim() !== this.state.confirmPassword.trim()) {
+            notyf.alert('New Password and Confirm Password is not match');
+            return false;
+        }
+        return true;
     }
 
     render() {
@@ -326,6 +366,8 @@ class Home extends Component {
             }
         ]
         const name = "Welcome, " + user.name;
+
+
         return (
             <div className="full-height">
                 <nav className="navbar navbar-default">
@@ -386,6 +428,7 @@ class Home extends Component {
                                     required
                                     onChange={(event) => this._handleChange(event, 'name')}
                                     value={user.name}
+                                    onBlur={this.validateInput}
                                 />
                             </div>
                             {/* old password*/}
@@ -400,7 +443,7 @@ class Home extends Component {
                                     placeholder="Old Password"
                                     required
                                     onChange={(event) => this._handleChange(event, 'oldPassword')}
-                                    // value={user.password}
+                                    onBlur={this.validateInput}
                                 />
                             </div>
                             {/* new password*/}
@@ -415,7 +458,7 @@ class Home extends Component {
                                     placeholder="New Password"
                                     required
                                     onChange={(event) => this._handleChange(event, 'newPassword')}
-                                    // value={user.password}
+                                    onBlur={this.validateInput}
                                 />
                             </div>
                             {/*confirm*/}
@@ -432,6 +475,7 @@ class Home extends Component {
                                     onChange={(event) => this._handleChange(event, 'confirmPassword')}
                                     // value={user.password}
                                     id="confirm-password"
+                                    onBlur={this.validateInput}
                                 />
                             </div>
                         </Modal.Body>
