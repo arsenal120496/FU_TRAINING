@@ -26,8 +26,6 @@ var notyf = new Notyf({
     delay: 3000,
 });
 
-// Display an alert notification
-
 
 let user = JSON.parse(localStorage.getItem('user'));
 if (user === null) {
@@ -298,11 +296,12 @@ class Home extends Component {
     }
 
     validateInput() {
-        if (this.state.name.trim().length === 0) {
-            notyf.alert("Username can't be null");
+        if (!this.state.name.trim().match(/^[a-zA-Z0-9_]{2,30}$/)) {
+            notyf.alert("Username can't contain special character except '_' character");
             return false;
         }
-        if (this.state.newPassword.trim().length < 6 || this.state.oldPassword.trim().length < 6) {
+        if (!this.state.newPassword.trim().match(/^[0-9a-zA-Z@]{6,}$/)
+            || !this.state.oldPassword.trim().match(/^[0-9a-zA-Z@]{6,}$/)) {
             notyf.alert("The length of password must be 6 character at least");
             return false;
         } else if (this.state.newPassword.trim() !== this.state.confirmPassword.trim()) {
