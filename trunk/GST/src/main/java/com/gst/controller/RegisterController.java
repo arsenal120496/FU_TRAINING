@@ -18,36 +18,37 @@ public class RegisterController {
 
     @CrossOrigin
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public ResponseEntity register(@RequestParam(value = "name") String  name,
+    public ResponseEntity register(@RequestParam(value = "name") String name,
                                    @RequestParam(value = "email") String email,
-                                   @RequestParam(value = "password") String password){
+                                   @RequestParam(value = "password") String password) {
         User existed = userService.checkEmailExist(email);
         if (existed == null) {
             User user = new User(name, email, password);
             User added = userService.register(user);
             return new ResponseEntity("User registered successfully", HttpStatus.OK);
-        }
-        else {
+        } else {
             return new ResponseEntity("User registered unsuccessfully", HttpStatus.BAD_REQUEST);
         }
     }
+
     @CrossOrigin
-    @RequestMapping(value = "/updateProfile")
-    public ResponseEntity update(@RequestParam(value = "name") String  name,
-                                    @RequestParam(value = "email") String email,
-                                    @RequestParam(value = "oldPassword") String oldPassword, @RequestParam(value = "newPassword") String newPassword){
+    @RequestMapping(value = "/updateProfile", method = RequestMethod.POST)
+    public ResponseEntity update(@RequestParam(value = "name") String name,
+                                 @RequestParam(value = "email") String email,
+                                 @RequestParam(value = "oldPassword") String oldPassword,
+                                 @RequestParam(value = "newPassword") String newPassword) {
         User existed = userService.checkEmailExist(email);
-        if (existed != null){
-            if (existed.getPassword() == oldPassword){
+        if (existed != null) {
+            System.out.println("existed not null");
+            if (existed.getPassword().equals(oldPassword)) {
                 existed.setName(name);
                 existed.setPassword(newPassword);
                 userService.update(existed);
                 return new ResponseEntity(existed, HttpStatus.OK);
-            }
-            else{
+            } else {
                 return new ResponseEntity(HttpStatus.BAD_REQUEST);
             }
-        }else {
+        } else {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
     }

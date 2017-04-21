@@ -123,6 +123,10 @@ class Home extends Component {
             },
             paths: [],
             show: false,
+            name: user.name,
+            oldPassword: '',
+            newPassword: '',
+            confirmPassword: '',
         }
 
         this.setSearchLocation = this.setSearchLocation.bind(this);
@@ -131,16 +135,14 @@ class Home extends Component {
         this.handleFormSubmit = this.handleFormSubmit.bind(this);
         this.showModal = this.showModal.bind(this);
         this.hideModal = this.hideModal.bind(this);
-        this.showPass = this.showPass.bind(this);
-        this.hidePass = this.hidePass.bind(this);
+        this._handleChange = this._handleChange.bind(this);
+        this.handleSubmitProfile = this.handleSubmitProfile.bind(this);
     }
 
-    showPass(id) {
-        $(id).attr('type', 'text');
-    }
-
-    hidePass(id) {
-        $(id).attr('type', 'password');
+    _handleChange(event, attribute) {
+        let newState = this.state;
+        newState[attribute] = event.target.value;
+        this.setState(newState);
     }
 
     showModal() {
@@ -148,7 +150,6 @@ class Home extends Component {
     }
 
     hideModal() {
-        notyf.confirm('Please fill out the form');
         this.setState({show: false});
     }
 
@@ -194,12 +195,6 @@ class Home extends Component {
     }
 
     fetchSearchLocation() {
-        // $.ajaxSetup({
-        //     beforeSend: function (xhr) {
-        //         xhr.setRequestHeader("Authorization", user.tokenValue + "");
-        //         console.log(xhr);
-        //     }
-        // });
         function setTokenHeader() {
             return {"Authorization": user.tokenValue};
         }
@@ -214,7 +209,7 @@ class Home extends Component {
             error: function (err) {
                 console.log('error: ', err.status);
                 // if(err.status === )
-                
+
             }
         });
 
@@ -274,6 +269,28 @@ class Home extends Component {
         window.location.reload();
     }
 
+    handleSubmitProfile() {
+        $.ajax({
+            url: 'http://localhost:8080/updateProfile',
+            method: 'POST',
+            headers: {"Authorization": user.tokenValue},
+            data: {
+                name: this.state.name,
+                email: user.email,
+                oldPassword: this.state.oldPassword,
+                newPassword: this.state.newPassword
+            },
+            success: function (data) {
+                notyf.confirm('Update your profile successfully!!!');
+                this.hideModal();
+            }.bind(this),
+            error: function (err) {
+                notyf.alert(err.toString());
+                this.hideModal();
+            }.bind(this)
+        });
+    }
+
     render() {
         if (user.name === "me") {
             window.location.reload(true);
@@ -321,12 +338,12 @@ class Home extends Component {
                             <NavDropdown title={name} id="nav-dropdown">
                                 <MenuItem onClick={this.showModal}>
                                     <span className="glyphicon glyphicon-user"/>&nbsp;
-                                    Thong tin tai khoan
+                                    Update Profile
                                 </MenuItem>
                                 <MenuItem divider/>
                                 <MenuItem onClick={this.logout}>
                                     <span className="glyphicon glyphicon-log-out"/>&nbsp;
-                                    Dang xuat
+                                    Logout
                                 </MenuItem>
                             </NavDropdown>
                         </div>
@@ -338,7 +355,7 @@ class Home extends Component {
                         dialogClassName="custom-modal"
                     >
                         <Modal.Header closeButton>
-                            <Modal.Title id="contained-modal-title-lg">Thong tin tai khoan</Modal.Title>
+                            <Modal.Title id="contained-modal-title-lg">Update Profile</Modal.Title>
                         </Modal.Header>
                         <Modal.Body>
                             {/*email*/}
@@ -352,7 +369,6 @@ class Home extends Component {
                                     name="txtEmail"
                                     placeholder="Email"
                                     required
-                                    onChange={(event) => this._handleChange(event, 'email')}
                                     value={user.email}
                                     disabled
                                 />
@@ -372,7 +388,7 @@ class Home extends Component {
                                     value={user.name}
                                 />
                             </div>
-                            {/*password*/}
+                            {/* old password*/}
                             <div className="input-group">
                                 <div className="input-group-addon">
                                     <i className="fa fa-key" aria-hidden="true"/>
@@ -381,9 +397,24 @@ class Home extends Component {
                                     type="password"
                                     className="form-control"
                                     name="txtPassword"
-                                    placeholder="Password"
+                                    placeholder="Old Password"
                                     required
-                                    onChange={(event) => this._handleChange(event, 'password')}
+                                    onChange={(event) => this._handleChange(event, 'oldPassword')}
+                                    // value={user.password}
+                                />
+                            </div>
+                            {/* new password*/}
+                            <div className="input-group">
+                                <div className="input-group-addon">
+                                    <i className="fa fa-key" aria-hidden="true"/>
+                                </div>
+                                <input
+                                    type="password"
+                                    className="form-control"
+                                    name="txtPassword"
+                                    placeholder="New Password"
+                                    required
+                                    onChange={(event) => this._handleChange(event, 'newPassword')}
                                     // value={user.password}
                                 />
                             </div>
@@ -405,7 +436,7 @@ class Home extends Component {
                             </div>
                         </Modal.Body>
                         <Modal.Footer>
-                            <Button bsStyle="primary" onClick={this.hideModal}>Save</Button>
+                            <Button bsStyle="primary" onClick={this.handleSubmitProfile}>Save</Button>
                             <Button onClick={this.hideModal}>Close</Button>
                         </Modal.Footer>
                     </Modal>
