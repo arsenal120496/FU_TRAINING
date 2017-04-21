@@ -13,9 +13,19 @@ import 'react-table/react-table.css'
 
 import {NavDropdown, MenuItem, Modal, Button} from 'react-bootstrap'
 
+
 var DateRangePicker = require('react-bootstrap-daterangepicker');
 var moment = require('moment');
 var BS = require('react-bootstrap');
+// Import Notyf using CommonJS require
+var Notyf = require('notyf');
+import 'notyf/dist/notyf.min.css';
+
+// Create an instance of Notyf
+var notyf = new Notyf()
+
+// Display an alert notification
+
 
 let user = JSON.parse(localStorage.getItem('user'));
 if (user === null) {
@@ -138,6 +148,7 @@ class Home extends Component {
     }
 
     hideModal() {
+        notyf.confirm('Please fill out the form');
         this.setState({show: false});
     }
 
@@ -189,9 +200,10 @@ class Home extends Component {
         //         console.log(xhr);
         //     }
         // });
-        function setTokenHeader () {
+        function setTokenHeader() {
             return {"Authorization": user.tokenValue};
         }
+
         $.ajax({
             url: `${PATH_BASE}?${PATH_EMAIL}${PARAM_EMAIL}&${PATH_FROMDATE}${PARAM_FROMDATE}&${PATH_TODATE}${PARAM_TODATE}`,
             method: 'GET',
@@ -261,7 +273,6 @@ class Home extends Component {
     }
 
     render() {
-        console.log(user);
         if (user.name === "me") {
             window.location.reload(true);
         } else {
@@ -319,7 +330,7 @@ class Home extends Component {
                         </div>
                     </div>
                     <Modal
-                        {...this.props}
+                        /*{...this.props}*/
                         show={this.state.show}
                         onHide={this.hideModal}
                         dialogClassName="custom-modal"
@@ -389,10 +400,6 @@ class Home extends Component {
                                     // value={user.password}
                                     id="confirm-password"
                                 />
-                                <div className="input-group-addon " onMouseDown={this.showPass('#confirm-password')}
-                                     onMouseUp={this.hidePass('#confirm-password')}
-                                     onMouseOut={this.hidePass('#confirm-password')}><span
-                                    className="glyphicon glyphicon-eye-open"/></div>
                             </div>
                         </Modal.Body>
                         <Modal.Footer>

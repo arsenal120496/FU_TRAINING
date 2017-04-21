@@ -8,6 +8,7 @@
     "google-map-react": "^0.23.0",
     "jquery": "^3.2.1",
     "moment-range": "^3.0.3",
+    "notyf": "^2.0.1",
     "react": "^15.4.2",
     "react-bootstrap": "^0.30.8",
     "react-bootstrap-daterangepicker": "^3.2.2",
