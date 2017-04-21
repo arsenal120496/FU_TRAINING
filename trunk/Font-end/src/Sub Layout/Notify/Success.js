@@ -5,7 +5,7 @@ class Success extends Component {
     render(){
         return(
             <div className="alert alert-success">
-                <p>Register successfully. Please click here to <Link to='/'><strong>Login</strong></Link></p>
+                <p>Register successfully. Please click here to <Link to='/sign_in'><strong>Login</strong></Link></p>
             </div>
         );
     }

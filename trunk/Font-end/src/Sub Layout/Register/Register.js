@@ -76,7 +76,7 @@ class Register extends Component {
         if (valid) {
             console.log('fetched: ', this.state);
             $.ajax({
-                url: 'http://localhost:8080/register',
+                url: 'http://e481a2e8.ngrok.io/register',
                 method: 'POST',
                 // headers: { "Access-Control-Allow-Origin": "*" },
                 data: {
@@ -91,8 +91,9 @@ class Register extends Component {
                     this.resetForm();
                 }.bind(this),
                 error: function (err) {
+                    notyf.alert('Email existed. Please try another');
                     this.setState({
-                        error: 'Email existed. Please try another',
+                        // error: 'Email existed. Please try another',
                         success: false
                     });
                 }.bind(this)

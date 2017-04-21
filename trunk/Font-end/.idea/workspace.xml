@@ -27,11 +27,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
-      <file leaf-file-name="Home.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Home.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Sub Layout/User Home/Home.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="706">
-              <caret line="408" column="53" lean-forward="false" selection-start-line="408" selection-start-column="53" selection-end-line="408" selection-end-column="53" />
+            <state relative-caret-position="435">
+              <caret line="339" column="13" lean-forward="true" selection-start-line="339" selection-start-column="13" selection-end-line="339" selection-end-column="13" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
                 <element signature="e#41#80#0" expanded="true" />
@@ -39,17 +39,15 @@
                 <element signature="e#876#955#0" expanded="false" />
                 <element signature="n#!!block;n#handleFormSubmit#0;n#Home#0" expanded="false" />
                 <element signature="n#!!block;n#validateInput#0;n#Home#0" expanded="false" />
-                <element signature="e#17042#20192#0" expanded="false" />
-                <element signature="e#18379#20111#0" expanded="false" />
-                <marker date="1492758273229" expanded="false" signature="9949:10727" ph="[...]" />
-                <marker date="1492758273229" expanded="false" signature="10911:11909" ph="&lt;div/&gt;" />
-                <marker date="1492758273229" expanded="false" signature="10970:11121" ph="&lt;div/&gt;" />
-                <marker date="1492758273229" expanded="false" signature="11146:11882" ph="&lt;div/&gt;" />
-                <marker date="1492758273229" expanded="false" signature="12449:13144" ph="&lt;div/&gt;" />
-                <marker date="1492758273229" expanded="false" signature="14097:14863" ph="&lt;div/&gt;" />
-                <marker date="1492758273229" expanded="false" signature="14940:15706" ph="&lt;div/&gt;" />
-                <marker date="1492758273229" expanded="false" signature="15191:15671" ph="&lt;input/&gt;" />
-                <marker date="1492758273229" expanded="false" signature="15777:16677" ph="&lt;div/&gt;" />
+                <element signature="e#9822#9875#0" expanded="false" />
+                <marker date="1492761642163" expanded="false" signature="10916:11914" ph="&lt;div/&gt;" />
+                <marker date="1492761642163" expanded="false" signature="10975:11126" ph="&lt;div/&gt;" />
+                <marker date="1492761642163" expanded="false" signature="11151:11887" ph="&lt;div/&gt;" />
+                <marker date="1492761642163" expanded="false" signature="12454:13149" ph="&lt;div/&gt;" />
+                <marker date="1492761642163" expanded="false" signature="14102:14868" ph="&lt;div/&gt;" />
+                <marker date="1492761642163" expanded="false" signature="14945:15711" ph="&lt;div/&gt;" />
+                <marker date="1492761642163" expanded="false" signature="15196:15676" ph="&lt;input/&gt;" />
+                <marker date="1492761642163" expanded="false" signature="15782:16682" ph="&lt;div/&gt;" />
               </folding>
             </state>
           </provider>
@@ -58,9 +56,21 @@
       <file leaf-file-name="Register.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Sub Layout/Register/Register.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="328">
-              <caret line="78" column="29" lean-forward="false" selection-start-line="78" selection-start-column="29" selection-end-line="78" selection-end-column="43" />
+            <state relative-caret-position="643">
+              <caret line="93" column="69" lean-forward="false" selection-start-line="93" selection-start-column="69" selection-end-line="93" selection-end-column="69" />
               <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Success.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/Sub Layout/Notify/Success.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="147">
+              <caret line="7" column="81" lean-forward="false" selection-start-line="7" selection-start-column="81" selection-end-line="7" selection-end-column="81" />
+              <folding>
+                <element signature="e#0#39#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -88,8 +98,18 @@
       <file leaf-file-name="Login.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Sub Layout/Login/Login.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="63">
-              <caret line="34" column="39" lean-forward="false" selection-start-line="34" selection-start-column="39" selection-end-line="34" selection-end-column="39" />
+            <state relative-caret-position="189">
+              <caret line="34" column="43" lean-forward="false" selection-start-line="34" selection-start-column="43" selection-end-line="34" selection-end-column="43" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="App.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/App.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="693">
+              <caret line="66" column="51" lean-forward="false" selection-start-line="66" selection-start-column="51" selection-end-line="66" selection-end-column="51" />
               <folding />
             </state>
           </provider>
@@ -107,7 +127,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>10.88.52.1</find>
       <find>10.88.52.14</find>
       <find>10.88.52.143</find>
       <find>lo</find>
@@ -137,6 +156,7 @@
       <find>rt-tr -even</find>
       <find>user</find>
       <find>9db8ecf0.ngrok.io</find>
+      <find>window</find>
     </findStrings>
     <replaceStrings>
       <replace>localhost</replace>
@@ -179,15 +199,16 @@
         <option value="$PROJECT_DIR$/node_modules/react-table/src/pagination.js" />
         <option value="$PROJECT_DIR$/node_modules/react-table/src/lifecycle.js" />
         <option value="$PROJECT_DIR$/src/Sub Layout/Table/Table.js" />
-        <option value="$PROJECT_DIR$/src/App.js" />
         <option value="$PROJECT_DIR$/node_modules/react-table/src/defaultProps.js" />
         <option value="$PROJECT_DIR$/src/Sub Layout/Login/main.css" />
         <option value="$PROJECT_DIR$/src/Sub Layout/Map/MyMap.js" />
         <option value="$PROJECT_DIR$/public/index.html" />
         <option value="$PROJECT_DIR$/src/Sub Layout/User Home/main.css" />
         <option value="$PROJECT_DIR$/src/Sub Layout/Login/Login.js" />
-        <option value="$PROJECT_DIR$/src/Sub Layout/Register/Register.js" />
+        <option value="$PROJECT_DIR$/src/App.js" />
         <option value="$PROJECT_DIR$/src/Sub Layout/User Home/Home.js" />
+        <option value="$PROJECT_DIR$/src/Sub Layout/Register/Register.js" />
+        <option value="$PROJECT_DIR$/src/Sub Layout/Notify/Success.js" />
       </list>
     </option>
   </component>
@@ -324,6 +345,28 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="Register" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Font-end" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Font-end" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Sub Layout" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Notify" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -849,12 +892,12 @@
       <workItem from="1492565889397" duration="20720000" />
       <workItem from="1492652019916" duration="10562000" />
       <workItem from="1492703521542" duration="1198000" />
-      <workItem from="1492738432557" duration="13895000" />
+      <workItem from="1492738432557" duration="17003000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="246310000" />
+    <option name="totallyTimeSpent" value="249418000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -916,13 +959,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/.gitignore">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Main Layout/index.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="84">
@@ -1082,13 +1118,6 @@
     <entry file="file://$PROJECT_DIR$/node_modules/react-table/src/index.styl" />
     <entry file="file://$PROJECT_DIR$/node_modules/react-table/react-table.css" />
     <entry file="file://$PROJECT_DIR$/node_modules/react-table/src/defaultProps.js" />
-    <entry file="file://$PROJECT_DIR$/src/App.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="622">
-          <caret line="51" column="33" lean-forward="false" selection-start-line="51" selection-start-column="33" selection-end-line="51" selection-end-column="33" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Sub Layout/Map/MyMap.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="244">
@@ -1128,26 +1157,18 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Sub Layout/Register/Register.js">
+    <entry file="file://$PROJECT_DIR$/src/App.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="328">
-          <caret line="78" column="29" lean-forward="false" selection-start-line="78" selection-start-column="29" selection-end-line="78" selection-end-column="43" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Sub Layout/Login/Login.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="63">
-          <caret line="34" column="39" lean-forward="false" selection-start-line="34" selection-start-column="39" selection-end-line="34" selection-end-column="39" />
+        <state relative-caret-position="693">
+          <caret line="66" column="51" lean-forward="false" selection-start-line="66" selection-start-column="51" selection-end-line="66" selection-end-column="51" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Sub Layout/User Home/Home.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="706">
-          <caret line="408" column="53" lean-forward="false" selection-start-line="408" selection-start-column="53" selection-end-line="408" selection-end-column="53" />
+        <state relative-caret-position="435">
+          <caret line="339" column="13" lean-forward="true" selection-start-line="339" selection-start-column="13" selection-end-line="339" selection-end-column="13" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
             <element signature="e#41#80#0" expanded="true" />
@@ -1155,17 +1176,41 @@
             <element signature="e#876#955#0" expanded="false" />
             <element signature="n#!!block;n#handleFormSubmit#0;n#Home#0" expanded="false" />
             <element signature="n#!!block;n#validateInput#0;n#Home#0" expanded="false" />
-            <element signature="e#17042#20192#0" expanded="false" />
-            <element signature="e#18379#20111#0" expanded="false" />
-            <marker date="1492758273229" expanded="false" signature="9949:10727" ph="[...]" />
-            <marker date="1492758273229" expanded="false" signature="10911:11909" ph="&lt;div/&gt;" />
-            <marker date="1492758273229" expanded="false" signature="10970:11121" ph="&lt;div/&gt;" />
-            <marker date="1492758273229" expanded="false" signature="11146:11882" ph="&lt;div/&gt;" />
-            <marker date="1492758273229" expanded="false" signature="12449:13144" ph="&lt;div/&gt;" />
-            <marker date="1492758273229" expanded="false" signature="14097:14863" ph="&lt;div/&gt;" />
-            <marker date="1492758273229" expanded="false" signature="14940:15706" ph="&lt;div/&gt;" />
-            <marker date="1492758273229" expanded="false" signature="15191:15671" ph="&lt;input/&gt;" />
-            <marker date="1492758273229" expanded="false" signature="15777:16677" ph="&lt;div/&gt;" />
+            <element signature="e#9822#9875#0" expanded="false" />
+            <marker date="1492761642163" expanded="false" signature="10916:11914" ph="&lt;div/&gt;" />
+            <marker date="1492761642163" expanded="false" signature="10975:11126" ph="&lt;div/&gt;" />
+            <marker date="1492761642163" expanded="false" signature="11151:11887" ph="&lt;div/&gt;" />
+            <marker date="1492761642163" expanded="false" signature="12454:13149" ph="&lt;div/&gt;" />
+            <marker date="1492761642163" expanded="false" signature="14102:14868" ph="&lt;div/&gt;" />
+            <marker date="1492761642163" expanded="false" signature="14945:15711" ph="&lt;div/&gt;" />
+            <marker date="1492761642163" expanded="false" signature="15196:15676" ph="&lt;input/&gt;" />
+            <marker date="1492761642163" expanded="false" signature="15782:16682" ph="&lt;div/&gt;" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Sub Layout/Login/Login.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="189">
+          <caret line="34" column="43" lean-forward="false" selection-start-line="34" selection-start-column="43" selection-end-line="34" selection-end-column="43" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Sub Layout/Register/Register.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="643">
+          <caret line="93" column="69" lean-forward="false" selection-start-line="93" selection-start-column="69" selection-end-line="93" selection-end-column="69" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Sub Layout/Notify/Success.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="147">
+          <caret line="7" column="81" lean-forward="false" selection-start-line="7" selection-start-column="81" selection-end-line="7" selection-end-column="81" />
+          <folding>
+            <element signature="e#0#39#0" expanded="true" />
           </folding>
         </state>
       </provider>

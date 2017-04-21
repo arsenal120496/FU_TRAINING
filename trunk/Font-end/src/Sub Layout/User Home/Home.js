@@ -37,7 +37,7 @@ if (user === null) {
     }
 }
 
-const PATH_BASE = 'http://localhost:8080/getLocationByTime';
+const PATH_BASE = 'http://e481a2e8.ngrok.io/getLocationByTime';
 const PATH_EMAIL = 'email=';
 let PARAM_EMAIL = user.email;
 const PATH_FROMDATE = 'fromDate=';
@@ -274,7 +274,7 @@ class Home extends Component {
         let valid = this.validateInput();
         if (valid) {
             $.ajax({
-                url: 'http://localhost:8080/updateProfile',
+                url: 'http://e481a2e8.ngrok.io/updateProfile',
                 method: 'POST',
                 headers: {"Authorization": user.tokenValue},
                 data: {
@@ -333,7 +333,7 @@ class Home extends Component {
             },
             {
                 header: 'Device',
-                accessor: 'nameDevice',
+                accessor: 'nameDeivce',
                 sortable: false,
                 hideFilter: false,
             },
@@ -341,7 +341,7 @@ class Home extends Component {
                 header: 'Time',
                 accessor: 'time',
                 sortable: false,
-                hideFilter: false,
+                hideFilter: true,
             }
         ]
         const name = "Welcome, " + user.name;
@@ -477,10 +477,12 @@ class Home extends Component {
                                 <h5>Select day to tracking your GPS <cite>(MM-DD-YYYY)</cite>:</h5>
                                 <div className="col-xs-12 col-md-12">
                                     <CalendarInput/>
-                                    <div className="col-md-1"></div>
-                                    <button type="button" id="btnSeach" onClick={this.handleFormSubmit}
-                                            className="btn btn-success">Search
-                                    </button>
+                                    <div className="col-md-2">
+                                        <button type="button" id="btnSeach" onClick={this.handleFormSubmit}
+                                                className="btn btn-success">Search
+                                        </button>
+                                    </div>
+
                                 </div>
 
                             </form>
