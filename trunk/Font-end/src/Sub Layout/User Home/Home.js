@@ -37,7 +37,7 @@ if (user === null) {
     }
 }
 
-const PATH_BASE = 'http://localhost:8080/getLocationByTime';
+const PATH_BASE = 'http://5645304f.ngrok.io/getLocationByTime';
 const PATH_EMAIL = 'email=';
 let PARAM_EMAIL = user.email;
 const PATH_FROMDATE = 'fromDate=';
@@ -271,6 +271,25 @@ class Home extends Component {
     }
 
     handleSubmitProfile() {
+        $.ajax({
+            url: 'http://9db8ecf0.ngrok.io/updateProfile',
+            method: 'POST',
+            headers: {"Authorization": user.tokenValue},
+            data: {
+                name: this.state.name,
+                email: user.email,
+                oldPassword: this.state.oldPassword,
+                newPassword: this.state.newPassword
+            },
+            success: function (data) {
+                notyf.confirm('Update your profile successfully!!!');
+                this.hideModal();
+            }.bind(this),
+            error: function (err) {
+                notyf.alert(err.toString());
+                this.hideModal();
+            }.bind(this)
+        });
         let valid = this.validateInput();
         if (valid) {
             $.ajax({
