@@ -18,9 +18,9 @@ public class RegisterController {
 
     @CrossOrigin
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public ResponseEntity register(@RequestParam(value = "name") String name,
-                                   @RequestParam(value = "email") String email,
-                                   @RequestParam(value = "password") String password) {
+    public ResponseEntity register(@RequestParam(value = "name", required = true) String name,
+                                   @RequestParam(value = "email", required = true) String email,
+                                   @RequestParam(value = "password", required = true) String password) {
         User existed = userService.checkEmailExist(email);
         if (existed == null) {
             User user = new User(name, email, password);
@@ -33,10 +33,10 @@ public class RegisterController {
 
     @CrossOrigin
     @RequestMapping(value = "/updateProfile", method = RequestMethod.POST)
-    public ResponseEntity update(@RequestParam(value = "name") String name,
-                                 @RequestParam(value = "email") String email,
-                                 @RequestParam(value = "oldPassword") String oldPassword,
-                                 @RequestParam(value = "newPassword") String newPassword) {
+    public ResponseEntity update(@RequestParam(value = "name", required = true) String name,
+                                 @RequestParam(value = "email", required = true) String email,
+                                 @RequestParam(value = "oldPassword", required = true) String oldPassword,
+                                 @RequestParam(value = "newPassword", required = true) String newPassword) {
         User existed = userService.checkEmailExist(email);
         if (existed != null) {
             if (existed.getPassword().equals(oldPassword)) {
