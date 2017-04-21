@@ -200,7 +200,9 @@ class Home extends Component {
                 this.setSearchLocation(data)
             }.bind(this),
             error: function (err) {
-                console.log('error: ', err);
+                console.log('error: ', err.status);
+                // if(err.status === )
+                
             }
         });
 
@@ -261,7 +263,7 @@ class Home extends Component {
     }
 
     render() {
-        console.log(user);
+        // console.log(user);
         if (user.name === "me") {
             window.location.reload(true);
         } else {

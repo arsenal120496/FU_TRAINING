@@ -30,6 +30,9 @@ public class UserServiceImp implements UserService {
         User user = userRepository.getUserByEmail(email);
         return user;
     }
-    
-    
+
+    @Override
+    public User update(User user) {
+        return userRepository.save(user);
+    }
 }
