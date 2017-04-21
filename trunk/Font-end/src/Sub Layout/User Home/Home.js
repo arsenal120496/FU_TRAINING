@@ -212,7 +212,9 @@ class Home extends Component {
                 this.setSearchLocation(data)
             }.bind(this),
             error: function (err) {
-                console.log('error: ', err);
+                console.log('error: ', err.status);
+                // if(err.status === )
+                
             }
         });
 

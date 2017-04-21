@@ -31,5 +31,25 @@ public class RegisterController {
             return new ResponseEntity("User registered unsuccessfully", HttpStatus.BAD_REQUEST);
         }
     }
+    @CrossOrigin
+    @RequestMapping(value = "/updateProfile")
+    public ResponseEntity update(@RequestParam(value = "name") String  name,
+                                    @RequestParam(value = "email") String email,
+                                    @RequestParam(value = "oldPassword") String oldPassword, @RequestParam(value = "newPassword") String newPassword){
+        User existed = userService.checkEmailExist(email);
+        if (existed != null){
+            if (existed.getPassword() == oldPassword){
+                existed.setName(name);
+                existed.setPassword(newPassword);
+                userService.update(existed);
+                return new ResponseEntity(existed, HttpStatus.OK);
+            }
+            else{
+                return new ResponseEntity(HttpStatus.BAD_REQUEST);
+            }
+        }else {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+    }
 
 }
