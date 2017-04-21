@@ -74,7 +74,6 @@ class Register extends Component {
         let newState = this.state;
         newState[attribute] = event.target.value;
         this.setState(newState);
-        console.log(this.state);
     }
     render() {
         
