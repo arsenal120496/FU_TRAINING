@@ -68,12 +68,12 @@ class Login extends Component {
                     <div className="popup-form-title">
                         <h1>Login</h1>
                     </div>
-                    {this.state.error ? <Error error={this.state.error}></Error> : null}
+                    {this.state.error ? <Error error={this.state.error}/> : null}
                     <div>
                         <form id="login-form" onSubmit={(evt) => this.handleSubmit(evt)}>
                             <div className="input-group">
                                 <div className="input-group-addon">
-                                    <i className="fa fa-envelope" aria-hidden="true"></i>
+                                    <i className="fa fa-envelope" aria-hidden="true"/>
                                 </div>
                                 <input
                                     type="email"
@@ -85,7 +85,7 @@ class Login extends Component {
                             </div>
                             <div className="input-group">
                                 <div className="input-group-addon">
-                                    <i className="fa fa-key" aria-hidden="true"></i>
+                                    <i className="fa fa-key" aria-hidden="true"/>
                                 </div>
                                 <input
                                     type="password"

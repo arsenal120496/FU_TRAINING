@@ -26,8 +26,6 @@ var notyf = new Notyf({
     delay: 3000,
 });
 
-// Display an alert notification
-
 
 let user = JSON.parse(localStorage.getItem('user'));
 if (user === null) {
@@ -39,7 +37,7 @@ if (user === null) {
     }
 }
 
-const PATH_BASE = 'http://5645304f.ngrok.io/getLocationByTime';
+const PATH_BASE = 'http://localhost:8080/getLocationByTime';
 const PATH_EMAIL = 'email=';
 let PARAM_EMAIL = user.email;
 const PATH_FROMDATE = 'fromDate=';
@@ -273,25 +271,6 @@ class Home extends Component {
     }
 
     handleSubmitProfile() {
-        $.ajax({
-            url: 'http://9db8ecf0.ngrok.io/updateProfile',
-            method: 'POST',
-            headers: {"Authorization": user.tokenValue},
-            data: {
-                name: this.state.name,
-                email: user.email,
-                oldPassword: this.state.oldPassword,
-                newPassword: this.state.newPassword
-            },
-            success: function (data) {
-                notyf.confirm('Update your profile successfully!!!');
-                this.hideModal();
-            }.bind(this),
-            error: function (err) {
-                notyf.alert(err.toString());
-                this.hideModal();
-            }.bind(this)
-        });
         let valid = this.validateInput();
         if (valid) {
             $.ajax({
@@ -309,7 +288,6 @@ class Home extends Component {
                     this.hideModal();
                 }.bind(this),
                 error: function (err) {
-                    notyf.alert(err.toString());
                     this.hideModal();
                 }.bind(this)
             });
@@ -317,11 +295,12 @@ class Home extends Component {
     }
 
     validateInput() {
-        if (this.state.name.trim().length === 0) {
-            notyf.alert("Username can't be null");
+        if (!this.state.name.trim().match(/^[a-zA-Z0-9_]{2,30}$/)) {
+            notyf.alert("Username can't contain special character except '_' character");
             return false;
         }
-        if (this.state.newPassword.trim().length < 6 || this.state.oldPassword.trim().length < 6) {
+        if (!this.state.newPassword.trim().match(/^[0-9a-zA-Z@]{6,}$/)
+            || !this.state.oldPassword.trim().match(/^[0-9a-zA-Z@]{6,}$/)) {
             notyf.alert("The length of password must be 6 character at least");
             return false;
         } else if (this.state.newPassword.trim() !== this.state.confirmPassword.trim()) {
@@ -427,7 +406,7 @@ class Home extends Component {
                                     placeholder="Name"
                                     required
                                     onChange={(event) => this._handleChange(event, 'name')}
-                                    value={user.name}
+                                    value={this.state.name}
                                     onBlur={this.validateInput}
                                 />
                             </div>
@@ -498,6 +477,7 @@ class Home extends Component {
                                 <h5>Select day to tracking your GPS <cite>(MM-DD-YYYY)</cite>:</h5>
                                 <div className="col-xs-12 col-md-12">
                                     <CalendarInput/>
+                                    <div className="col-md-1"></div>
                                     <button type="button" id="btnSeach" onClick={this.handleFormSubmit}
                                             className="btn btn-success">Search
                                     </button>
