@@ -39,7 +39,6 @@ public class RegisterController {
                                  @RequestParam(value = "newPassword") String newPassword) {
         User existed = userService.checkEmailExist(email);
         if (existed != null) {
-            System.out.println("existed not null");
             if (existed.getPassword().equals(oldPassword)) {
                 existed.setName(name);
                 existed.setPassword(newPassword);

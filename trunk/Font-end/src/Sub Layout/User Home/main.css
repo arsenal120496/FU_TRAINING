@@ -35,6 +35,10 @@ cite {
     font-size: 0.9em;
     color: #BEBCB5;
 }
+/*format alert*/
+.notyf{
+    z-index: 1041 !important;
+}
 
 /*format table row*/
 .rt-tr-group:hover {
