@@ -37,7 +37,7 @@ if (user === null) {
     }
 }
 
-const PATH_BASE = 'http://localhost:8080/getLocationByTime';
+const PATH_BASE = 'http://5645304f.ngrok.io/getLocationByTime';
 const PATH_EMAIL = 'email=';
 let PARAM_EMAIL = user.email;
 const PATH_FROMDATE = 'fromDate=';
@@ -271,7 +271,7 @@ class Home extends Component {
 
     handleSubmitProfile() {
         $.ajax({
-            url: 'http://localhost:8080/updateProfile',
+            url: 'http://9db8ecf0.ngrok.io/updateProfile',
             method: 'POST',
             headers: {"Authorization": user.tokenValue},
             data: {

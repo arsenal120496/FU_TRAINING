@@ -59,7 +59,7 @@ class Register extends Component {
         if(valid){
             console.log('fetched: ', this.state);
             $.ajax({
-            url: 'http://localhost:8080/register',
+            url: 'http://5645304f.ngrok.io/register',
             method: 'POST',
             // headers: { "Access-Control-Allow-Origin": "*" },
             data: {
@@ -150,7 +150,7 @@ class Register extends Component {
                             <input className="btn btn-success btn-block" id="btnRegister" type="submit"
                                 value="Register" />
                                 </div>
-                                <div id="register-link"><Link to='/sign_in'>Login with existed account</Link></div>
+                                <div id="login-link"><Link to='/sign_in'>Login with existed account</Link></div>
                         </form>
                     </div>
                 </div>

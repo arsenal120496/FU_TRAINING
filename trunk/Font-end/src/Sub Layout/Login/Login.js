@@ -32,7 +32,7 @@ class Login extends Component {
     handleSubmit(event) {
         event.preventDefault();
         $.ajax({
-            url: 'http://localhost:8080/login',
+            url: 'http://5645304f.ngrok.io/login',
             method: 'POST',
             data: {
                 email: this.state.email,
