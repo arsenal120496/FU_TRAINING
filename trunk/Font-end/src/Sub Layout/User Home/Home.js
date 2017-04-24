@@ -37,7 +37,7 @@ if (user === null) {
     }
 }
 
-const PATH_BASE = 'http://e481a2e8.ngrok.io/getLocationByTime';
+const PATH_BASE = 'http://localhost:8080/getLocationByTime';
 const PATH_EMAIL = 'email=';
 let PARAM_EMAIL = user.email;
 const PATH_FROMDATE = 'fromDate=';
@@ -138,6 +138,8 @@ class Home extends Component {
         this._handleChange = this._handleChange.bind(this);
         this.handleSubmitProfile = this.handleSubmitProfile.bind(this);
         this.validateInput = this.validateInput.bind(this);
+
+        this.handleNextBtn = this.handleNextBtn.bind(this);
     }
 
     _handleChange(event, attribute) {
@@ -217,19 +219,10 @@ class Home extends Component {
     }
 
     componentDidMount() {
-        // user = JSON.parse(localStorage.getItem('user'));
-        // if (user === null) {
-        //     user = {
-        //         email: "abcd",
-        //         name: "me"
-        //     };
-        //     this.props.router.push('/sign_in');
-        // } else {
-        //     PARAM_EMAIL = user.email;
-        // }
         var height = (window.innerHeight - 100) + "px";
         document.getElementById("con").setAttribute("style", "height:" + height);
         document.getElementById("map").setAttribute("style", "height:" + height);
+        document.getElementById("table-area").setAttribute("style", "height:" + height);
         // this.timerID = setInterval(
         //     () => this.fetchSearchLocation(),
         //     1000
@@ -241,7 +234,24 @@ class Home extends Component {
                 listRow[i].setAttribute('style', 'background-color: #fff');
             }
         }
+
+        var nextBtn = document.getElementsByClassName('-next');
+        nextBtn[0].addEventListener("click", function (event) {
+            var pageNumTag = document.getElementsByClassName('-pageJump');
+            var pageNum = pageNumTag[0].firstElementChild.value;
+            console.log("next", pageNum);
+        });
+        var prevBtn = document.getElementsByClassName('-previous');
+        prevBtn[0].addEventListener("click", function (event) {
+            var pageNumTag = document.getElementsByClassName('-pageJump');
+            var pageNum = pageNumTag[0].firstElementChild.value;
+            console.log("previous", pageNum);
+        });
         this.fetchSearchLocation();
+    }
+
+    handleNextBtn() {
+        console.log("next");
     }
 
     handleFormSubmit() {
@@ -274,7 +284,7 @@ class Home extends Component {
         let valid = this.validateInput();
         if (valid) {
             $.ajax({
-                url: 'http://e481a2e8.ngrok.io/updateProfile',
+                url: 'http://localhost:8080/updateProfile',
                 method: 'POST',
                 headers: {"Authorization": user.tokenValue},
                 data: {
@@ -494,6 +504,7 @@ class Home extends Component {
                                 defaultPageSize={10}
                                 pageSizeOptions={[5, 10]}
                                 showFilters={true}
+                                // page={10}
                                 getTdProps={(state, rowInfo, column, instance) => {
                                     return {
                                         onClick: e => {
@@ -512,6 +523,15 @@ class Home extends Component {
                                                     }
                                                 });
                                             }
+                                        }
+                                    }
+                                }}
+                                getPaginationProps={(state) => {
+                                    return {
+                                        onClick: e => {
+                                            console.log('A Td Element was clicked!')
+                                            console.log('it produced this event:', e)
+                                            console.log('It was in this column:', state)
                                         }
                                     }
                                 }}
