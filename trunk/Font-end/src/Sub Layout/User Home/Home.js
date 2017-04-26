@@ -15,7 +15,7 @@ import {NavDropdown, MenuItem, Modal, Button} from 'react-bootstrap'
 
 
 var DateRangePicker = require('react-bootstrap-daterangepicker');
-var moment = require('moment');
+var moment = require('moment-timezone');
 var BS = require('react-bootstrap');
 // Import Notyf using CommonJS require
 var Notyf = require('notyf');
@@ -37,7 +37,7 @@ if (user === null) {
     }
 }
 
-const PATH_BASE = 'http://localhost:8080/getLocationByTime';
+const PATH_BASE = 'http://525d70fa.ngrok.io/getLocationByTime';
 const PATH_EMAIL = 'email=';
 let PARAM_EMAIL = user.email;
 const PATH_FROMDATE = 'fromDate=';
@@ -157,8 +157,11 @@ class Home extends Component {
         markers = [];
         //update marker, path, center
         result.reverse().forEach(function (el) {
-            var newDate = new Date(el.time);
-            el.time = moment(newDate).format('MM/DD/YYYY HH:mm:ss');
+        	
+        	var newDate = new Date(el.time);
+        	console.log(newDate);
+            el.time = moment(newDate).tz("Etc/UCT").format('LLL');
+            console.log(el.time);
             const path = {
                 lat: parseFloat(el.location.latitude),
                 lng: parseFloat(el.location.longitude),
@@ -313,7 +316,7 @@ class Home extends Component {
         let valid = this.validateInput();
         if (valid) {
             $.ajax({
-                url: 'http://localhost:8080/updateProfile',
+                url: 'http://525d70fa.ngrok.io/updateProfile',
                 method: 'POST',
                 headers: {"Authorization": user.tokenValue},
                 data: {
@@ -512,7 +515,7 @@ class Home extends Component {
                     </div>
                     <div className="col-xs-12 col-md-5" id="table-area">
                         <div className="col-xs-12 col-md-12" id="search-area">
-                            <form action="http://localhost:8080/home/locations" method="GET" className="form-inline"
+                            <form action="http://525d70fa.ngrok.io/home/locations" method="GET" className="form-inline"
                                   id="filter-form">
                                 <h5>Select day to tracking your GPS <cite>(MM-DD-YYYY)</cite>:</h5>
                                 <div className="col-xs-12 col-md-12">
