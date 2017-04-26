@@ -3,8 +3,6 @@ package com.gst.domain;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -21,12 +19,15 @@ public class UserLocation {
 
     String nameDeivce;
 
-    String time;
+    Date time;
 
     public UserLocation() {
     	
     }
     
+    public UserLocation(String email) {
+    	this.email = email;
+    }
     
 
     public UserLocation(String email, Location location, String nameDeivce) {
@@ -36,7 +37,7 @@ public class UserLocation {
 		this.nameDeivce = nameDeivce;
 	}
     
-    public UserLocation(String email, Location location, String nameDeivce, String time) {
+    public UserLocation(String email, Location location, String nameDeivce, Date time) {
 		super();
 		this.email = email;
 		this.location = location;
@@ -75,16 +76,13 @@ public class UserLocation {
 		this.nameDeivce = nameDeivce;
 	}
 
-    public void setTime(String time) {
+    public void setTime(Date time) {
         this.time = time;
     }
 
-    public String getTime() {
+    public Date getTime() {
         return time;
     }
 
-    public void setTime(Date time) {
-        DateFormat df = new SimpleDateFormat();
-        this.time = df.format(time);
-    }
+
 }

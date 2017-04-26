@@ -41,10 +41,13 @@ const PATH_BASE = 'http://localhost:8080/getLocationByTime';
 const PATH_EMAIL = 'email=';
 let PARAM_EMAIL = user.email;
 const PATH_FROMDATE = 'fromDate=';
-let PARAM_FROMDATE = moment().format('MM/DD/YYYY');
-
+let PARAM_FROMDATE = moment().format('MM/DD/YYYY 00:00:00');
 const PATH_TODATE = 'toDate=';
-let PARAM_TODATE = moment().format('MM/DD/YYYY');
+let PARAM_TODATE = moment().format('MM/DD/YYYY 23:59:59');
+const PATH_PAGE = 'pageID=';
+let PARAM_PAGE = 1;
+
+let viewStatus = true;
 
 
 // class use DateRangePicker
@@ -100,16 +103,9 @@ const center = {
     lng: 106.6297
 }
 
-const marker = {
-    position: {
-        lat: parseFloat(center.lat),
-        lng: parseFloat(center.lng),
-    },
-    defaultAnimation: 2,
-    key: PARAM_TODATE,
-};
+let markers = [];
 let pathList = [];
-
+var oldCenter = {};
 
 class Home extends Component {
     constructor(props) {
@@ -139,7 +135,6 @@ class Home extends Component {
         this.handleSubmitProfile = this.handleSubmitProfile.bind(this);
         this.validateInput = this.validateInput.bind(this);
 
-        this.handleNextBtn = this.handleNextBtn.bind(this);
     }
 
     _handleChange(event, attribute) {
@@ -158,43 +153,73 @@ class Home extends Component {
 
     setSearchLocation(result) {
         //reset marker, path, center
-        this.setState({
-            listLoc: [],
-            markers: [],
-            paths: [],
-            center: {
-                lat: 10.8231,
-                lng: 106.6297
-            },
-        });
         pathList = [];
+        markers = [];
         //update marker, path, center
-        const list = result;
-        list.forEach(function (el) {
+        result.reverse().forEach(function (el) {
+            var newDate = new Date(el.time);
+            el.time = moment(newDate).format('MM/DD/YYYY HH:mm:ss');
             const path = {
                 lat: parseFloat(el.location.latitude),
                 lng: parseFloat(el.location.longitude),
             };
-            marker.position.lat = parseFloat(el.location.latitude);
-            marker.position.lng = parseFloat(el.location.longitude);
-            marker.key = el.time;
+            if ((result.indexOf(el) === 0) || (result.indexOf(el) === (result.length - 1))) {
+                const nextMarkers = {
+                    position: {
+                        lat: parseFloat(el.location.latitude),
+                        lng: parseFloat(el.location.longitude)
+                    },
+                    defaultAnimation: 2,
+                    key: el.time, // Add a key property for: http://fb.me/react-warning-keys
+                };
+                markers.push(nextMarkers);
+            }
+
             center.lat = parseFloat(el.location.latitude);
             center.lng = parseFloat(el.location.longitude);
             pathList.push(path);
         });
-        this.setState({
-            paths: pathList,
-            center: center,
-            markers: marker,
-            listLoc: result.reverse(),
-        });
+        if (viewStatus) {
+            if ((center.lat !== oldCenter.lat || center.lng !== oldCenter.lng) || this.state.markers.length === 0) {
+                console.log("khac nhau");
+                this.setState({
+                    listLoc: [],
+                    markers: [],
+                    paths: [],
+                    center: {
+                        lat: 10.8231,
+                        lng: 106.6297
+                    },
+                });
+                this.setState({
+                    paths: pathList,
+                    center: center,
+                    markers: markers,
+                    listLoc: result.reverse(),
+                });
+                oldCenter = {
+                    lat: center.lat,
+                    lng: center.lng,
+                };
+            } else {
+                console.log("giong nhau");
+                this.setState({
+                    listLoc: [],
+                    paths: [],
+                });
+                this.setState({
+                    paths: pathList,
+                    listLoc: result.reverse(),
+                });
+            }
+
+        }
         //reset marker if no data
         if (result.length === 0) {
             this.setState({
-                markers: {}
+                markers: []
             })
         }
-
     }
 
     fetchSearchLocation() {
@@ -202,8 +227,13 @@ class Home extends Component {
             return {"Authorization": user.tokenValue};
         }
 
+        var pageNumTag = document.getElementsByClassName('-pageJump');
+        var pageNum = pageNumTag[0].firstElementChild.value;
+        if (pageNum === 0) {
+            PARAM_PAGE = pageNum + 1;
+        }
         $.ajax({
-            url: `${PATH_BASE}?${PATH_EMAIL}${PARAM_EMAIL}&${PATH_FROMDATE}${PARAM_FROMDATE}&${PATH_TODATE}${PARAM_TODATE}`,
+            url: `${PATH_BASE}?${PATH_EMAIL}${PARAM_EMAIL}&${PATH_FROMDATE}${PARAM_FROMDATE}&${PATH_TODATE}${PARAM_TODATE}&${PATH_PAGE}${PARAM_PAGE}`,
             method: 'GET',
             headers: setTokenHeader(),
             success: function (data) {
@@ -211,8 +241,6 @@ class Home extends Component {
             }.bind(this),
             error: function (err) {
                 console.log('error: ', err.status);
-                // if(err.status === )
-
             }
         });
 
@@ -223,10 +251,24 @@ class Home extends Component {
         document.getElementById("con").setAttribute("style", "height:" + height);
         document.getElementById("map").setAttribute("style", "height:" + height);
         document.getElementById("table-area").setAttribute("style", "height:" + height);
-        // this.timerID = setInterval(
-        //     () => this.fetchSearchLocation(),
-        //     1000
-        // );
+        this.fetchSearchLocation();
+        var nextBtn = document.getElementsByClassName('-next');
+        nextBtn[0].addEventListener("click", function (event) {
+            var pageNumTag = document.getElementsByClassName('-pageJump');
+            var pageNum = pageNumTag[0].firstElementChild.value;
+            PARAM_PAGE = parseInt(pageNum) + 1;
+            viewStatus = false;
+            this.fetchSearchLocation();
+        }.bind(this));
+        var prevBtn = document.getElementsByClassName('-previous');
+        prevBtn[0].addEventListener("click", function (event) {
+            var pageNumTag = document.getElementsByClassName('-pageJump');
+            var pageNum = pageNumTag[0].firstElementChild.value;
+            PARAM_PAGE = parseInt(pageNum) - 1;
+            viewStatus = false;
+            this.fetchSearchLocation();
+        }.bind(this));
+
         //fix hover background with null row
         var listRow = document.getElementsByClassName('rt-tr-group');
         for (var i = 0; i < listRow.length; i++) {
@@ -234,24 +276,10 @@ class Home extends Component {
                 listRow[i].setAttribute('style', 'background-color: #fff');
             }
         }
-
-        var nextBtn = document.getElementsByClassName('-next');
-        nextBtn[0].addEventListener("click", function (event) {
-            var pageNumTag = document.getElementsByClassName('-pageJump');
-            var pageNum = pageNumTag[0].firstElementChild.value;
-            console.log("next", pageNum);
-        });
-        var prevBtn = document.getElementsByClassName('-previous');
-        prevBtn[0].addEventListener("click", function (event) {
-            var pageNumTag = document.getElementsByClassName('-pageJump');
-            var pageNum = pageNumTag[0].firstElementChild.value;
-            console.log("previous", pageNum);
-        });
-        this.fetchSearchLocation();
-    }
-
-    handleNextBtn() {
-        console.log("next");
+        this.timerID = setInterval(
+            () => this.fetchSearchLocation(),
+            3000
+        );
     }
 
     handleFormSubmit() {
@@ -263,8 +291,9 @@ class Home extends Component {
         if (dates.length === 1) {
             dates.push(datesStr);
         }
-        PARAM_FROMDATE = dates.shift();
-        PARAM_TODATE = dates.pop();
+        PARAM_FROMDATE = dates.shift() + " 00:00:00";
+        PARAM_TODATE = dates.pop() + " 23:59:59";
+        viewStatus = false;
         this.fetchSearchLocation();
 
     }
@@ -351,7 +380,7 @@ class Home extends Component {
                 header: 'Time',
                 accessor: 'time',
                 sortable: false,
-                hideFilter: true,
+                hideFilter: false,
             }
         ]
         const name = "Welcome, " + user.name;
@@ -477,7 +506,8 @@ class Home extends Component {
                 <div className="container col-md-12" id="con">
 
                     <div className="col-xs-12 col-md-7 " id="map">
-                        <MyMap markerList={this.state.markers} centerPoint={this.state.center}
+                        <MyMap markerList={this.state.markers}
+                               centerPoint={this.state.center}
                                pathList={this.state.paths}/>
                     </div>
                     <div className="col-xs-12 col-md-5" id="table-area">
@@ -497,41 +527,81 @@ class Home extends Component {
 
                             </form>
                         </div>
+                        <div className="col-xs-12 col-md-12" id="sync-button">
+                            <button onClick={function (event) {
+                                event.preventDefault();
+                                PARAM_FROMDATE = moment().format('MM/DD/YYYY 00:00:00');
+                                PARAM_TODATE = moment().format('MM/DD/YYYY 23:59:59');
+                                PARAM_PAGE = 1;
+                                viewStatus = true;
+                                this.fetchSearchLocation();
+                            }.bind(this)} className="btn btn-success">
+                                Synchronize <span className="glyphicon glyphicon-refresh"/>
+                            </button>
+                        </div>
                         <div className="col-xs-12 col-md-12">
                             <ReactTable
                                 data={this.state.listLoc}
                                 columns={columns}
                                 defaultPageSize={10}
-                                pageSizeOptions={[5, 10]}
+                                showPageSizeOptions={false}
+                                pageSizeOptions={[10]}
                                 showFilters={true}
-                                // page={10}
                                 getTdProps={(state, rowInfo, column, instance) => {
                                     return {
                                         onClick: e => {
                                             if (rowInfo !== undefined) {
                                                 this.setState({
+                                                    center: {},
+                                                    markers: [],
+                                                });
+                                                let nextMarkers = {
+                                                    position: {
+                                                        lat: parseFloat(rowInfo.rowValues.latitude),
+                                                        lng: parseFloat(rowInfo.rowValues.longitude),
+                                                    },
+                                                    defaultAnimation: 2,
+                                                    key: rowInfo.rowValues.time.trim(), // Add a key property for: http://fb.me/react-warning-keys
+                                                };
+                                                var dup = false;
+                                                markers.forEach((el) => {
+                                                    if (el.key.trim() === nextMarkers.key) {
+                                                        dup = true;
+                                                    }
+                                                });
+                                                if (!dup) {
+                                                    if (markers.length === 2) {
+                                                        markers.splice(1, 0, nextMarkers);
+                                                    } else if (markers.length === 3) {
+                                                        markers.splice(1, 1, nextMarkers);
+                                                    }
+                                                } else {
+                                                    if (markers.length === 3) {
+                                                        markers.splice(1, 1);
+                                                    }
+                                                }
+
+                                                this.setState({
                                                     center: {
                                                         lat: parseFloat(rowInfo.rowValues.latitude),
                                                         lng: parseFloat(rowInfo.rowValues.longitude),
-                                                    }, markers: {
-                                                        position: {
-                                                            lat: parseFloat(rowInfo.rowValues.latitude),
-                                                            lng: parseFloat(rowInfo.rowValues.longitude),
-                                                        },
-                                                        defaultAnimation: 2,
-                                                        key: rowInfo.rowValues.time,
-                                                    }
+                                                    },
+                                                    markers: markers,
                                                 });
                                             }
                                         }
                                     }
                                 }}
-                                getPaginationProps={(state) => {
-                                    return {
-                                        onClick: e => {
-                                            console.log('A Td Element was clicked!')
-                                            console.log('it produced this event:', e)
-                                            console.log('It was in this column:', state)
+                                defaultFilterMethod={(filter, row, column) => {
+                                    const id = filter.pivotId || filter.id;
+                                    return row[id] !== undefined ? (String(row[id]).indexOf(filter.value) >= 0) : true;
+                                }}
+                                onChange={ () => {
+                                    //fix hover background with null row
+                                    var listRow = document.getElementsByClassName('rt-tr-group');
+                                    for (var i = 0; i < listRow.length; i++) {
+                                        if (listRow[i].innerText.trim() === '') {
+                                            listRow[i].setAttribute('style', 'background-color: #fff');
                                         }
                                     }
                                 }}

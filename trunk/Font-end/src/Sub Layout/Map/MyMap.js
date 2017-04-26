@@ -16,12 +16,14 @@ import {
 const GoogleMapConst = withGoogleMap(props => (
     <GoogleMap
         ref={props.onMapLoad}
-        defaultZoom={15}
+        defaultZoom={20}
         center={props.center}
     >
-        <Marker
-            {...props.markers}
-        />
+        {props.markers.map(marker => (
+            <Marker
+                {...marker}
+            />
+        ))}
         <Polyline path={props.paths}
                   options={{
                       geodesic: true,
