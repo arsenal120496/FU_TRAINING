@@ -45,12 +45,6 @@ class Register extends Component {
     }
 
     validateInput() {
-        // var pattern = "/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/";
-        if (this.state.password.trim().match(/^[0-9a-zA-Z@]{6,}$/)) {
-            console.log("ok");
-        } else {
-            console.log("fail");
-        }
         if (!this.state.name.trim().match(/^[a-zA-Z0-9_]{2,30}$/)) {
             notyf.alert("Username can't contain special character except '_' character");
             return false;
@@ -72,9 +66,7 @@ class Register extends Component {
     fetchRegister(event) {
         event.preventDefault();
         let valid = this.validateInput();
-        // console.log('valid: ', valid);
         if (valid) {
-            console.log('fetched: ', this.state);
             $.ajax({
                 url: 'http://990614f2.ngrok.io/register',
                 method: 'POST',
@@ -85,9 +77,7 @@ class Register extends Component {
                     password: this.state.password
                 },
                 success: function (data) {
-                    // console.log(data);
                     this.setState({success: 'success'});
-                    // console.log(this.state);
                     this.resetForm();
                 }.bind(this),
                 error: function (err) {

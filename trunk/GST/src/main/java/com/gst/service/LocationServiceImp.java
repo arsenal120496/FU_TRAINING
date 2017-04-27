@@ -54,7 +54,7 @@ public class LocationServiceImp implements LocationService {
     @Override
     public List<UserLocation> findByTime(String email, String fromDate, String toDate, String pageID) throws ParseException {
         List<UserLocation> list = new ArrayList<UserLocation>();      
-        DateFormat df = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss");
+        DateFormat df = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         Date fDate = df.parse(fromDate);
         Date tDate = df.parse(toDate);
         Criteria criteria = Criteria.where("time").gte(fDate).lte(tDate).and("email").is(email);

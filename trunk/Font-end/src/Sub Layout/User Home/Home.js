@@ -29,7 +29,6 @@ var notyf = new Notyf({
 
 let user = JSON.parse(localStorage.getItem('user'));
 if (user === null) {
-    // console.log("1")
     user = {
         email: "abcd",
         name: "me",
@@ -170,9 +169,9 @@ class Home extends Component {
             result.reverse().forEach(function (el) {
 
                 var newDate = new Date(el.time);
-                console.log(newDate);
+
                 el.time = moment(newDate).tz("Etc/UCT").format('LLL');
-                console.log(el.time);
+
                 const path = {
                     lat: parseFloat(el.location.latitude),
                     lng: parseFloat(el.location.longitude),
@@ -193,10 +192,10 @@ class Home extends Component {
                 center.lng = parseFloat(el.location.longitude);
                 pathList.push(path);
             });
-            console.log(viewStatus);
+
             if (viewStatus) {
                 if ((center.lat !== oldCenter.lat || center.lng !== oldCenter.lng) || this.state.markers.length === 0) {
-                    console.log("khac nhau");
+
                     this.setState({
                         listLoc: [],
                         markers: [],
@@ -217,7 +216,7 @@ class Home extends Component {
                         lng: center.lng,
                     };
                 } else {
-                    console.log("giong nhau");
+
                     this.setState({
                         listLoc: [],
                         paths: [],
@@ -230,28 +229,28 @@ class Home extends Component {
 
             } else {
                 // if (this.state.listLoc.length === 0) {
-                    if ((center.lat !== oldCenter.lat || center.lng !== oldCenter.lng) || this.state.markers.length === 0) {
-                        console.log("khac nhau");
-                        this.setState({
-                            listLoc: [],
-                            markers: [],
-                            paths: [],
-                            center: {
-                                lat: 10.8231,
-                                lng: 106.6297
-                            },
-                        });
-                        this.setState({
-                            paths: pathList,
-                            center: center,
-                            markers: markers,
-                            listLoc: result.reverse(),
-                        });
-                        oldCenter = {
-                            lat: center.lat,
-                            lng: center.lng,
-                        };
-                    }
+                if ((center.lat !== oldCenter.lat || center.lng !== oldCenter.lng) || this.state.markers.length === 0) {
+
+                    this.setState({
+                        listLoc: [],
+                        markers: [],
+                        paths: [],
+                        center: {
+                            lat: 10.8231,
+                            lng: 106.6297
+                        },
+                    });
+                    this.setState({
+                        paths: pathList,
+                        center: center,
+                        markers: markers,
+                        listLoc: result.reverse(),
+                    });
+                    oldCenter = {
+                        lat: center.lat,
+                        lng: center.lng,
+                    };
+                }
                 // }
 
             }
@@ -282,7 +281,6 @@ class Home extends Component {
                 this.setSearchLocation(data);
             }.bind(this),
             error: function (err) {
-                console.log('error: ', err.status);
             }
         });
 
@@ -430,7 +428,7 @@ class Home extends Component {
 
 
         return (
-            <div className="full-height" >
+            <div className="full-height">
                 <nav className="navbar navbar-default">
                     <div className="container-fluid">
 
@@ -608,11 +606,18 @@ class Home extends Component {
                                                     key: rowInfo.rowValues.time.trim(), // Add a key property for: http://fb.me/react-warning-keys
                                                 };
                                                 var dup = false;
+                                                var count = 0;
                                                 markers.forEach((el) => {
-                                                    if (el.key.trim() === nextMarkers.key) {
+                                                    count++;
+                                                    if ((el.key.trim() === nextMarkers.key)
+                                                        && (el.position.lat === nextMarkers.position.lat)
+                                                        && (el.position.lng === nextMarkers.position.lng)
+                                                        && (count === 2)
+                                                    ) {
                                                         dup = true;
                                                     }
                                                 });
+                                                count = 0;
                                                 if (!dup) {
                                                     if (markers.length === 2) {
                                                         markers.splice(1, 0, nextMarkers);
