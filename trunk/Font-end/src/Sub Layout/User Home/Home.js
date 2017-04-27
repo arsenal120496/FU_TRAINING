@@ -229,7 +229,7 @@ class Home extends Component {
                 }
 
             } else {
-                if (this.state.listLoc.length === 0) {
+                // if (this.state.listLoc.length === 0) {
                     if ((center.lat !== oldCenter.lat || center.lng !== oldCenter.lng) || this.state.markers.length === 0) {
                         console.log("khac nhau");
                         this.setState({
@@ -252,7 +252,7 @@ class Home extends Component {
                             lng: center.lng,
                         };
                     }
-                }
+                // }
 
             }
             //reset marker if no data
@@ -289,10 +289,10 @@ class Home extends Component {
     }
 
     componentDidMount() {
-        var height = (window.innerHeight - 100) + "px";
+        var height = (window.innerHeight - 52.5) + "px";
         document.getElementById("con").setAttribute("style", "height:" + height);
-        document.getElementById("map").setAttribute("style", "height:" + height);
-        document.getElementById("table-area").setAttribute("style", "height:" + height);
+        document.getElementById("map").setAttribute("style", "height:" + (window.innerHeight - 100) + "px");
+        document.getElementById("table-area").setAttribute("style", "height:" + (window.innerHeight - 72) + "px");
         this.fetchSearchLocation();
         var nextBtn = document.getElementsByClassName('-next');
         nextBtn[0].addEventListener("click", function (event) {
@@ -430,7 +430,7 @@ class Home extends Component {
 
 
         return (
-            <div className="full-height">
+            <div className="full-height" >
                 <nav className="navbar navbar-default">
                     <div className="container-fluid">
 
@@ -578,6 +578,7 @@ class Home extends Component {
                                 PARAM_PAGE = 1;
                                 viewStatus = true;
                                 this.fetchSearchLocation();
+                                notyf.confirm("Update current location");
                             }.bind(this)} className="btn btn-success">
                                 Synchronize <span className="glyphicon glyphicon-refresh"/>
                             </button>

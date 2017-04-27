@@ -5,6 +5,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -32,14 +33,16 @@ public class LocationController {
 	
 	
 	
-	@RequestMapping(value = "/addLocation" , method = RequestMethod.GET)
+	@RequestMapping(value = "/addLocation" , method = RequestMethod.POST)
 	public UserLocation addLocation(@RequestParam(value = "email", required = true) String  email, 
 							@RequestParam(value = "deviceName", required = true) String deviceName,
 							@RequestParam(value = "longtitude", required = true) String longtitude,
 							@RequestParam(value = "latitude", required = true) String latitude,
 							@RequestParam(value = "date", required = true) String date) throws ParseException{
-		DateFormat df = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss");
+		DateFormat df = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+		df.setTimeZone(TimeZone.getTimeZone("UTC"));
         Date fDate = df.parse(date);
+        System.out.println("Binh = = = "+date);
 		UserLocation u = new UserLocation(email,new Location(longtitude, latitude),deviceName, fDate);
 		locationService.save(u);
 		return u;
@@ -52,7 +55,9 @@ public class LocationController {
 							@RequestParam(value = "toDate", required = true) String toDate,
 							@RequestParam(value = "pageID", required = true) String pageID
 							) throws ParseException {
+			System.out.println("Viet ==== " + email);
 		List<UserLocation> res = locationService.findByTime(email, fromDate, toDate, pageID);
+
 		if(res == null){
 			return new ResponseEntity("Not found",HttpStatus.OK);
 		}

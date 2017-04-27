@@ -1,5 +1,9 @@
 /*format navbar*/
 
+.navbar {
+    margin-bottom: 0px;
+}
+
 .navbar-right {
     height: 50px;
 }
@@ -39,6 +43,17 @@
 cite {
     font-size: 0.9em;
     color: #BEBCB5;
+}
+
+.-pagination, .ReactTable{
+    background: #fff;
+
+}
+
+#con{
+    padding-top: 20px;
+    background-color: #fff;
+    background-image: url("../resource/img/map.jpg");
 }
 /*format alert*/
 .notyf{

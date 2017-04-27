@@ -21,7 +21,6 @@ import org.springframework.stereotype.Service;
 import com.gst.domain.UserLocation;
 import com.gst.repository.LocationRespository;
 
-
 /**
  * Created by truonghuuthanh on 4/4/17.
  */
@@ -30,7 +29,7 @@ public class LocationServiceImp implements LocationService {
 
     @Autowired
     LocationRespository locationRespository;
-    
+
     @Autowired
     MongoTemplate mt;
     
@@ -47,6 +46,7 @@ public class LocationServiceImp implements LocationService {
 
     @Override
     public List<UserLocation> findByEmail(String email) {
+
         List<UserLocation> list = locationRespository.findByEmail(email);
         return list;
     }
@@ -57,7 +57,7 @@ public class LocationServiceImp implements LocationService {
         DateFormat df = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss");
         Date fDate = df.parse(fromDate);
         Date tDate = df.parse(toDate);
-        Criteria criteria = Criteria.where("time").gte(fDate).lte(tDate);
+        Criteria criteria = Criteria.where("time").gte(fDate).lte(tDate).and("email").is(email);
         Query q = new Query();
         q.addCriteria(criteria);
         list = mt.find(q, UserLocation.class);
