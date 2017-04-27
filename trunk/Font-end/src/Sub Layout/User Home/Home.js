@@ -37,7 +37,7 @@ if (user === null) {
     }
 }
 
-const PATH_BASE = 'http://525d70fa.ngrok.io/getLocationByTime';
+const PATH_BASE = 'http://localhost:8080/getLocationByTime';
 const PATH_EMAIL = 'email=';
 let PARAM_EMAIL = user.email;
 const PATH_FROMDATE = 'fromDate=';
@@ -156,72 +156,111 @@ class Home extends Component {
         pathList = [];
         markers = [];
         //update marker, path, center
-        result.reverse().forEach(function (el) {
-        	
-        	var newDate = new Date(el.time);
-        	console.log(newDate);
-            el.time = moment(newDate).tz("Etc/UCT").format('LLL');
-            console.log(el.time);
-            const path = {
-                lat: parseFloat(el.location.latitude),
-                lng: parseFloat(el.location.longitude),
-            };
-            if ((result.indexOf(el) === 0) || (result.indexOf(el) === (result.length - 1))) {
-                const nextMarkers = {
-                    position: {
-                        lat: parseFloat(el.location.latitude),
-                        lng: parseFloat(el.location.longitude)
-                    },
-                    defaultAnimation: 2,
-                    key: el.time, // Add a key property for: http://fb.me/react-warning-keys
-                };
-                markers.push(nextMarkers);
-            }
-
-            center.lat = parseFloat(el.location.latitude);
-            center.lng = parseFloat(el.location.longitude);
-            pathList.push(path);
-        });
-        if (viewStatus) {
-            if ((center.lat !== oldCenter.lat || center.lng !== oldCenter.lng) || this.state.markers.length === 0) {
-                console.log("khac nhau");
-                this.setState({
-                    listLoc: [],
-                    markers: [],
-                    paths: [],
-                    center: {
-                        lat: 10.8231,
-                        lng: 106.6297
-                    },
-                });
-                this.setState({
-                    paths: pathList,
-                    center: center,
-                    markers: markers,
-                    listLoc: result.reverse(),
-                });
-                oldCenter = {
-                    lat: center.lat,
-                    lng: center.lng,
-                };
-            } else {
-                console.log("giong nhau");
-                this.setState({
-                    listLoc: [],
-                    paths: [],
-                });
-                this.setState({
-                    paths: pathList,
-                    listLoc: result.reverse(),
-                });
-            }
-
-        }
-        //reset marker if no data
-        if (result.length === 0) {
+        if (result === "Not found") {
             this.setState({
-                markers: []
-            })
+                listLoc: [],
+                markers: [],
+                paths: [],
+                center: {
+                    lat: 10.8231,
+                    lng: 106.6297
+                },
+            });
+        } else {
+            result.reverse().forEach(function (el) {
+
+                var newDate = new Date(el.time);
+                console.log(newDate);
+                el.time = moment(newDate).tz("Etc/UCT").format('LLL');
+                console.log(el.time);
+                const path = {
+                    lat: parseFloat(el.location.latitude),
+                    lng: parseFloat(el.location.longitude),
+                };
+                if ((result.indexOf(el) === 0) || (result.indexOf(el) === (result.length - 1))) {
+                    const nextMarkers = {
+                        position: {
+                            lat: parseFloat(el.location.latitude),
+                            lng: parseFloat(el.location.longitude)
+                        },
+                        defaultAnimation: 2,
+                        key: el.time, // Add a key property for: http://fb.me/react-warning-keys
+                    };
+                    markers.push(nextMarkers);
+                }
+
+                center.lat = parseFloat(el.location.latitude);
+                center.lng = parseFloat(el.location.longitude);
+                pathList.push(path);
+            });
+            console.log(viewStatus);
+            if (viewStatus) {
+                if ((center.lat !== oldCenter.lat || center.lng !== oldCenter.lng) || this.state.markers.length === 0) {
+                    console.log("khac nhau");
+                    this.setState({
+                        listLoc: [],
+                        markers: [],
+                        paths: [],
+                        center: {
+                            lat: 10.8231,
+                            lng: 106.6297
+                        },
+                    });
+                    this.setState({
+                        paths: pathList,
+                        center: center,
+                        markers: markers,
+                        listLoc: result.reverse(),
+                    });
+                    oldCenter = {
+                        lat: center.lat,
+                        lng: center.lng,
+                    };
+                } else {
+                    console.log("giong nhau");
+                    this.setState({
+                        listLoc: [],
+                        paths: [],
+                    });
+                    this.setState({
+                        paths: pathList,
+                        listLoc: result.reverse(),
+                    });
+                }
+
+            } else {
+                if (this.state.listLoc.length === 0) {
+                    if ((center.lat !== oldCenter.lat || center.lng !== oldCenter.lng) || this.state.markers.length === 0) {
+                        console.log("khac nhau");
+                        this.setState({
+                            listLoc: [],
+                            markers: [],
+                            paths: [],
+                            center: {
+                                lat: 10.8231,
+                                lng: 106.6297
+                            },
+                        });
+                        this.setState({
+                            paths: pathList,
+                            center: center,
+                            markers: markers,
+                            listLoc: result.reverse(),
+                        });
+                        oldCenter = {
+                            lat: center.lat,
+                            lng: center.lng,
+                        };
+                    }
+                }
+
+            }
+            //reset marker if no data
+            if (result.length === 0) {
+                this.setState({
+                    markers: []
+                })
+            }
         }
     }
 
@@ -240,7 +279,7 @@ class Home extends Component {
             method: 'GET',
             headers: setTokenHeader(),
             success: function (data) {
-                this.setSearchLocation(data)
+                this.setSearchLocation(data);
             }.bind(this),
             error: function (err) {
                 console.log('error: ', err.status);
@@ -316,7 +355,7 @@ class Home extends Component {
         let valid = this.validateInput();
         if (valid) {
             $.ajax({
-                url: 'http://525d70fa.ngrok.io/updateProfile',
+                url: 'http://localhost:8080/updateProfile',
                 method: 'POST',
                 headers: {"Authorization": user.tokenValue},
                 data: {
@@ -328,6 +367,7 @@ class Home extends Component {
                 success: function (data) {
                     notyf.confirm('Update your profile successfully!!!');
                     this.hideModal();
+                    this.logout();
                 }.bind(this),
                 error: function (err) {
                     this.hideModal();
@@ -515,7 +555,7 @@ class Home extends Component {
                     </div>
                     <div className="col-xs-12 col-md-5" id="table-area">
                         <div className="col-xs-12 col-md-12" id="search-area">
-                            <form action="http://525d70fa.ngrok.io/home/locations" method="GET" className="form-inline"
+                            <form action="http://localhost:8080/home/locations" method="GET" className="form-inline"
                                   id="filter-form">
                                 <h5>Select day to tracking your GPS <cite>(MM-DD-YYYY)</cite>:</h5>
                                 <div className="col-xs-12 col-md-12">

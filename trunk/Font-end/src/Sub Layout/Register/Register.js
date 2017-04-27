@@ -76,7 +76,7 @@ class Register extends Component {
         if (valid) {
             console.log('fetched: ', this.state);
             $.ajax({
-                url: 'http://localhost:8080/register',
+                url: 'http://990614f2.ngrok.io/register',
                 method: 'POST',
                 // headers: { "Access-Control-Allow-Origin": "*" },
                 data: {

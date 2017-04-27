@@ -44,16 +44,16 @@ public class LoginController {
     @RequestMapping(value = "/loginMobile", method = RequestMethod.POST)
     public ResponseEntity<User> loginMobile(@RequestParam(value = "email", required = true) String  email, @RequestParam(value = "password", required = true) String password, HttpServletResponse res){
     	User userTest = userService.checkEmailExist(email);
-    	
     	User user = userService.login(email, password);
+
     	if(user != null && userTest !=null){
     		String token = TokenAuthenticationService.gettoken(res, email);
             UserTokenRespone userTokenRespone = new UserTokenRespone(user.getEmail(), user.getName(), TokenAuthenticationService.HEADER_STRING, token);
             return new ResponseEntity(userTokenRespone,HttpStatus.OK);
-    	}else if (user != null){
-    		return new ResponseEntity("Invalid email or password !!!",HttpStatus.NOT_FOUND);
+    	}else if (user == null && userTest != null){
+    		return new ResponseEntity("1",HttpStatus.NOT_FOUND);
         } else {
-            return new ResponseEntity("You must have an account !!!", HttpStatus.NOT_FOUND);
+            return new ResponseEntity("2", HttpStatus.NOT_FOUND);
         }
     }
     

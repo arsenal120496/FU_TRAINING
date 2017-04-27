@@ -61,8 +61,10 @@ public class LocationServiceImp implements LocationService {
         Query q = new Query();
         q.addCriteria(criteria);
         list = mt.find(q, UserLocation.class);
+        if(list.isEmpty()){
+            return null;
+        }
         Collections.reverse(list);
-        System.out.println(list.get(0).getTime().toString());     
         int indexPage = 0;
         try {
 			indexPage = Integer.parseInt(pageID);

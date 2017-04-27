@@ -52,9 +52,10 @@ public class LocationController {
 							@RequestParam(value = "toDate", required = true) String toDate,
 							@RequestParam(value = "pageID", required = true) String pageID
 							) throws ParseException {
-		System.out.println(toDate + "-----" + fromDate);
 		List<UserLocation> res = locationService.findByTime(email, fromDate, toDate, pageID);
-		System.out.println(res.get(0).getTime().toString());	
+		if(res == null){
+			return new ResponseEntity("Not found",HttpStatus.OK);
+		}
 		return new ResponseEntity(res,HttpStatus.OK);
 	}
 	

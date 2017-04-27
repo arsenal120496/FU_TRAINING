@@ -19,7 +19,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/loginMobile").permitAll()
                 .antMatchers(HttpMethod.GET, "/addLocation").permitAll()
                 .antMatchers(HttpMethod.POST, "/register").permitAll()
-                .antMatchers(HttpMethod.GET, "/getLocationByTime").permitAll()
                 .anyRequest().authenticated()
                 .and().anonymous().and()
                 .formLogin().disable()
